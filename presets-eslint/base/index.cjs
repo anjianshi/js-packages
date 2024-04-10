@@ -6,7 +6,6 @@ module.exports = {
   rules: {
     // Possible Problems
     'array-callback-return': 'error',
-    'no-await-in-loop': 'warn',
     'no-constant-binary-expression': 'warn',
     'no-constant-condition': ['error', { checkLoops: false }],
     'no-constructor-return': 'error',
