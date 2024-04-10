@@ -1,0 +1,25 @@
+{
+  "name": "@anjianshi/presets-typescript",
+  "version": "3.0.0",
+  "description": "通用 tsconfig.json 配置",
+  "homepage": "https://github.com/anjianshi/js-packages/presets-typescript",
+  "bugs": {
+    "url": "https://github.com/anjianshi/js-packages/issues",
+    "email": "anjianshi@gmail.com"
+  },
+  "license": "MIT",
+  "author": "anjianshi <anjianshi@gmail.com>",
+  "repository": "github:anjianshi/js-packages",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "peerDependencies": {
+    "typescript": "^5.4.3"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
+  }
+}

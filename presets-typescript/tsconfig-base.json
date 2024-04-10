@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    // ========== 类型检查 ==========
+
+    // 开启严格检查
+    "strict": true,
+
+    // 对象中未明确定义的 key，类型标记为”可能为 undefined“，而不是假设一定有值
+    "noUncheckedIndexedAccess": true,
+
+    // ========== 模块化 ==========
+
+    // 允许用 import X from 'xxx' 代替 import * as X from 'xxx'
+    "allowSyntheticDefaultImports": true,
+
+    // 使 ES6 脚本可以更方便地引用 CommonJS 模块
+    "esModuleInterop": true,
+
+    "module": "ESNext",
+
+    "moduleResolution": "Node",
+
+    // ========== 运行环境 ==========
+
+    // 假设代码运行环境是最新的
+    "target": "ESNext",
+
+    // 允许使用装饰器
+    "experimentalDecorators": true,
+
+    // TypeScript 本身不转义 JSX，交给其他工具
+    "jsx": "preserve",
+  },
+
+  "include": ["../../../src/"]
+}

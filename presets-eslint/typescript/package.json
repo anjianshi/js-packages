@@ -1,0 +1,24 @@
+{
+  "name": "@anjianshi/presets-eslint-typescript",
+  "version": "3.1.0",
+  "description": "公共 ESLint 配置",
+  "homepage": "https://github.com/anjianshi/js-packages/presets-eslint/",
+  "bugs": {
+    "url": "https://github.com/anjianshi/js-packages/issues",
+    "email": "anjianshi@gmail.com"
+  },
+  "license": "MIT",
+  "author": "anjianshi <anjianshi@gmail.com>",
+  "repository": "github:anjianshi/js-packages",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "main": "index.cjs",
+  "dependencies": {
+    "@anjianshi/presets-eslint-base": "workspace:../base",
+    "@typescript-eslint/eslint-plugin": "^6.19.1",
+    "@typescript-eslint/parser": "^6.19.1",
+    "eslint-import-resolver-typescript": "^3.6.1"
+  }
+}

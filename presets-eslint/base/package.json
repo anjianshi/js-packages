@@ -1,0 +1,23 @@
+{
+  "name": "@anjianshi/presets-eslint-base",
+  "version": "4.0.0",
+  "description": "公共 ESLint 配置",
+  "homepage": "https://github.com/anjianshi/js-packages/presets-eslint/",
+  "bugs": {
+    "url": "https://github.com/anjianshi/js-packages/issues",
+    "email": "anjianshi@gmail.com"
+  },
+  "license": "MIT",
+  "author": "anjianshi <anjianshi@gmail.com>",
+  "repository": "github:anjianshi/js-packages",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "main": "index.cjs",
+  "dependencies": {
+    "eslint": "^8.57.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-config-prettier": "^9.1.0"
+  }
+}

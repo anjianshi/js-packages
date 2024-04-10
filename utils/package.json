@@ -1,0 +1,48 @@
+{
+  "name": "@anjianshi/utils",
+  "version": "1.4.0",
+  "description": "Common JavaScript Utils",
+  "homepage": "https://github.com/anjianshi/js-packages/utils",
+  "bugs": {
+    "url": "https://github.com/anjianshi/js-packages/issues",
+    "email": "anjianshi@gmail.com"
+  },
+  "license": "MIT",
+  "author": "anjianshi <anjianshi@gmail.com>",
+  "repository": "github:anjianshi/js-packages",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "type": "module",
+  "scripts": {
+    "watch": "npm run clear && tsc --watch",
+    "build": "npm run clear && tsc",
+    "clear": "rm -rf dist",
+    "prepublishOnly": "npm run build && cp -R dist/* ./",
+    "postpublish": "node ./build-cleanup.cjs",
+    "lint": "tsc --noEmit && eslint './src/**/*'"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "dayjs": "^1.11.10",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@anjianshi/presets-eslint-base": "workspace:../presets-eslint/base",
+    "@anjianshi/presets-eslint-typescript": "workspace:../presets-eslint/typescript",
+    "@anjianshi/presets-eslint-node": "workspace:../presets-eslint/node",
+    "@anjianshi/presets-prettier": "workspace:../presets-prettier",
+    "@anjianshi/presets-typescript": "workspace:../presets-typescript",
+    "@types/debug": "^4.1.9",
+    "@types/lodash": "^4.14.199",
+    "@types/node": "^20.8.6",
+    "chalk": "^5.3.0",
+    "dotenv": "^16.4.5",
+    "typeorm": "^0.3.20",
+    "vconsole": "^3.15.1",
+    "typescript": "^5.4.3"
+  },
+  "eslintIgnore": [],
+  "prettier": "@anjianshi/presets-prettier/prettierrc"
+}

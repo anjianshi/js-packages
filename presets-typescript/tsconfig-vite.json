@@ -1,0 +1,16 @@
+{
+  "extends": ["./tsconfig-base", "./tsconfig-alias"],
+  "compilerOptions": {
+    // 启用 Vite 的文件解析特性（支持在开启了 Module 的项目里不带扩展名引入文件）
+    "moduleResolution": "bundler",
+
+    // Vite 建议开启此选项：代码涉及到 Vite 不支持的”隔离相关特性“时，显示警告。
+    "isolatedModules": true,
+
+    // 开启 isolatedModules 的情况下，一些库（如 Vue）会报错，通过此选项缓解此问题。
+    "skipLibCheck": true,
+
+    // 补充类型定义，如 svg 等导入资源的类型；假定项目包含了以下依赖：vite、vite-plugin-svgr
+    "types": ["vite-plugin-svgr/client", "vite/client"],
+  }
+}
