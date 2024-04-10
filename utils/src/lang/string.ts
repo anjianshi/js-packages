@@ -81,3 +81,14 @@ export function readableSize(bytes: number, si = false, dp = 1) {
   } while (Math.round(Math.abs(bytes) * r) / r >= thresh && u < units.length - 1)
   return `${bytes.toFixed(dp)} ${units[u]!}`
 }
+
+/**
+ * 解析 JSON，失败时不抛出异常，而是返回 undefined
+ */
+export function safeParseJSON<T>(json: string) {
+  try {
+    return JSON.parse(json) as T
+  } catch (e) {
+    return undefined
+  }
+}

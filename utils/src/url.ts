@@ -29,11 +29,11 @@ function parseQuery(url: string, options?: { array?: false, loose?: boolean, dec
 function parseQuery(url: string, options: { array: true, loose?: boolean, decode?: boolean }): Record<string, string | string[]> // prettier-ignore
 function parseQuery(
   url: string,
-  options?: { array?: boolean; loose?: boolean; decode?: boolean }
+  options?: { array?: boolean; loose?: boolean; decode?: boolean },
 ): Record<string, string | string[]> {
   const { array = false, loose = false, decode = true } = options ?? {}
 
-  // 正常状态下，将仅剩 a=1&b=1（即不会再有 ? 和 #）；loose 模型下，可能为 a=1&b=2#c=3?d=4
+  // 正常状态下，将仅剩 a=1&b=1（即不会再有 ? 和 #）；loose 模式下，可能为 a=1&b=2#c=3?d=4
   const queryString = (loose ? /(\?|#)(.+)/ : /(\?)(.+?)(#|$)/).exec(url)?.[2] ?? ''
   if (!queryString) return {}
 
@@ -77,7 +77,7 @@ export function stringifyQuery(obj: StringifyQuery, encode = true) {
 function stringifyQueryItem(
   name: string,
   value: StringifyVal | StringifyVal[],
-  encode: boolean
+  encode: boolean,
 ): string {
   if (Array.isArray(value))
     return value.map(subValue => stringifyQueryItem(name, subValue, encode)).join('&')
