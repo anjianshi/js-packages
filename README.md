@@ -19,4 +19,6 @@
 
 ## 如何发布
 
-更新要发布的包的版本号，然后运行 `publish.js`
+1. 先全局安装 [pnpm-workspace-publisher](https://github.com/anjianshi/pnpm-workspace-publisher)
+2. 修改有更新的包的版本号
+3. 运行 `ws-publish` 执行更新
