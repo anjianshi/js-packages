@@ -89,7 +89,7 @@ const rules = {
   'default-param-last': 'off',
   '@typescript-eslint/default-param-last': 'error',
   '@typescript-eslint/no-empty-function': 'off',
-  'no-loop-func': 'off',
+  '@typescript-eslint/no-loop-func': 'off',
   '@typescript-eslint/no-loss-of-precision': 'error',
   'no-redeclare': 'off',
   '@typescript-eslint/no-redeclare': 'error',
