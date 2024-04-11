@@ -1,6 +1,6 @@
 {
   "name": "@anjianshi/presets-typescript",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "通用 tsconfig.json 配置",
   "homepage": "https://github.com/anjianshi/js-packages/presets-typescript",
   "bugs": {

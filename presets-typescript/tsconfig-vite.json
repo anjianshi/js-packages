@@ -1,5 +1,5 @@
 {
-  "extends": ["./tsconfig-base", "./tsconfig-alias"],
+  "extends": ["./tsconfig-base"],
   "compilerOptions": {
     // 启用 Vite 的文件解析特性（支持在开启了 Module 的项目里不带扩展名引入文件）
     "moduleResolution": "bundler",
