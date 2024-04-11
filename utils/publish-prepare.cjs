@@ -7,6 +7,7 @@ const dist = path.join(base, 'dist')
 
 const packageJSON = require(path.join(base, 'package.json'))
 delete packageJSON.publishConfig.directory
+delete packageJSON.scripts
 for (const [key, value] of Object.entries(packageJSON.dependencies)) {
   packageJSON.dependencies[key] = value.replace('workspace:', 'workspace:../')
 }

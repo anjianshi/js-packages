@@ -1,6 +1,6 @@
 {
   "name": "@anjianshi/presets-typescript",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "通用 tsconfig.json 配置",
   "homepage": "https://github.com/anjianshi/js-packages/presets-typescript",
   "bugs": {
@@ -14,12 +14,25 @@
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
+  "type": "module",
+  "bin": {
+    "tsc-with-alias": "tsc-with-alias.js"
+  },
+  "devDependencies": {
+    "@anjianshi/presets-eslint-node": "workspace:../presets-eslint/node",
+    "@anjianshi/presets-prettier": "workspace:../presets-prettier"
+  },
   "peerDependencies": {
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.3",
+    "tsc-alias": "^1.8.8"
   },
   "peerDependenciesMeta": {
     "typescript": {
       "optional": true
+    },
+    "tsc-alias": {
+      "optional": true
     }
-  }
+  },
+  "prettier": "@anjianshi/presets-prettier/prettierrc"
 }
