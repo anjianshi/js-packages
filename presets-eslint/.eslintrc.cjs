@@ -1,4 +1,4 @@
 module.exports = {
-  env: 'node',
+  env: { node: true },
   ...require('./base/index.cjs'),
 }

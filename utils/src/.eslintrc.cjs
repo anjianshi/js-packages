@@ -1,4 +1,5 @@
 /* eslint-env node */
 module.exports = {
-  extends: [require.resolve('@anjianshi/presets-eslint-typescript/exclusive.cjs')],
+  root: true,
+  extends: [require.resolve('@anjianshi/presets-eslint-typescript')],
 }
