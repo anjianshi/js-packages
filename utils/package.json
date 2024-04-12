@@ -25,17 +25,8 @@
     "lint": "tsc --noEmit && eslint './src/**/*'"
   },
   "main": "index.js",
-  "peerDependencies": {
-    "dayjs": "^1.11.10",
+  "dependencies": {
     "lodash": "^4.17.21"
-  },
-  "peerDependenciesMeta": {
-    "dayjs": {
-      "optional": true
-    },
-    "lodash": {
-      "optional": true
-    }
   },
   "devDependencies": {
     "@anjianshi/presets-eslint-typescript": "workspace:../presets-eslint/typescript",
@@ -50,6 +41,14 @@
     "typeorm": "^0.3.20",
     "vconsole": "^3.15.1",
     "typescript": "^5.4.4"
+  },
+  "peerDependencies": {
+    "dayjs": "^1.11.10"
+  },
+  "peerDependenciesMeta": {
+    "dayjs": {
+      "optional": true
+    }
   },
   "eslintIgnore": [],
   "prettier": "@anjianshi/presets-prettier/prettierrc"
