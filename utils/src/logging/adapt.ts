@@ -1,5 +1,9 @@
-import type { Debug } from 'debug'
 import { getLogger, type Logger } from './index.js'
+
+interface Debug {
+  enable: (namespaces: string) => void
+  log: (...args: any[]) => any // eslint-disable-line @typescript-eslint/no-explicit-any
+}
 
 /**
  * 适配 debug package
