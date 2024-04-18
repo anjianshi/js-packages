@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import util from 'node:util'
 import chalk from 'chalk'
 import dayjs from 'dayjs'
 import { type LogInfo, LogLevel, LogHandler, formatters } from '../../logging/index.js'
@@ -125,14 +126,11 @@ export class FileHandler extends LogHandler {
   }
 
   protected stringifyDataItem(item: unknown) {
-    if (typeof item === 'string') return item
-    if (item instanceof Error) return item.stack ?? String(item)
-    try {
-      const json = JSON.stringify(item) as string | undefined
-      return json ?? String(json)
-    } catch (e: unknown) {
-      return String(item)
-    }
+    // 去掉颜色控制字符
+    if (typeof item === 'string') item = item.replace(/\x1b\[\d+m/g, '')
+
+    // 利用 util.format() 获得和 console.log() 相同的输出（因为 console.log() 底层也是用的 util.format()）
+    return util.format(item)
   }
 
   // Handle buffer

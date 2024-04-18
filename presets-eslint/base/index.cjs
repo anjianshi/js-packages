@@ -9,6 +9,7 @@ module.exports = {
     'no-constant-binary-expression': 'warn',
     'no-constant-condition': ['error', { checkLoops: false }],
     'no-constructor-return': 'error',
+    'no-control-regex': 'off',
     'no-duplicate-imports': 'off', // Replaced by import/no-duplicates
     'no-new-native-nonconstructor': 'error',
     'no-promise-executor-return': 'error',
