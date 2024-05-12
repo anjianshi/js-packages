@@ -39,6 +39,10 @@ export function adaptDebugLib(debugLib: Debug, enable = '', logger?: Logger) {
   debugLib.log = logger.debug.bind(logger)
 
   if (enable) {
+    // 有些库（例如 prisma）重新实现了自己的 debug 库，且模仿 debug 也读取 DEBUG 环境变量。
+    // 这里除了设置 debug 库，顺便也适配这些遵循 debug 库模式的自定义库。
+    process.env.DEBUG = enable
+
     debugLib.enable(enable)
   }
 }
