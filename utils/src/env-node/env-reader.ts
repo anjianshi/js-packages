@@ -1,6 +1,20 @@
 import * as dotenv from 'dotenv'
 import { safeParseJSON } from '../lang/string.js'
 
+type EnvValue = string | number | boolean | unknown[] | Record<string, unknown>
+
+type TypeDef = 'string' | 'number' | 'boolean' | unknown[] | Record<string, unknown>
+type TypeFrom<D extends TypeDef> = D extends 'string'
+  ? string
+  : D extends 'number'
+    ? number
+    : D extends 'boolean'
+      ? boolean
+      : D
+type ResultFrom<Defs extends Record<string, TypeDef>> = {
+  [K in keyof Defs]: TypeFrom<Defs[K]>
+}
+
 /**
  * 读取 .env 文件，并获取格式化后的数据
  * 注意：依赖 dotenv 包
@@ -38,7 +52,7 @@ export class EnvReader {
   get(key: string, defaults: number): number
   get(key: string, defaults: boolean): boolean
   get<T extends unknown[] | Record<string, unknown>>(key: string, defaults: T): T
-  get(key: string, defaults: string | number | boolean | unknown[] | Record<string, unknown>) {
+  get(key: string, defaults: EnvValue) {
     const raw = this.getRaw(key)
     if (raw === undefined) return defaults
 
@@ -66,5 +80,36 @@ export class EnvReader {
     if (type === 'boolean') return this.toBoolean(raw)
     if (type === 'json') return safeParseJSON(raw)
     return raw
+  }
+
+  /**
+   * 同 envReader.get()，只不过是通过对象指定各 env 的默认值来批量获取
+   * envReader.batchGet({ port: 8000, debug: false, mobiles: ['123', '456'] }
+   */
+  batchGet<Defs extends Record<string, EnvValue>>(definitions: Defs) {
+    const result = {} as Record<string, unknown>
+    for (const [key, defaults] of Object.entries(definitions)) {
+      result[key] = this.get(key, defaults as string)
+    }
+    return result as Defs
+  }
+
+  /**
+   * 同 envReader.getByType()，只不过是通过对象指定各 env 的类型来批量获取
+   *
+   * envReader.batchGetByType({
+   *   port: 'number',
+   *   debug: 'boolean',
+   *   mobiles: [] as string[],  // 用此格式定义内容是数组的 JSON 值
+   *   obj: {} as { a: number, b: string } // 用此格式定义内容是对象的 JSON 值
+   * }
+   */
+  batchGetByType<Defs extends Record<string, TypeDef>>(definitions: Defs) {
+    const result = {} as Record<string, unknown>
+    for (const [key, def] of Object.entries(definitions)) {
+      result[key] =
+        typeof def === 'string' ? this.getByType(key, def as 'string') : this.getByType(key, 'json')
+    }
+    return result as Partial<ResultFrom<Defs>>
   }
 }
