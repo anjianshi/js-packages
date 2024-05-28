@@ -7,9 +7,9 @@ import * as dotenv from 'dotenv'
 export class EnvReader {
   envsFromFile: Record<string, string> = {}
 
-  constructor(readonly envFile: string) {
+  constructor(readonly envFiles: string | string[]) {
     dotenv.config({
-      path: this.envFile,
+      path: this.envFiles,
       processEnv: this.envsFromFile, // 把从 .env 文件读到的内容写入到此实例的属性，而不是 process.env
     })
   }
