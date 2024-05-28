@@ -69,10 +69,10 @@ export class EnvReader {
    * 获取指定 env 的值，并转换成指定类型，无需提供默认值。
    * 值不存在或转换失败时，返回 undefined。
    */
-  getByType(key: string, type?: 'string'): string
-  getByType(key: string, type: 'number'): number
-  getByType(key: string, type: 'boolean'): boolean
-  getByType<T extends unknown[] | Record<string, unknown>>(key: string, type: 'json'): T
+  getByType(key: string, type?: 'string'): string | undefined
+  getByType(key: string, type: 'number'): number | undefined
+  getByType(key: string, type: 'boolean'): boolean | undefined
+  getByType<T extends unknown[] | Record<string, unknown>>(key: string, type: 'json'): T | undefined
   getByType(key: string, type: 'string' | 'number' | 'boolean' | 'json' = 'string') {
     const raw = this.getRaw(key)
     if (raw === undefined) return raw
@@ -95,21 +95,32 @@ export class EnvReader {
   }
 
   /**
-   * 同 envReader.getByType()，只不过是通过对象指定各 env 的类型来批量获取
+   * 同 envReader.getByType()，只不过是通过对象指定各 env 的类型来批量获取。
+   * 若 required 为 true，要求所有 env 都必须有值，否则会抛出异常；默认为 false。
    *
    * envReader.batchGetByType({
    *   port: 'number',
    *   debug: 'boolean',
    *   mobiles: [] as string[],  // 用此格式定义内容是数组的 JSON 值
    *   obj: {} as { a: number, b: string } // 用此格式定义内容是对象的 JSON 值
-   * }
+   * })
    */
-  batchGetByType<Defs extends Record<string, TypeDef>>(definitions: Defs) {
+  batchGetByType<Defs extends Record<string, TypeDef>>(
+    definitions: Defs,
+    required?: false,
+  ): Partial<ResultFrom<Defs>>
+  batchGetByType<Defs extends Record<string, TypeDef>>(
+    definitions: Defs,
+    required: true,
+  ): ResultFrom<Defs>
+  batchGetByType<Defs extends Record<string, TypeDef>>(definitions: Defs, required = false) {
     const result = {} as Record<string, unknown>
     for (const [key, def] of Object.entries(definitions)) {
-      result[key] =
+      const value =
         typeof def === 'string' ? this.getByType(key, def as 'string') : this.getByType(key, 'json')
+      if (value === undefined && required) throw new Error(`env ${key} needs a value`)
+      result[key] = value
     }
-    return result as Partial<ResultFrom<Defs>>
+    return result
   }
 }
