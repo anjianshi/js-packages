@@ -6,12 +6,12 @@ import { safeParseJSON } from '../lang/string.js'
  * 注意：依赖 dotenv 包
  */
 export class EnvReader {
-  envsFromFile: Record<string, string> = {}
+  protected loadedEnvs: Record<string, string> = {}
 
-  constructor(readonly envFiles: string | string[]) {
+  constructor(envFiles?: string | string[]) {
     dotenv.config({
-      path: this.envFiles,
-      processEnv: this.envsFromFile, // 把从 .env 文件读到的内容写入到此实例的属性，而不是 process.env
+      path: envFiles,
+      processEnv: this.loadedEnvs, // 把从 .env 文件读到的内容写入此变量，而不是 process.env，以避免污染 process.env。
     })
   }
 
@@ -27,32 +27,44 @@ export class EnvReader {
   }
 
   getRaw(key: string) {
-    return this.envsFromFile[key] ?? process.env[key]
+    return this.loadedEnvs[key] ?? process.env[key]
   }
 
+  /**
+   * 获取指定 env 的值，并转换成与 defaults 匹配的类型。
+   * 若值不存在，返回 defaults。
+   */
   get(key: string, defaults: string): string
   get(key: string, defaults: number): number
   get(key: string, defaults: boolean): boolean
   get<T extends unknown[] | Record<string, unknown>>(key: string, defaults: T): T
   get(key: string, defaults: string | number | boolean | unknown[] | Record<string, unknown>) {
-    const value = this.getRaw(key)
-    if (value === undefined) return defaults
+    const raw = this.getRaw(key)
+    if (raw === undefined) return defaults
 
-    if (typeof defaults === 'number') return this.toNumber(value) ?? defaults
-    else if (typeof defaults === 'boolean') return this.toBoolean(value) ?? defaults
-    else if (Array.isArray(defaults) || typeof defaults === 'object')
-      return safeParseJSON(value) ?? defaults
+    if (typeof defaults === 'number') return this.toNumber(raw) ?? defaults
+    else if (typeof defaults === 'boolean') return this.toBoolean(raw) ?? defaults
+    else if (Array.isArray(defaults) || typeof defaults === 'object') {
+      return safeParseJSON(raw) ?? defaults
+    }
 
-    return value
+    return raw
   }
 
-  getNumber(key: string) {
-    return this.toNumber(this.getRaw(key) ?? '')
-  }
-  getBoolean(key: string) {
-    return this.toBoolean(this.getRaw(key) ?? '')
-  }
-  getJSON<T>(key: string) {
-    return safeParseJSON<T>(this.getRaw(key) ?? '')
+  /**
+   * 获取指定 env 的值，并转换成指定类型，无需提供默认值。
+   * 值不存在或转换失败时，返回 undefined。
+   */
+  getByType(key: string, type?: 'string'): string
+  getByType(key: string, type: 'number'): number
+  getByType(key: string, type: 'boolean'): boolean
+  getByType<T extends unknown[] | Record<string, unknown>>(key: string, type: 'json'): T
+  getByType(key: string, type: 'string' | 'number' | 'boolean' | 'json' = 'string') {
+    const raw = this.getRaw(key)
+    if (raw === undefined) return raw
+    if (type === 'number') return this.toNumber(raw)
+    if (type === 'boolean') return this.toBoolean(raw)
+    if (type === 'json') return safeParseJSON(raw)
+    return raw
   }
 }
