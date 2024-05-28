@@ -22,10 +22,12 @@ type ResultFrom<Defs extends Record<string, TypeDef>> = {
 export class EnvReader {
   protected loadedEnvs: Record<string, string> = {}
 
-  constructor(envFiles?: string | string[]) {
+  constructor(options: dotenv.DotenvConfigOptions = {}) {
     dotenv.config({
-      path: envFiles,
-      processEnv: this.loadedEnvs, // 把从 .env 文件读到的内容写入此变量，而不是 process.env，以避免污染 process.env。
+      ...options,
+
+      // 把从 .env 文件读到的内容写入此变量，而不是 process.env，以避免污染 process.env。
+      processEnv: this.loadedEnvs,
     })
   }
 
