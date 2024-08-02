@@ -101,11 +101,8 @@ module.exports = {
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
 
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-  },
+  "editor.codeActionsOnSave": { "source.fixAll.eslint": "explicit" },
   "eslint.workingDirectories": [{ "mode": "auto" }],
-  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact", "vue"]
 }
 ```
 
