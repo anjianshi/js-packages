@@ -63,7 +63,7 @@ importers:
         specifier: ^1.8.8
         version: 1.8.10
       typescript:
-        specifier: ^5.4.3
+        specifier: ^5.5.4
         version: 5.5.4
     devDependencies:
       '@anjianshi/presets-eslint-node':

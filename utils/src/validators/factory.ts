@@ -57,7 +57,7 @@ export type Definition =
   | StructDefinition
   | RecordDefinition
 
-type ValueOfDefinition<Def extends Definition> = Def extends AnyDefinition
+export type ValueOfDefinition<Def extends Definition> = Def extends AnyDefinition
   ? unknown
   : Def extends BooleanDefinition
     ? boolean
@@ -84,7 +84,7 @@ type ValueOfDefinition<Def extends Definition> = Def extends AnyDefinition
                 ? Record<string, Validated<ValueOfDefinition<Def['record']>, Def['record']>>
                 : never
 
-type OptionsFromDefinition<Def extends Definition> = Def extends ArrayDefinition
+export type OptionsFromDefinition<Def extends Definition> = Def extends ArrayDefinition
   ? Omit<Def, 'item'> & { item: ValidatorForDefinition<Def['item']> }
   : Def extends TupleDefinition
     ? Omit<Def, 'tuple'> & {
@@ -102,10 +102,12 @@ type OptionsFromDefinition<Def extends Definition> = Def extends ArrayDefinition
         ? Omit<Def, 'record'> & { record: ValidatorForDefinition<Def['record']> }
         : Def
 
-type ValidatorForDefinition<Def extends Definition> = Validator<
+export type ValidatorForDefinition<Def extends Definition> = Validator<
   ValueOfDefinition<Def>,
   OptionsFromDefinition<Def>
 >
+
+export type ResultForDefinition<Def extends Definition> = ReturnType<ValidatorForDefinition<Def>>
 
 export function getValidator<const InputDefinition extends Definition>(
   definition: InputDefinition,

@@ -20,6 +20,7 @@ module.exports = [
           varsIgnorePattern: 'React',
           argsIgnorePattern: '^_',
           destructuredArrayIgnorePattern: '^_',
+          caughtErrors: 'none',
         },
       ],
       'require-atomic-updates': ['error', { allowProperties: true }],

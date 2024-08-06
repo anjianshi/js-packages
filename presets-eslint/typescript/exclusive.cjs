@@ -72,7 +72,15 @@ const rules = {
   'no-unused-expressions': 'off',
   '@typescript-eslint/no-unused-expressions': 'error',
   'no-unused-vars': 'off',
-  '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: 'React|[iI]gnored' }],
+  '@typescript-eslint/no-unused-vars': [
+    'error',
+    {
+      varsIgnorePattern: 'React',
+      argsIgnorePattern: '^_',
+      destructuredArrayIgnorePattern: '^_',
+      caughtErrors: 'none',
+    },
+  ],
   'no-useless-constructor': 'off',
   '@typescript-eslint/no-useless-constructor': 'error',
   '@typescript-eslint/return-await': 'error',
