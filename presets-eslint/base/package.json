@@ -1,6 +1,6 @@
 {
   "name": "@anjianshi/presets-eslint-base",
-  "version": "4.0.2",
+  "version": "5.0.1",
   "description": "公共 ESLint 配置",
   "homepage": "https://github.com/anjianshi/js-packages/presets-eslint/",
   "bugs": {
@@ -16,8 +16,9 @@
   },
   "main": "index.cjs",
   "dependencies": {
-    "eslint": "^8.57.0",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-config-prettier": "^9.1.0"
+    "@eslint/js": "^9.8.0",
+    "eslint": "^9.8.0",
+    "eslint-config-prettier": "^9.1.0",
+    "globals": "^15.9.0"
   }
 }

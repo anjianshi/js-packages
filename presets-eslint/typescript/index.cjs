@@ -1,3 +1,1 @@
-module.exports = {
-  extends: [require.resolve('@anjianshi/presets-eslint-base'), require.resolve('./exclusive.cjs')],
-}
+module.exports = [...require('@anjianshi/presets-eslint-base'), ...require('./exclusive.cjs')]

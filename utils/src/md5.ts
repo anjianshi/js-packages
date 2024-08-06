@@ -114,7 +114,7 @@ export class MD5 {
     const { blocks } = this
     const i = this.lastByteIndex
     const EXTRA = [128, 32768, 8388608, -2147483648]
-    blocks[i >> 2] |= EXTRA[i & 3]!
+    blocks[i >> 2]! |= EXTRA[i & 3]!
     if (i >= 56) {
       if (!this.hashed) this.hash()
       blocks[0] = blocks[16]!

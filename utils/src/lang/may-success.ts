@@ -49,7 +49,7 @@ function formatSuccess<T1, T2, FT = void>(value: MaySuccess<T1, FT>, formatter: 
 function formatSuccess<T1, T2, FT = void>(value: Promise<MaySuccess<T1, FT>>, formatter: (value: T1) => T2): Promise<MaySuccess<T2, FT>> // prettier-ignore
 function formatSuccess<T1, T2, FT = void>(
   value: MaySuccess<T1, FT> | Promise<MaySuccess<T1, FT>>,
-  formatter: (value: T1) => T2
+  formatter: (value: T1) => T2,
 ) {
   if ('then' in value) return value.then(finalValue => formatSuccess(finalValue, formatter))
   return value.success ? success(formatter(value.data)) : value

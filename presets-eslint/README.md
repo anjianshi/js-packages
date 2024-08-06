@@ -1,20 +1,20 @@
 # 公共 ESLint 配置
 
-注意：因为 `eslint-plugin-import` 还没有支持 `ESlint v9`，所以此配置也没有跟进到 v9。
-详见：<https://github.com/import-js/eslint-plugin-import/issues/2948>
-
 ## 设计思路
 
-### 从简
+一、  
+只开启尽量少的规则，目标是**减少 bug 率**，而不是**限制**代码风格。
 
-只开启尽量少的规则，目标是“减少 bug 率”，而不是限制代码风格。
-
-### 不关注”代码样式“
-
+二、  
 参考 [此文章](https://typescript-eslint.io/linting/troubleshooting/formatting/) 的建议，不开启代码样式规则，
 由专门的格式化工具，如 `Prettier` 来控制。  
 [被排除的规则](https://github.com/prettier/eslint-config-prettier/blob/main/index.js)，
 主要包括 ESLint 自身 `Layout & Formatting` 段落的全部规则和 TypeScript、React 插件的许多规则。
+
+三、  
+`eslint-plugin-import` 还没有支持 `ESlint v9`，暂时将其弃用。  
+因此需要手动确认 `import` 的内容是否存在，以及维护引入内容的顺序。  
+详见：<https://github.com/import-js/eslint-plugin-import/issues/2948>
 
 ---
 
@@ -34,25 +34,22 @@
 ### 安装
 
 ```sh
-npm install --dev @anjianshi/presets-eslint-xxx
+pnpm add --save-dev @anjianshi/presets-eslint-xxx
 ```
 
 此包已包含 ESLint 依赖，无需再手动添加。
 
 ### 配置 ESLint
 
-建立一个 `.eslintrc.cjs` 文件：
+建立 `eslint.config.cjs` 文件：
 
 ```js
-module.exports = {
-  extends: [
-    require.resolve('@anjianshi/presets-eslint-xxx'),
+module.exports = [
+  ...require('@anjianshi/presets-eslint-xxx'),
 
-    // 如果只想引入某个场景专属的内容，、例如只单独引入 TypeScript 配置，不包含 base，可以引入 exclusive.cjs 文件
-    require.resolve('@anjianshi/presets-eslint-xxx/exclusive.cjs')
-    ...
-  ]
-}
+  // 如果只想引入某个场景专属的内容，、例如只单独引入 TypeScript 配置，不包含 base，可以引入 exclusive.cjs 文件
+  ...require('@anjianshi/presets-eslint-xxx/exclusive.cjs'),
+]
 ```
 
 ### 配置 TypeScript
@@ -64,12 +61,15 @@ module.exports = {
 默认假定它处在项目根目录，如果是在其他地方，则需手动指定（以项目根目录为基准）：
 
 ```js
-module.exports = {
-  extends: ['./node_modules/@anjianshi/eslint-typescript'],
-  parserOptions: {
-    project: './src/tsconfig.json',
+module.exports = [
+  ...require('./node_modules/@anjianshi/eslint-typescript'),
+
+  {
+    parserOptions: {
+      project: './src/tsconfig.json',
+    },
   },
-}
+]
 ```
 
 3、为 import 插件指明 `tsconfig.json` 的位置。  
@@ -78,15 +78,17 @@ module.exports = {
 如果 `tsconfig.json` 不在项目根目录，需要手动指明（以项目根目录为基准）：
 
 ```js
-{
-  settings: {
-    'import/resolver': {
-      typescript: {
-        project: './src/'
-      }
-    }
-  }
-}
+module.exports = [
+  {
+    settings: {
+      'import/resolver': {
+        typescript: {
+          project: './src/',
+        },
+      },
+    },
+  },
+]
 ```
 
 ### 配置 VSCode
@@ -102,7 +104,7 @@ module.exports = {
   "files.trimTrailingWhitespace": true,
 
   "editor.codeActionsOnSave": { "source.fixAll.eslint": "explicit" },
-  "eslint.workingDirectories": [{ "mode": "auto" }],
+  "eslint.workingDirectories": [{ "mode": "auto" }]
 }
 ```
 

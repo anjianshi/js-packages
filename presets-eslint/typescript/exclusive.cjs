@@ -1,3 +1,5 @@
+const tseslint = require('typescript-eslint')
+
 /*
 【一些规则不启用的理由】
 【Reasons for not enabling some rules】
@@ -23,13 +25,6 @@ Conflicts with other rules.
 */
 
 const rules = {
-  // TypeScript 会自行检查以下项目，禁用以避免冲突并提升性能.
-  // Checked by TypeScript itself, disable to avoid conflicts and improve performance.
-  // <https://typescript-eslint.io/linting/troubleshooting/performance-troubleshooting/#eslint-plugin-import>
-  'import/default': 'off',
-  'import/named': 'off',
-  'import/namespace': 'off',
-
   // 交给 @typescript-eslint/switch-exhaustiveness-check 规则来检查 switch
   // Use the '@typescript-eslint/switch-exhaustiveness-check' rule to check switch cases.
   'default-case': 'off',
@@ -39,7 +34,6 @@ const rules = {
   'no-void': 'off',
 
   // Supported Rules
-  '@typescript-eslint/array-type': 'error',
   '@typescript-eslint/ban-ts-comment': ['error', { 'ts-ignore': 'allow-with-description' }],
   '@typescript-eslint/consistent-type-exports': [
     'error',
@@ -47,43 +41,25 @@ const rules = {
   ],
   '@typescript-eslint/consistent-type-imports': ['error', { fixStyle: 'inline-type-imports' }],
   '@typescript-eslint/explicit-member-accessibility': ['error', { accessibility: 'no-public' }],
-  '@typescript-eslint/no-confusing-non-null-assertion': 'error',
   '@typescript-eslint/no-confusing-void-expression': [
     'error',
     { ignoreArrowShorthand: true, ignoreVoidOperator: true },
   ],
   '@typescript-eslint/no-explicit-any': ['error', { fixToUnknown: false, ignoreRestArgs: true }],
-  '@typescript-eslint/no-extraneous-class': 'error',
   '@typescript-eslint/no-non-null-asserted-nullish-coalescing': 'error',
   '@typescript-eslint/no-misused-promises': ['error', { checksVoidReturn: false }],
   '@typescript-eslint/no-non-null-assertion': 'off',
   '@typescript-eslint/no-this-alias': 'off',
-  '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'error',
   '@typescript-eslint/no-unnecessary-condition': ['error', { allowConstantLoopConditions: true }],
   '@typescript-eslint/no-unnecessary-qualifier': 'error',
-  '@typescript-eslint/no-unnecessary-type-arguments': 'error',
-  '@typescript-eslint/no-unsafe-declaration-merging': 'error',
-  '@typescript-eslint/no-var-requires': 'off',
-  '@typescript-eslint/non-nullable-type-assertion-style': 'error',
   '@typescript-eslint/prefer-enum-initializers': 'error',
-  '@typescript-eslint/prefer-for-of': 'error',
-  '@typescript-eslint/prefer-function-type': 'error',
-  '@typescript-eslint/prefer-includes': 'error',
-  '@typescript-eslint/prefer-literal-enum-member': 'error',
-  '@typescript-eslint/prefer-nullish-coalescing': 'error',
   '@typescript-eslint/prefer-readonly': 'error',
-  '@typescript-eslint/prefer-reduce-type-parameter': 'error',
-  '@typescript-eslint/prefer-regexp-exec': 'error',
-  '@typescript-eslint/prefer-return-this-type': 'error',
-  '@typescript-eslint/prefer-string-starts-ends-with': 'error',
   '@typescript-eslint/promise-function-async': 'error',
   '@typescript-eslint/require-array-sort-compare': ['error', { ignoreStringArrays: true }],
-  '@typescript-eslint/strict-boolean-expressions': 'error',
   '@typescript-eslint/switch-exhaustiveness-check': 'error',
   // 此规则对有些情况适配的不好
   // "This rule does not adapt well to some scenarios.
   '@typescript-eslint/unbound-method': 'off',
-  '@typescript-eslint/unified-signatures': 'error',
 
   // Extension Rules
   'default-param-last': 'off',
@@ -93,42 +69,31 @@ const rules = {
   '@typescript-eslint/no-loss-of-precision': 'error',
   'no-redeclare': 'off',
   '@typescript-eslint/no-redeclare': 'error',
-  '@typescript-eslint/no-throw-literal': 'error',
   'no-unused-expressions': 'off',
   '@typescript-eslint/no-unused-expressions': 'error',
   'no-unused-vars': 'off',
   '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: 'React|[iI]gnored' }],
   'no-useless-constructor': 'off',
   '@typescript-eslint/no-useless-constructor': 'error',
-  quotes: 'off',
-  '@typescript-eslint/quotes': ['error', 'single', { avoidEscape: true }],
   '@typescript-eslint/return-await': 'error',
-
-  // Import
-  'import/no-duplicates': ['error', { 'prefer-inline': true, considerQueryString: true }],
 }
 
-module.exports = {
-  overrides: [
-    {
-      files: ['*.ts', '*.mts', '*.cts', '*.tsx'],
-      extends: [
-        'plugin:@typescript-eslint/recommended',
-        'plugin:@typescript-eslint/recommended-requiring-type-checking',
-        'plugin:import/typescript',
-        'prettier',
-      ],
+const files = ['**/*.ts', '**/*.mts', '**/*.cts', '**/*.tsx']
+
+module.exports = [
+  ...[...tseslint.configs.strict, ...tseslint.configs.stylistic].map(config => ({
+    ...config,
+    files,
+  })),
+  require('eslint-config-prettier'),
+  {
+    name: 'anjianshi-typescript',
+    languageOptions: {
       parserOptions: {
         project: './tsconfig.json',
       },
-      settings: {
-        'import/resolver': {
-          typescript: {
-            project: './',
-          },
-        },
-      },
-      rules,
     },
-  ],
-}
+    files,
+    rules,
+  },
+]

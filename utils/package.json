@@ -1,6 +1,6 @@
 {
   "name": "@anjianshi/utils",
-  "version": "2.1.8",
+  "version": "2.1.9",
   "description": "Common JavaScript Utils",
   "homepage": "https://github.com/anjianshi/js-packages/utils",
   "bugs": {
@@ -29,10 +29,10 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@anjianshi/presets-eslint-typescript": "workspace:../presets-eslint/typescript",
-    "@anjianshi/presets-eslint-node": "workspace:../presets-eslint/node",
-    "@anjianshi/presets-prettier": "workspace:../presets-prettier",
-    "@anjianshi/presets-typescript": "workspace:../presets-typescript",
+    "@anjianshi/presets-eslint-typescript": "workspace:*",
+    "@anjianshi/presets-eslint-node": "workspace:*",
+    "@anjianshi/presets-prettier": "workspace:*",
+    "@anjianshi/presets-typescript": "workspace:*",
     "@types/lodash": "^4.14.199",
     "@types/node": "^20.12.7",
     "dotenv": "^16.4.5",
