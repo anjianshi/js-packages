@@ -31,6 +31,12 @@ export interface CommonOptions<Defaults = unknown> {
    * 指定后 required 选项将失去作用。
    */
   defaults?: Defaults
+
+  // 用来保证传入定制过的 Options 时 TypeScript 不会报不匹配的错
+  // 例如不加这句时， `{ costom: boolean } extends CommonOptions` 是会被 TypeScript 判定为不匹配的：
+  // error TS2559: Type '{ costom: boolean }' has no properties in common with type 'CommonOptions<unknown>'
+  // 此解决办法来自：https://mariusschulz.com/blog/weak-type-detection-in-typescript
+  [key: string]: unknown
 }
 
 /**
