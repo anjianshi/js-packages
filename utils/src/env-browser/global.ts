@@ -5,7 +5,7 @@
 
 declare global {
   interface Window {
-    app: { [key: string]: unknown }
+    app: Record<string, unknown>
   }
 }
 

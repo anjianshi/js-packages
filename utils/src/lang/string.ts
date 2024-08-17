@@ -16,7 +16,7 @@ export function zfill(num: number, length = 2) {
  * 执行关键词匹配
  * 成功返回 true；失败返回 false
  */
-const kwCache: { [kw: string]: RegExp } = {} // 避免大量重复构建正则表达式影响性能
+const kwCache: Record<string, RegExp> = {} // 避免大量重复构建正则表达式影响性能
 export function keywordCompare(keyword: string, target: string) {
   if (!keyword) return true
   if (!(keyword in kwCache)) {
@@ -49,7 +49,7 @@ export function numericCompare(a: string, b: string) {
  */
 export function safeParseInt(value: string | number, fallback?: number, redix = 10) {
   const raw = parseInt(String(value), redix)
-  return isFinite(raw) ? raw : fallback ?? raw
+  return isFinite(raw) ? raw : (fallback ?? raw)
 }
 
 /**

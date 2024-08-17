@@ -57,7 +57,7 @@ export type ExcludeKeys<T, ExcludeKeys> = Pick<
 >
 
 /** 排除对象的方法（仅保留属性） */
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 export type ExcluceMethods<T> = ExcludePropertiesOfType<T, Function>
 
 /**
@@ -65,10 +65,10 @@ export type ExcluceMethods<T> = ExcludePropertiesOfType<T, Function>
  * 注意：空字符串和数字 0 也会判定为没有值
  */
 function truthy(
-  value: string | number | boolean | null | undefined
+  value: string | number | boolean | null | undefined,
 ): value is string | number | true
 function truthy<T>(
-  value: T | string | number | boolean | null | undefined
+  value: T | string | number | boolean | null | undefined,
 ): value is T | string | number | true
 function truthy<T>(value: T | string | number | boolean | null | undefined) {
   return value !== null && value !== undefined && value !== '' && value !== 0 && value !== false

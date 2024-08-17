@@ -21,6 +21,7 @@ export function adaptDebugLib(debugLib: Debug, enable = '', logger?: Logger) {
         emulate.storage.data[name] = value
       },
       removeItem(name: string) {
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete emulate.storage.data[name]
       },
     },

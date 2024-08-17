@@ -9,8 +9,8 @@
 async function sleep(ms: number): Promise<void>
 async function sleep<T>(ms: number, resolveValue: T): Promise<T>
 async function sleep<T>(ms: number, resolveValue?: T) {
-  return new Promise<T | void>(resolve => {
-    setTimeout(() => resolve(resolveValue), ms)
+  return new Promise<T>(resolve => {
+    setTimeout(() => resolve(resolveValue as T), ms)
   })
 }
 export { sleep }

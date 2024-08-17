@@ -17,7 +17,7 @@ export interface Success<T = void> {
   success: true
   data: T
 }
-export type Failed<T = void> = {
+export interface Failed<T = void> {
   success: false
   message: string
   code?: string | number

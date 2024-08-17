@@ -38,8 +38,8 @@ export class Logger {
   handlers = new Set<LogHandler>()
 
   constructor(
-    public name: string = '',
-    public base: Logger | null = null // 指定上级 logger，当前 logger 记录的日志也会传递给上级
+    public name = '',
+    public base: Logger | null = null, // 指定上级 logger，当前 logger 记录的日志也会传递给上级
   ) {}
 
   static getRealLevel(raw: LogLevel | string) {
