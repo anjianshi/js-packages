@@ -1,6 +1,6 @@
 {
   "name": "@anjianshi/presets-eslint-typescript",
-  "version": "5.0.3",
+  "version": "5.0.5",
   "description": "公共 ESLint 配置",
   "homepage": "https://github.com/anjianshi/js-packages/presets-eslint/",
   "bugs": {
@@ -17,6 +17,6 @@
   "main": "index.cjs",
   "dependencies": {
     "@anjianshi/presets-eslint-base": "workspace:*",
-    "typescript-eslint": "^8.0.0"
+    "typescript-eslint": "^8.1.0"
   }
 }

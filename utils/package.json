@@ -1,6 +1,6 @@
 {
   "name": "@anjianshi/utils",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "description": "Common JavaScript Utils",
   "homepage": "https://github.com/anjianshi/js-packages/utils",
   "bugs": {
@@ -29,16 +29,16 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@anjianshi/presets-eslint-typescript": "workspace:*",
     "@anjianshi/presets-eslint-node": "workspace:*",
+    "@anjianshi/presets-eslint-typescript": "workspace:*",
     "@anjianshi/presets-prettier": "workspace:*",
     "@anjianshi/presets-typescript": "workspace:*",
-    "@types/lodash": "^4.14.199",
-    "@types/node": "^20.12.7",
+    "@types/lodash": "^4.17.7",
+    "@types/node": "^20.15.0",
     "dotenv": "^16.4.5",
     "typeorm": "^0.3.20",
-    "vconsole": "^3.15.1",
-    "typescript": "^5.4.4"
+    "typescript": "^5.5.4",
+    "vconsole": "^3.15.1"
   },
   "peerDependencies": {
     "chalk": "^5.3.0",
