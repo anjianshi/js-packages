@@ -58,15 +58,16 @@ module.exports = [
 
 2、为 parser 指明 `tsconfig.json` 的位置。  
 `@typescript-eslint/parser` 需要有一个配置好了的 `tsconfig.json` 才能运行。  
-默认假定它处在项目根目录，如果是在其他地方，则需手动指定（以项目根目录为基准）：
+默认假定它与 ESLint 配置文件处在同目录，如果是在其他地方，则需手动指定：
 
 ```js
 module.exports = [
   ...require('./node_modules/@anjianshi/eslint-typescript'),
-
   {
-    parserOptions: {
-      project: './src/tsconfig.json',
+    languageOptions: {
+      parserOptions: {
+        project: '../tsconfig.json',
+      },
     },
   },
 ]
