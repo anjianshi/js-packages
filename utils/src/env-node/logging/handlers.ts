@@ -19,7 +19,7 @@ export class ConsoleHandler extends LogHandler {
     const prefix = [
       chalk.white(`[${formatters.time(info)}]`),
       levelColor(`[${levelName}]`),
-      loggerColor(`[${logger}]`),
+      ...(logger ? [loggerColor(`[${logger}]`)] : []),
     ].join('')
     method(prefix, ...args)
   }
