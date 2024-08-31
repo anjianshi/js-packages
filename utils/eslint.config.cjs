@@ -17,4 +17,9 @@ module.exports = [
       },
     },
   },
+
+  ...require('@anjianshi/presets-eslint-react/exclusive.cjs').map(config => ({
+    ...config,
+    files: ['src/env-react/**/*.*'],
+  })),
 ]
