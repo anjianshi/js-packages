@@ -37,7 +37,7 @@ function parseQuery(
   const queryString = (loose ? /(\?|#)(.+)/ : /(\?)(.+?)(#|$)/).exec(url)?.[2] ?? ''
   if (!queryString) return {}
 
-  const query: { [name: string]: string | string[] } = {}
+  const query: Record<string, string | string[]> = {}
   const reg = /([^#?&]*)=([^#?&]*)/g
   let re = reg.exec(queryString)
   while (re) {
@@ -62,8 +62,8 @@ export { parseQuery }
  * - 数组会多次赋值：{ a: [1,2,3] } => 'a=1&a=2&a=3'，不支持嵌套数组
  * - encode 为 true 时会对 value 执行 encodeURIComponent（默认为 true）
  */
-type StringifyVal = string | number | boolean
-type StringifyQuery = { [key: string]: StringifyVal | StringifyVal[] | undefined }
+export type StringifyVal = string | number | boolean
+export type StringifyQuery = Record<string, StringifyVal | StringifyVal[] | undefined>
 export function stringifyQuery(obj: StringifyQuery, encode = true) {
   if (!isPlainObject(obj)) return ''
   return (
@@ -116,7 +116,7 @@ export function splitUrl(url: string, bare = true): { base: string; search: stri
  * query   object    与现有 search 合并，替换同名项（值为数组的，用新数组代替老的，不会合并数组）
  * hash    string    带不带开头的 '#' 皆可。会代替 url 已有的 hash。
  */
-export function combineUrl(origUrl: string, query: StringifyQuery = {}, hash: string = '') {
+export function combineUrl(origUrl: string, query: StringifyQuery = {}, hash = '') {
   if (hash.startsWith('#')) hash = hash.slice(1)
 
   // 拆分原 url 的 search、hash
