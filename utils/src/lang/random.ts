@@ -18,7 +18,8 @@ export function getRandomString(length = 6, seed = '0123456789abcdefghijklmnopqr
 
 /**
  * 从给定的选择中随机选中一项
+ * 如果数组为空，会返回 undefined
  */
 export function choiceRandom<T>(choices: T[]) {
-  return choices[getRandomInt(0, choices.length - 1)]!
+  return choices[getRandomInt(0, choices.length - 1)]
 }
