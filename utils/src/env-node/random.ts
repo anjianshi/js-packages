@@ -7,7 +7,9 @@ import crypto from 'node:crypto'
  * 返回随机数，包含 min 和 max
  */
 export function getRandomInt(min: number, max: number) {
-  return crypto.randomInt(min, max + 1)
+  // 如果传入的 max 小于 min，把它拉到和 min 一样。不然 crypto.randomInt 无法处理
+  const fixedMax = Math.max(min, max)
+  return crypto.randomInt(min, fixedMax + 1)
 }
 
 /**
