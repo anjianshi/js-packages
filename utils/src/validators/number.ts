@@ -14,14 +14,16 @@ export interface NumberOptions extends CommonOptions<number> {
   /**
    * 指定可选值
    * 若指定，前几个选项将不再生效 */
-  choices?: number[]
+  choices?: number[] | Record<number, string>
 }
 
 export type NumberValueWithChoices<Options extends NumberOptions> = Options extends {
   choices: (infer T)[]
 }
   ? T
-  : number
+  : Options extends { choices: Record<number, string> }
+    ? Options['choices'][keyof Options['choices']]
+    : number
 
 export function getNumberValidator<const Options extends NumberOptions>(
   options: Options = {} as Options,
@@ -33,8 +35,11 @@ export function getNumberValidator<const Options extends NumberOptions>(
         return failed(`${field} must be a valid number`)
 
       if ('choices' in options && options.choices) {
-        if (!options.choices.includes(value))
-          return failed(`${field} can only be one of ${options.choices.join(', ')}.`)
+        const choices = Array.isArray(options.choices)
+          ? options.choices
+          : Object.values(options.choices).map(v => parseInt(v, 10))
+        if (!choices.includes(value))
+          return failed(`${field} can only be one of ${choices.join(', ')}.`)
       } else {
         if (!truthy(options.float) && value % 1 !== 0) return failed(`${field} must be a integer`)
         if (typeof options.min === 'number' && value < options.min)
