@@ -35,7 +35,7 @@ export function getArrayValidator<Options extends ArrayOptions>(options: Options
     function validate(field, value, options) {
       if (!Array.isArray(value)) {
         if (options.toArray) value = [value as PrimitiveType]
-        return failed(`${field} should be an array`)
+        else return failed(`${field} should be an array`)
       }
 
       let formatted = []
