@@ -4,6 +4,7 @@ import {
   type CommonOptions,
   type Validator,
   type Validated,
+  type PrimitiveType,
 } from './base.js'
 
 /** 验证元素数量任意、元素类型相同的数组 */
@@ -19,6 +20,9 @@ export interface ArrayOptions extends CommonOptions {
 
   /** 是否对数组元素进行去重 @defaults false */
   unique?: boolean
+
+  /** 如果传入的不是数组，是否要将其视为数组内元素，包裹成数组 */
+  toArray?: boolean
 }
 
 type ArrayValues<Options extends ArrayOptions> = Validated<
@@ -29,7 +33,10 @@ type ArrayValues<Options extends ArrayOptions> = Validated<
 export function getArrayValidator<Options extends ArrayOptions>(options: Options) {
   return getValidatorGenerator<ArrayValues<Options>, Options>(
     function validate(field, value, options) {
-      if (!Array.isArray(value)) return failed(`${field} should be an array`)
+      if (!Array.isArray(value)) {
+        if (options.toArray) value = [value as PrimitiveType]
+        return failed(`${field} should be an array`)
+      }
 
       let formatted = []
       if (typeof options.min === 'number' && value.length < options.min)
