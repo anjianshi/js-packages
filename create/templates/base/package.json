@@ -1,0 +1,14 @@
+{
+  "name": "project",
+  "description": "基础项目",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "devDependencies": {
+    "@anjianshi/presets-eslint-base": "",
+    "@anjianshi/presets-prettier": ""
+  },
+  "prettier": "@anjianshi/presets-prettier/prettierrc"
+}

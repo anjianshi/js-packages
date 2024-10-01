@@ -6,6 +6,39 @@ settings:
 
 importers:
 
+  create:
+    dependencies:
+      chalk:
+        specifier: ^5.3.0
+        version: 5.3.0
+    devDependencies:
+      '@anjianshi/presets-eslint-node':
+        specifier: workspace:*
+        version: link:../presets-eslint/node
+      '@anjianshi/presets-prettier':
+        specifier: workspace:*
+        version: link:../presets-prettier
+
+  create/templates/base:
+    dependencies:
+      '@anjianshi/utils':
+        specifier: ''
+        version: 2.3.5(@emotion/react@11.13.3(react@18.3.1))(@emotion/serialize@1.3.1)(@emotion/utils@1.4.0)(chalk@5.3.0)(dayjs@1.11.13)(react@18.3.1)
+    devDependencies:
+      '@anjianshi/presets-prettier':
+        specifier: ''
+        version: 3.0.1
+
+  create/test:
+    dependencies:
+      '@anjianshi/utils':
+        specifier: ^2.3.5
+        version: 2.3.5(@emotion/react@11.13.3(react@18.3.1))(@emotion/serialize@1.3.1)(@emotion/utils@1.4.0)(chalk@5.3.0)(dayjs@1.11.13)(react@18.3.1)
+    devDependencies:
+      '@anjianshi/presets-prettier':
+        specifier: ^3.0.1
+        version: 3.0.1
+
   presets-eslint/base:
     dependencies:
       '@eslint/js':
@@ -37,7 +70,7 @@ importers:
         version: 7.35.0(eslint@9.9.0)
       eslint-plugin-react-hooks:
         specifier: canary
-        version: 5.1.0-rc-e56f4ae3-20240830(eslint@9.9.0)
+        version: 5.1.0-rc-d8c90fa4-20241001(eslint@9.9.0)
       eslint-plugin-ts-react-hooks:
         specifier: ^1.0.2
         version: 1.0.2(eslint@9.9.0)(typescript@5.5.4)
@@ -136,6 +169,32 @@ importers:
     publishDirectory: dist
 
 packages:
+
+  '@anjianshi/presets-prettier@3.0.1':
+    resolution: {integrity: sha512-Oebi6Cm0FKg3usTtqBcbyyOjhZdRawNBsDnlzXgMmh/7o+yhTnTn6k6Vqxd4W7wcbDo4WepdlCE1Q/kKf2muHA==}
+
+  '@anjianshi/utils@2.3.5':
+    resolution: {integrity: sha512-FMyVCz/3oVjxs4tF6R5SmmVaQXqWo1SefGNtCl5k4NcBzX5LDpSgppQmRHO+6airFidgWgEpTKeRxzkJwuo87A==}
+    peerDependencies:
+      '@emotion/react': ^11.13.3
+      '@emotion/serialize': ^1.3.1
+      '@emotion/utils': ^1.4.0
+      chalk: ^5.3.0
+      dayjs: ^1.11.10
+      react: ^18.3.1
+    peerDependenciesMeta:
+      '@emotion/react':
+        optional: true
+      '@emotion/serialize':
+        optional: true
+      '@emotion/utils':
+        optional: true
+      chalk:
+        optional: true
+      dayjs:
+        optional: true
+      react:
+        optional: true
 
   '@babel/code-frame@7.24.7':
     resolution: {integrity: sha512-BcYH1CVJBO9tvyIZ2jVeXgSIMvGZ2FDRvDdOIVQyuklNKSsx+eppDEBq/g47Ayw+RqNFE+URvOShmf+f/qwAlA==}
@@ -692,8 +751,8 @@ packages:
     peerDependencies:
       eslint: '>=7.0.0'
 
-  eslint-plugin-react-hooks@5.1.0-rc-e56f4ae3-20240830:
-    resolution: {integrity: sha512-w+VTy81b3KCQYWhe2Ux/kVqhiyqieaWbHfPlSwU8sKLeHOPl2LPlCn1wWRJE7KMb5/bkrOtAyWrwhlasqUsePA==}
+  eslint-plugin-react-hooks@5.1.0-rc-d8c90fa4-20241001:
+    resolution: {integrity: sha512-QXbrGKwGhYTsC7Ss6cjPx9TN5rU7BiRtxStLIEJ9IVlTANKnJ62IXOpvHtTVx/Tlcv4MIU1vZo8bNXFsRMUBwA==}
     engines: {node: '>=10'}
     peerDependencies:
       eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0 || ^9.0.0
@@ -1626,6 +1685,21 @@ packages:
 
 snapshots:
 
+  '@anjianshi/presets-prettier@3.0.1':
+    dependencies:
+      prettier: 3.3.3
+
+  '@anjianshi/utils@2.3.5(@emotion/react@11.13.3(react@18.3.1))(@emotion/serialize@1.3.1)(@emotion/utils@1.4.0)(chalk@5.3.0)(dayjs@1.11.13)(react@18.3.1)':
+    dependencies:
+      lodash: 4.17.21
+    optionalDependencies:
+      '@emotion/react': 11.13.3(@types/react@18.3.5)(react@18.3.1)
+      '@emotion/serialize': 1.3.1
+      '@emotion/utils': 1.4.0
+      chalk: 5.3.0
+      dayjs: 1.11.13
+      react: 18.3.1
+
   '@babel/code-frame@7.24.7':
     dependencies:
       '@babel/highlight': 7.24.7
@@ -2350,7 +2424,7 @@ snapshots:
     dependencies:
       eslint: 9.9.0
 
-  eslint-plugin-react-hooks@5.1.0-rc-e56f4ae3-20240830(eslint@9.9.0):
+  eslint-plugin-react-hooks@5.1.0-rc-d8c90fa4-20241001(eslint@9.9.0):
     dependencies:
       eslint: 9.9.0
 

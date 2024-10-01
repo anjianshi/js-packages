@@ -1,0 +1,38 @@
+{
+  "name": "@anjianshi/create",
+  "version": "0.0.7",
+  "description": "基础项目模板",
+  "homepage": "https://github.com/anjianshi/js-packages/create/",
+  "type": "module",
+  "scripts": {
+    "dev": "rm -rf test && node ./src/index.js base --name=test"
+  },
+  "bin": {
+    "create": "./src/index.js"
+  },
+  "files": [
+    "src",
+    "templates",
+    "package.json",
+    "README.md"
+  ],
+  "bugs": {
+    "url": "https://github.com/anjianshi/js-packages/issues",
+    "email": "anjianshi@gmail.com"
+  },
+  "license": "MIT",
+  "author": "anjianshi <anjianshi@gmail.com>",
+  "repository": "github:anjianshi/js-packages",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "devDependencies": {
+    "@anjianshi/presets-eslint-node": "workspace:*",
+    "@anjianshi/presets-prettier": "workspace:*"
+  },
+  "prettier": "@anjianshi/presets-prettier/prettierrc",
+  "dependencies": {
+    "chalk": "^5.3.0"
+  }
+}
