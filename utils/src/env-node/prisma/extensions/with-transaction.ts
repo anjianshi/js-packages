@@ -12,7 +12,7 @@
  *   }
  * )
  */
-import { Prisma } from '@prisma/client'
+import { Prisma } from '@prisma/client/extension'
 import { type ITXClientDenyList } from '@prisma/client/runtime/library.js'
 import type { MaySuccess, Failed } from '../../../index.js'
 
