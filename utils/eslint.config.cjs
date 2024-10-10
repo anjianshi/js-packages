@@ -22,4 +22,19 @@ module.exports = [
     ...config,
     files: ['src/env-react/**/*.*'],
   })),
+
+  {
+    files: ['src/env-node/prisma/**/*.*'],
+    rules: {
+      // prisma 相关方法需要保证返回的是 PrismaPromise 而不能是经过 async function 转过的 Promise，所以不能把函数标记为 async function
+      '@typescript-eslint/promise-function-async': 'off',
+    },
+  },
+  {
+    files: ['src/env-node/prisma/extensions/**/*.*'],
+    rules: {
+      // prisma extension 需要用到 any 类型
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
+  },
 ]
