@@ -98,7 +98,9 @@ export class EnvReader {
 
   /**
    * 同 envReader.getByType()，只不过是通过对象指定各 env 的类型来批量获取。
-   * 若 required 为 true，要求所有 env 都必须有值，否则会抛出异常；默认为 false。
+   *
+   * - required=false（默认）时，不存在或值为 undefined 的 env 不会出现在返回对象里，以保证 { ...defaults, ...envReader.batchGetByType(...) } 的用法能正常保留默认值。
+   * - required=true 时要求所有 env 都必须有值，否则会抛出异常
    *
    * envReader.batchGetByType({
    *   port: 'number',
@@ -120,8 +122,8 @@ export class EnvReader {
     for (const [key, def] of Object.entries(definitions)) {
       const value =
         typeof def === 'string' ? this.getByType(key, def as 'string') : this.getByType(key, 'json')
-      if (value === undefined && required) throw new Error(`env ${key} needs a value`)
-      result[key] = value
+      if (value !== undefined) result[key] = value
+      else if (required) throw new Error(`env ${key} needs a value`)
     }
     return result
   }
