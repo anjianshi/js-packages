@@ -1,6 +1,6 @@
 {
   "name": "@anjianshi/create",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "基础项目模板",
   "homepage": "https://github.com/anjianshi/js-packages/create/",
   "type": "module",
@@ -10,12 +10,6 @@
   "bin": {
     "create": "./src/index.js"
   },
-  "files": [
-    "src",
-    "templates",
-    "package.json",
-    "README.md"
-  ],
   "bugs": {
     "url": "https://github.com/anjianshi/js-packages/issues",
     "email": "anjianshi@gmail.com"
