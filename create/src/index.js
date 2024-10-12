@@ -198,3 +198,17 @@ function formatDependencies(dependencies) {
     .map(([name, ver]) => (ver !== 'latest' && ver !== 'workspace:*' ? `${name}@${ver}` : name))
     .join(' ')
 }
+
+// -----------------------------
+// 执行模板的自定义初始化脚本
+// -----------------------------
+
+const setupScriptPath = path.join(templatePath, 'setup.sh')
+if (confirmPath(setupScriptPath) === 'file') {
+  console.log('\n[执行初始化脚本]')
+
+  const context = { getDirectoryPath, confirmPath, command }
+  const module = await import(setupScriptPath)
+  await module.setup(context)
+  fs.unlinkSync(setupScriptPath)
+}
