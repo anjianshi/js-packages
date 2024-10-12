@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": " concurrently --raw \"npm run watch\" \"sleep 3 && nodemon dist/index.js\"",
+    "dev": " concurrently --raw \"npm run watch\" \"sleep 5 && nodemon dist/index.js\"",
     "watch": "rm -rf dist && tsc-with-alias --watch",
     "build": "rm -rf dist && tsc-with-alias",
     "start": "node dist/index.js",

@@ -6,7 +6,7 @@ import { EnvReader } from '@anjianshi/utils/env-service/index.js'
  * 环境信息
  */
 const dirpath = getDirectoryPath(import.meta.url)
-export const projectRoot = path.resolve(dirpath, '../../')
+export const appRoot = path.resolve(dirpath, '../../')
 
 /**
  * 业务常量
@@ -20,7 +20,7 @@ export const constants = {
  * 通过 .env 文件覆盖设置
  */
 const envReader = new EnvReader({
-  path: [path.join(projectRoot, '.env')],
+  path: [path.join(appRoot, '.env')],
 })
 const config = envReader.batchGet({
   // ---------- 基础设置 ----------
@@ -32,7 +32,7 @@ const config = envReader.batchGet({
   PORT: 8000,
 
   // 日志文件存放路径
-  LOGS_DIR: path.join(projectRoot, 'logs'),
+  LOGS_DIR: path.join(appRoot, 'logs'),
 
   // ---------- 服务连接 ----------
 

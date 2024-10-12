@@ -33,3 +33,10 @@ router.setExecutor(async (basicContext, route) => {
   // 初始化 route context 并调用 route handler
   await route.handler({ ...basicContext, db, controllers })
 })
+
+router.register({
+  path: '/check-health',
+  handler({ response }) {
+    response.text('ok')
+  },
+})
