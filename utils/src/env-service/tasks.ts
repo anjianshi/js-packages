@@ -2,7 +2,7 @@ import { sleep } from '../lang/async.js'
 import { type Logger, logger as rootLogger } from '../logging/index.js'
 
 /** 返回 false 可结束任务 */
-export type TaskExecutor<Context> = (context: Context) => Promise<undefined | false>
+export type TaskExecutor<Context> = (context: Context, logger: Logger) => Promise<undefined | false>
 
 /**
  * 执行定期任务
@@ -25,7 +25,7 @@ export abstract class TaskManager<Context> {
       logger.info(`#${id} 任务开始`)
       try {
         const context = this.getContext(name)
-        const result = await executor(context)
+        const result = await executor(context, logger)
         const cost = (Date.now() - start) / 1000
         logger.info(`#${id} 任务完成，耗时 ${cost}s`)
         if (result === false) {
