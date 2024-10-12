@@ -1,6 +1,6 @@
 {
   "name": "@anjianshi/utils",
-  "version": "2.3.10",
+  "version": "2.4.0",
   "description": "Common JavaScript Utils",
   "homepage": "https://github.com/anjianshi/js-packages/utils",
   "bugs": {
@@ -30,15 +30,16 @@
   },
   "devDependencies": {
     "@anjianshi/presets-eslint-node": "workspace:*",
-    "@anjianshi/presets-eslint-typescript": "workspace:*",
     "@anjianshi/presets-eslint-react": "workspace:*",
+    "@anjianshi/presets-eslint-typescript": "workspace:*",
     "@anjianshi/presets-prettier": "workspace:*",
     "@anjianshi/presets-typescript": "workspace:*",
-    "@types/lodash": "^4.17.7",
-    "@types/node": "^20.16.2",
-    "@types/react": "^18.3.5",
+    "@types/lodash": "^4.17.10",
+    "@types/node": "^20.16.11",
+    "@types/react": "^18.3.11",
     "dotenv": "^16.4.5",
-    "typescript": "^5.5.4",
+    "redis": "^4.7.0",
+    "typescript": "^5.6.3",
     "vconsole": "^3.15.1"
   },
   "peerDependencies": {
@@ -48,8 +49,8 @@
     "@prisma/client": "^5.20.0",
     "chalk": "^5.3.0",
     "dayjs": "^1.11.10",
-    "react": "^18.3.1",
-    "redis": "^4.7.0"
+    "dotenv": "^16.4.5",
+    "react": "^18.3.1"
   },
   "peerDependenciesMeta": {
     "@emotion/react": {
@@ -70,10 +71,10 @@
     "dayjs": {
       "optional": true
     },
-    "react": {
+    "dotenv": {
       "optional": true
     },
-    "redis": {
+    "react": {
       "optional": true
     }
   },

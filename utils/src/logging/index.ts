@@ -1,6 +1,6 @@
+import dayjs, { type Dayjs } from 'dayjs'
 export { default as formatters } from './formatters.js'
 export * from './adapt.js'
-import dayjs, { type Dayjs } from 'dayjs'
 import { initDayJs } from '../init-dayjs.js'
 
 // 引入 logging 库会自动初始化 dayjs

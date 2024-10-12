@@ -93,7 +93,17 @@ export class EnvReader {
     for (const [key, defaults] of Object.entries(definitions)) {
       result[key] = this.get(key, defaults as string)
     }
-    return result as Defs
+
+    // 保证返回的值类型是“通用化”的，例如不是 `false` 而是 `boolean`
+    return result as {
+      [K in keyof Defs]: Defs[K] extends string
+        ? string
+        : Defs[K] extends number
+          ? number
+          : Defs[K] extends boolean
+            ? boolean
+            : Defs[K]
+    }
   }
 
   /**
