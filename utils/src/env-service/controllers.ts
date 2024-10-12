@@ -40,8 +40,8 @@ export type Controllers = ControllersFrom<MyContext, typeof controllerClasses>
 initializeControllers({ c1: C1, c2: C2, c3: C3 }, { prop1: 1, prop2: 2 })
 */
 
-type AnyObject = Record<string, unknown>
-type AnyController<Context> = Controller<Context, any> // eslint-disable-line @typescript-eslint/no-explicit-any
+export type AnyObject = Record<string, unknown>
+export type AnyController<Context> = Controller<Context, any> // eslint-disable-line @typescript-eslint/no-explicit-any
 type AnyControllerClass<Context> = typeof Controller<Context, any> // eslint-disable-line @typescript-eslint/no-explicit-any
 type ControllerClassesFrom<Context, T extends AnyObject> = {
   [K in keyof T]: T[K] extends AnyControllerClass<Context> ? T[K] : never
@@ -59,6 +59,8 @@ export class Controller<Context, AllControllers extends Record<string, AnyContro
     protected readonly controllers: AllControllers,
 
     protected readonly context: Context,
+
+    protected readonly name: string = this.constructor.name,
   ) {}
 }
 
@@ -78,7 +80,11 @@ export function initializeControllers<Context, T extends AnyObject>(
       if (prop in controllers) return controllers[prop]
       if (prop in controllerClasses) {
         const Class = controllerClasses[prop]! as typeof Controller<Context, Controllers>
-        controllers[prop as keyof Classes] = new Class(proxy, context) as Controllers[keyof Classes]
+        controllers[prop as keyof Classes] = new Class(
+          proxy,
+          context,
+          prop,
+        ) as Controllers[keyof Classes]
         return controllers[prop]
       }
     },
