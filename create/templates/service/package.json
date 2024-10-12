@@ -1,0 +1,40 @@
+{
+  "name": "project",
+  "description": "服务端项目",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": " concurrently --raw \"npm run watch\" \"sleep 3 && nodemon dist/index.js\"",
+    "watch": "rm -rf dist && tsc-with-alias --watch",
+    "build": "rm -rf dist && tsc-with-alias",
+    "start": "node dist/index.js",
+    "lint": "tsc --noEmit && eslint './src/'",
+    "db-generate": "prisma generate",
+    "db-push": "prisma generate && prisma db push",
+    "db-save": "prisma migrate dev",
+    "db-deploy": "prisma generate && prisma migrate deploy"
+  },
+  "dependencies": {
+    "@anjianshi/utils": "latest",
+    "@prisma/client": "latest",
+    "dayjs": "latest",
+    "dotenv": "latest",
+    "lodash": "latest",
+    "pg": "latest",
+    "redis": "latest",
+    "starlight-server": "latest"
+  },
+  "devDependencies": {
+    "@anjianshi/presets-eslint-node": "workspace:*",
+    "@anjianshi/presets-prettier": "workspace:*",
+    "@anjianshi/presets-typescript": "workspace:*",
+    "@types/lodash": "latest",
+    "@types/node": "latest",
+    "concurrently": "latest",
+    "nodemon": "latest",
+    "prisma": "latest",
+    "tsc-alias": "latest",
+    "typescript": "latest"
+  },
+  "prettier": "@anjianshi/presets-prettier/prettierrc"
+}

@@ -194,5 +194,7 @@ if (confirmPath(packageJSONPath) === 'file') {
 }
 
 function formatDependencies(dependencies) {
-  return dependencies.map(([name, ver]) => (ver ? `${name}@${ver}` : name)).join(' ')
+  return dependencies
+    .map(([name, ver]) => (ver !== 'latest' && ver !== 'workspace:*' ? `${name}@${ver}` : name))
+    .join(' ')
 }

@@ -5,7 +5,7 @@ import { type Logger, logger as rootLogger } from '../logging/index.js'
 export type TaskExecutor<Context> = (
   context: Context,
   logger: Logger,
-) => Promise<void> | Promise<undefined | false>
+) => Promise<void> | Promise<undefined | boolean>
 
 /**
  * 执行定期任务

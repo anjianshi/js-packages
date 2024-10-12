@@ -1,0 +1,39 @@
+// 数据库设计约定见 README.md
+
+// -------------------------------
+// 数据库配置
+// -------------------------------
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DB_URL")
+  extensions = [citext]
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions", "typedSql"]
+}
+
+// -------------------------------
+// 业务实体
+// -------------------------------
+
+model School {
+  id   String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name String @unique @db.Citext
+
+  students Student[]
+
+  @@map("schools")
+}
+
+model Student {
+  id   String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name String @db.Citext
+
+  school   School @relation(fields: [schoolId], references: [id])
+  schoolId String @map("school_id") @db.Uuid
+
+  @@map("students")
+}

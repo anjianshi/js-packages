@@ -7,8 +7,8 @@
     "start": "node index.js"
   },
   "devDependencies": {
-    "@anjianshi/presets-eslint-base": "",
-    "@anjianshi/presets-prettier": ""
+    "@anjianshi/presets-eslint-base": "workspace:*",
+    "@anjianshi/presets-prettier": "workspace:*"
   },
   "prettier": "@anjianshi/presets-prettier/prettierrc"
 }
