@@ -60,3 +60,8 @@ export async function setup(context: { command, confirmPath, getDirectoryPath })
 ```
 
 此函数会在项目自动初始化流程运行完执行，之后此脚本文件会被删除。
+
+### 指定 .gitignore
+
+因为安装 npm 包时会自动把 `.gitignore` 重命名为 `.npmignore`，因此模板里需要把此文件命名为 `gitignore`（不带开头的点）。
+在初始化项目时会自动重命名为 `.gitignore`。

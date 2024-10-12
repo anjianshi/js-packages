@@ -95,7 +95,18 @@ else if (projectPathStat) {
 // -------------------------
 
 console.log('复制模板内容...')
-fs.cpSync(templatePath, projectPath, { recursive: true })
+fs.cpSync(templatePath, projectPath, {
+  recursive: true,
+  filter(src, dest) {
+    console.log(dest.slice(projectPath.length))
+    return true
+  },
+})
+
+const gitignorePath = path.join(projectPath, 'gitignore')
+if (confirmPath(gitignorePath) === 'file') {
+  fs.renameSync(gitignorePath, path.join(projectPath, '.gitignore'))
+}
 
 // -------------------------
 // 变量替换
