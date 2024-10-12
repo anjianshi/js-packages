@@ -203,7 +203,7 @@ function formatDependencies(dependencies) {
 // 执行模板的自定义初始化脚本
 // -----------------------------
 
-const setupScriptPath = path.join(templatePath, 'setup.sh')
+const setupScriptPath = path.join(templatePath, 'setup.js')
 if (confirmPath(setupScriptPath) === 'file') {
   console.log('\n[执行初始化脚本]')
 
