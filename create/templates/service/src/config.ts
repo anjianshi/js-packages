@@ -7,7 +7,6 @@ import { EnvReader } from '@anjianshi/utils/env-service/index.js'
  */
 const dirpath = getDirectoryPath(import.meta.url)
 export const projectRoot = path.resolve(dirpath, '../../')
-export const appRoot = path.resolve(dirpath, '../')
 
 /**
  * 业务常量
@@ -18,22 +17,29 @@ export const constants = {
 
 /**
  * 设置
- * 定义在 .env 文件中，可通过 .env.local 文件覆盖
+ * 通过 .env 文件覆盖设置
  */
 const envReader = new EnvReader({
-  path: [
-    path.join(projectRoot, '.env.local'),
-    path.join(projectRoot, '.env'),
-    path.join(appRoot, '.env.local'),
-    path.join(appRoot, '.env'),
-  ],
+  path: [path.join(projectRoot, '.env')],
 })
 const config = envReader.batchGet({
-  DEBUG: false,
-  PORT: 8000,
-  LOGS_DIR: path.join(appRoot, 'logs'),
+  // ---------- 基础设置 ----------
 
+  // 是否开启调试模式，会影响日志记录
+  DEBUG: false,
+
+  // 监听端口
+  PORT: 8000,
+
+  // 日志文件存放路径
+  LOGS_DIR: path.join(projectRoot, 'logs'),
+
+  // ---------- 服务连接 ----------
+
+  // postgresql://[[username][:password]@][host][:port][/db-name]
   DB_URL: '',
+
+  // redis[s]://[[username][:password]@][host][:port][/db-number]
   REDIS_URL: '',
   REDIS_KEY_PREFIX: '',
 })
