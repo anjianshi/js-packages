@@ -32,7 +32,7 @@ importers:
     dependencies:
       '@anjianshi/utils':
         specifier: latest
-        version: 2.4.2(@emotion/react@11.13.3(react@18.3.1))(@emotion/serialize@1.3.2)(@emotion/utils@1.4.1)(@prisma/client@5.20.0(prisma@5.20.0))(chalk@5.3.0)(dayjs@1.11.13)(dotenv@16.4.5)(react@18.3.1)
+        version: 2.4.3(@emotion/react@11.13.3(react@18.3.1))(@emotion/serialize@1.3.2)(@emotion/utils@1.4.1)(@prisma/client@5.20.0(prisma@5.20.0))(chalk@5.3.0)(dayjs@1.11.13)(dotenv@16.4.5)(react@18.3.1)
       '@prisma/client':
         specifier: latest
         version: 5.20.0(prisma@5.20.0)
@@ -220,8 +220,8 @@ importers:
 
 packages:
 
-  '@anjianshi/utils@2.4.2':
-    resolution: {integrity: sha512-A0ng9MEOVcV3ZcGn/LG/+W7UnNM/DPyBYreWxSDgfE+Ko2RKyqr3KWiEagcOSGHgou66FQDPdsqnNIL0f9UEgQ==}
+  '@anjianshi/utils@2.4.3':
+    resolution: {integrity: sha512-0k3RJnqGFp3Cl2zOdYsRrsCzf+EHBolXIKwXcB8s6E+OE9fn8noYb4P1L6eLcXYdd4jT9RXFX8yz/zivBrkGKg==}
     peerDependencies:
       '@emotion/react': ^11.13.3
       '@emotion/serialize': ^1.3.1
@@ -1735,7 +1735,7 @@ packages:
 
 snapshots:
 
-  '@anjianshi/utils@2.4.2(@emotion/react@11.13.3(react@18.3.1))(@emotion/serialize@1.3.2)(@emotion/utils@1.4.1)(@prisma/client@5.20.0(prisma@5.20.0))(chalk@5.3.0)(dayjs@1.11.13)(dotenv@16.4.5)(react@18.3.1)':
+  '@anjianshi/utils@2.4.3(@emotion/react@11.13.3(react@18.3.1))(@emotion/serialize@1.3.2)(@emotion/utils@1.4.1)(@prisma/client@5.20.0(prisma@5.20.0))(chalk@5.3.0)(dayjs@1.11.13)(dotenv@16.4.5)(react@18.3.1)':
     dependencies:
       lodash: 4.17.21
     optionalDependencies:
@@ -3225,7 +3225,7 @@ snapshots:
 
   starlight-server@1.7.16(@emotion/react@11.13.3(react@18.3.1))(@emotion/serialize@1.3.2)(@emotion/utils@1.4.1)(@prisma/client@5.20.0(prisma@5.20.0))(dotenv@16.4.5)(react@18.3.1):
     dependencies:
-      '@anjianshi/utils': 2.4.2(@emotion/react@11.13.3(react@18.3.1))(@emotion/serialize@1.3.2)(@emotion/utils@1.4.1)(@prisma/client@5.20.0(prisma@5.20.0))(chalk@5.3.0)(dayjs@1.11.13)(dotenv@16.4.5)(react@18.3.1)
+      '@anjianshi/utils': 2.4.3(@emotion/react@11.13.3(react@18.3.1))(@emotion/serialize@1.3.2)(@emotion/utils@1.4.1)(@prisma/client@5.20.0(prisma@5.20.0))(chalk@5.3.0)(dayjs@1.11.13)(dotenv@16.4.5)(react@18.3.1)
       chalk: 5.3.0
       dayjs: 1.11.13
       debug: 4.3.7(supports-color@5.5.0)

@@ -2,7 +2,10 @@ import { sleep } from '../lang/async.js'
 import { type Logger, logger as rootLogger } from '../logging/index.js'
 
 /** 返回 false 可结束任务 */
-export type TaskExecutor<Context> = (context: Context, logger: Logger) => Promise<undefined | false>
+export type TaskExecutor<Context> = (
+  context: Context,
+  logger: Logger,
+) => Promise<void> | Promise<undefined | false>
 
 /**
  * 执行定期任务
