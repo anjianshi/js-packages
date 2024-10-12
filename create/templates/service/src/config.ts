@@ -6,7 +6,7 @@ import { EnvReader } from '@anjianshi/utils/env-service/index.js'
  * 环境信息
  */
 const dirpath = getDirectoryPath(import.meta.url)
-export const appRoot = path.resolve(dirpath, '../../')
+export const appRoot = path.resolve(dirpath, '../')
 
 /**
  * 业务常量
