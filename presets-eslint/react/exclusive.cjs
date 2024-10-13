@@ -37,9 +37,7 @@ module.exports = [
     rules: {
       'react/boolean-prop-naming': ['error'],
       'react/display-name': 'off',
-      // TypeScript 下有时 props 的类型是自动推导出来的，此 rule 不适配这种情况
-      // In TypeScript, sometimes the type of props is automatically inferred, this rule is not compatible with this situation.
-      'react/prop-types': 'off',
+      'react/prop-types': 'off', // TypeScript 下有时 props 的类型是自动推导出来的，此 rule 不适配这种情况
     },
     settings: {
       react: {

@@ -56,10 +56,9 @@ const rules = {
   '@typescript-eslint/prefer-readonly': 'error',
   '@typescript-eslint/promise-function-async': 'error',
   '@typescript-eslint/require-array-sort-compare': ['error', { ignoreStringArrays: true }],
+  '@typescript-eslint/strict-boolean-expressions': 'off', // 这个规则不能正确判断 object | null | boolean 的情况
   '@typescript-eslint/switch-exhaustiveness-check': 'error',
-  // 此规则对有些情况适配的不好
-  // "This rule does not adapt well to some scenarios.
-  '@typescript-eslint/unbound-method': 'off',
+  '@typescript-eslint/unbound-method': 'off', // 此规则对有些情况适配的不好
 
   // Extension Rules
   'default-param-last': 'off',
