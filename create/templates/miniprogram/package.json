@@ -1,0 +1,25 @@
+{
+  "private": true,
+  "name": "project",
+  "version": "1.0.0",
+  "scripts": {
+    "watch": "gulp watch",
+    "build": "gulp build"
+  },
+  "dependencies": {
+    "@anjianshi/utils": "latest"
+  },
+  "devDependencies": {
+    "@anjianshi/presets-eslint-typescript": "workspace:*",
+    "@anjianshi/presets-prettier": "workspace:*",
+    "@anjianshi/presets-typescript": "workspace:*",
+    "@swc/core": "latest",
+    "gulp": "latest",
+    "gulp-rename": "latest",
+    "gulp-sass": "latest",
+    "gulp-swc": "latest",
+    "sass": "latest",
+    "tsc-alias": "latest"
+  },
+  "prettier": "@anjianshi/presets-prettier/prettierrc"
+}

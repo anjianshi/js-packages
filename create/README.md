@@ -29,7 +29,10 @@ npm init @anjianshi@latest {template} -- --name=xxx
 
 除非有明确的版本需要，否则 `package.json` 中的依赖版本都指定为 `latest` 或 `workspace:*`，项目初始化时会替换为实际版本号。
 
-注意：同时引用 `@anjianshi/utils` 和 `starlight-server` 时，`utils` 需要用 `latest`，不然两个类库的 `Logger` 类会被认为是不同的，导致类型检查不通过。
+`dependencies` 中的依赖最好指定为 `latest` 而不是 `workspace:*`，不然会出现各种问题：
+
+- 同时引用 `@anjianshi/utils` 和 `starlight-server` 时，`utils` 需要用 `latest`，不然两个类库的 `Logger` 类会被认为是不同的，导致类型检查不通过。
+- 网页项目运行时，提示找不到 `@anjianshi/utils` 内容
 
 ### 定义变量
 

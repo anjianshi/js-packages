@@ -1,0 +1,11 @@
+// 以下配置仅用于开发时的类型检查，编译时走的是 swc 配置
+{
+  "extends": "./node_modules/@anjianshi/presets-typescript/tsconfig-base",
+  "compilerOptions": {
+    "types": ["./typings"],
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "outDir": "./dist" // 用于 tsc-alias
+  }
+}

@@ -1,0 +1,1 @@
+<view class="count" bind:tap="click">当前计数：{{count}}</view>

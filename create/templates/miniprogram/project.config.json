@@ -1,0 +1,31 @@
+{
+  "appid": "{{appid}}",
+  "compileType": "miniprogram",
+  "condition": {},
+  "description": "项目配置文件",
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
+  },
+  "libVersion": "widelyUsed",
+  "miniprogramRoot": "dist/",
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "setting": {
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "coverView": true,
+    "minified": true,
+    "postcss": true,
+    "showShadowRootInWxmlPanel": true,
+    "skylineRenderEnable": true
+  },
+  "simulatorType": "wechat",
+  "simulatorPluginLibVersion": {},
+  "srcMiniprogramRoot": "dist/"
+}

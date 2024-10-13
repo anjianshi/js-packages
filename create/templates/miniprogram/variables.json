@@ -1,0 +1,11 @@
+[
+  {
+    "name": "appid",
+    "describe": "小程序 appid"
+  },
+  {
+    "name": "appname",
+    "describe": "小程序名称",
+    "defaults": "测试小程序"
+  }
+]
