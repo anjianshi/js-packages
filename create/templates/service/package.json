@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "project",
   "description": "服务端项目",
   "version": "1.0.0",

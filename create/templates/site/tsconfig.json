@@ -1,0 +1,10 @@
+{
+  "extends": "./node_modules/@anjianshi/presets-typescript/tsconfig-vite",
+  "compilerOptions": {
+    "jsxImportSource": "@emotion/react",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["./src/", "vite.config.ts"]
+}

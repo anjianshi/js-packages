@@ -1,0 +1,32 @@
+{
+  "private": true,
+  "name": "project",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@anjianshi/utils": "workspace:*",
+    "@ant-design/icons": "latest",
+    "antd": "latest",
+    "dayjs": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "@anjianshi/presets-eslint-react": "workspace:*",
+    "@anjianshi/presets-prettier": "workspace:*",
+    "@anjianshi/presets-typescript": "workspace:*",
+    "@emotion/react": "latest",
+    "@swc/plugin-emotion": "latest",
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@vitejs/plugin-react-swc": "latest",
+    "vite": "latest",
+    "vite-plugin-svgr": "latest"
+  },
+  "prettier": "@anjianshi/presets-prettier/prettierrc"
+}

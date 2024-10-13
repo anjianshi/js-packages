@@ -1,0 +1,15 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+body, #root {
+  height: 100%;
+}
+#root {
+  background-image: url("../assets/background.webp");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  overflow-y: auto;
+}
