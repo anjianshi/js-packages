@@ -1,6 +1,6 @@
 {
   "name": "@anjianshi/create",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "基础项目模板",
   "homepage": "https://github.com/anjianshi/js-packages/create/",
   "type": "module",
@@ -14,7 +14,8 @@
     "src",
     "templates",
     "templates/**/.env",
-    "!templates/**/node_modules"
+    "!templates/**/node_modules",
+    "!templates/**/.swc"
   ],
   "bugs": {
     "url": "https://github.com/anjianshi/js-packages/issues",
