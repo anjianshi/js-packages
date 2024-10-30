@@ -11,6 +11,11 @@ module.exports = [
         ecmaVersion: 'latest',
       },
     },
+    settings: {
+      'import/resolver': {
+        node: true,
+      },
+    },
     rules: {
       'global-require': 'off',
       'no-console': 'off',

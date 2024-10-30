@@ -92,6 +92,30 @@ module.exports = [
     ...config,
     files,
   })),
+
+  {
+    ...require('eslint-plugin-import/config/typescript'),
+    files,
+    settings: {
+      'import/resolver': {
+        node: true,
+        typescript: {
+          project: './',
+        },
+      },
+    },
+    rules: {
+      // TypeScript 会自行检查以下项目，禁用以避免冲突并提升性能.
+      // Checked by TypeScript itself, disable to avoid conflicts and improve performance.
+      // <https://typescript-eslint.io/troubleshooting/typed-linting/performance#eslint-plugin-import>
+      'import/default': 'off',
+      'import/named': 'off',
+      'import/namespace': 'off',
+      'import/no-named-as-default-member': 'off',
+      'import/no-unresolved': 'off',
+    },
+  },
+
   require('eslint-config-prettier'),
   {
     name: 'anjianshi-typescript',

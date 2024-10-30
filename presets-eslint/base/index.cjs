@@ -1,5 +1,6 @@
 module.exports = [
   require('@eslint/js').configs.recommended,
+  require('eslint-plugin-import').flatConfigs.recommended,
   require('eslint-config-prettier'),
   {
     name: 'anjianshi-base',
