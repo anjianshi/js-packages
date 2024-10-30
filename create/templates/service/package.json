@@ -10,10 +10,10 @@
     "build": "rm -rf dist && tsc-with-alias",
     "start": "node dist/index.js",
     "lint": "tsc --noEmit && eslint './src/'",
-    "db-generate": "prisma generate",
-    "db-push": "prisma generate && prisma db push",
+    "db-generate": "prisma generate --sql",
+    "db-push": "prisma db push",
     "db-save": "prisma migrate dev",
-    "db-deploy": "prisma generate && prisma migrate deploy"
+    "db-deploy": "prisma migrate deploy"
   },
   "dependencies": {
     "@anjianshi/utils": "latest",
