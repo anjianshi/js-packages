@@ -144,12 +144,12 @@ export class FileHandler extends LogHandler {
       this.flush()
   }
 
-  protected flush() {
+  protected flush(sync?: boolean) {
     if (this.buffer.length) {
       const content = this.buffer.join('')
       this.buffer = []
       this.bufferSize = 0
-      this.write(content)
+      this.write(content, sync)
     }
   }
 
@@ -157,7 +157,10 @@ export class FileHandler extends LogHandler {
     if (this.options.flushInterval !== 0) {
       setInterval(() => this.flush(), this.options.flushInterval)
     }
-    process.on('exit', () => this.flush())
+
+    // 进程退出前把尚未写入文件的日志强制写入
+    // 这里必须用同步的方式来写，不然会写入不进去（可能是因为异步的话是放到下一个事件循环，但进程在这个事件循环内就退出了）
+    process.on('exit', () => this.flush(true))
   }
 
   // 文件系统交互 File system interaction
@@ -173,9 +176,13 @@ export class FileHandler extends LogHandler {
     if (!fs.existsSync(this.options.dir)) fs.mkdirSync(this.options.dir)
   }
 
-  protected write(content: string) {
-    fs.appendFile(this.filepath, content, error => {
-      if (error) console.error('[logger] write failed: ' + String(error))
-    })
+  protected write(content: string, sync = false) {
+    if (sync) {
+      fs.appendFileSync(this.filepath, content)
+    } else {
+      fs.appendFile(this.filepath, content, error => {
+        if (error) console.error('[logger] write failed: ' + String(error))
+      })
+    }
   }
 }
