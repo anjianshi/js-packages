@@ -178,27 +178,6 @@ importers:
         specifier: latest
         version: 4.2.0(rollup@4.24.0)(typescript@5.6.3)(vite@5.4.10(@types/node@22.8.4)(sass@1.80.5))
 
-  eslint-test:
-    dependencies:
-      '@anjianshi/presets-eslint-react':
-        specifier: workspace:*
-        version: link:../presets-eslint/react
-      '@anjianshi/presets-eslint-typescript':
-        specifier: workspace:*
-        version: link:../presets-eslint/typescript
-      '@anjianshi/presets-typescript':
-        specifier: workspace:*
-        version: link:../presets-typescript
-      '@types/react':
-        specifier: ^18.3.12
-        version: 18.3.12
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
-      typescript:
-        specifier: ^5.6.3
-        version: 5.6.3
-
   presets-eslint/base:
     dependencies:
       '@eslint/js':
@@ -235,8 +214,8 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0(eslint@9.9.0)
       eslint-plugin-ts-react-hooks:
-        specifier: ^1.0.3
-        version: 1.0.3(eslint@9.9.0)(typescript@5.6.3)
+        specifier: ^1.0.4
+        version: 1.0.4(eslint@9.9.0)(typescript@5.6.3)
 
   presets-eslint/typescript:
     dependencies:
@@ -1798,8 +1777,8 @@ packages:
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9.7
 
-  eslint-plugin-ts-react-hooks@1.0.3:
-    resolution: {integrity: sha512-og39f8J0xjLqZeqUpBlYuFOJ3BU5Mxk1GWAFnit8NT83Xr4IoX8SPo2k4o9qt4sSoDxC/DJfjTu2Numhww5R5Q==}
+  eslint-plugin-ts-react-hooks@1.0.4:
+    resolution: {integrity: sha512-oAcBArC9kwN6vZFP+AvulLf+WneJF4nAYNS6pFjRqo1xOD8X89iJLX5jJ9GMIGoKN2EVBwz4y88m1SoRYZpeZA==}
     engines: {node: '>=10'}
     peerDependencies:
       eslint: ^9.0.0
@@ -5075,7 +5054,7 @@ snapshots:
       string.prototype.matchall: 4.0.11
       string.prototype.repeat: 1.0.0
 
-  eslint-plugin-ts-react-hooks@1.0.3(eslint@9.9.0)(typescript@5.6.3):
+  eslint-plugin-ts-react-hooks@1.0.4(eslint@9.9.0)(typescript@5.6.3):
     dependencies:
       '@typescript-eslint/utils': 8.12.2(eslint@9.9.0)(typescript@5.6.3)
       eslint: 9.9.0
