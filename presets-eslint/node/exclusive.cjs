@@ -20,6 +20,7 @@ module.exports = [
       'global-require': 'off',
       'no-console': 'off',
       'no-restricted-syntax': 'off',
+      'import/no-dynamic-require': 'off',
     },
   },
 ]

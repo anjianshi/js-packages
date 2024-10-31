@@ -83,16 +83,15 @@ const rules = {
   'no-useless-constructor': 'off',
   '@typescript-eslint/no-useless-constructor': 'error',
   '@typescript-eslint/return-await': 'error',
+
+  'import/no-duplicates': ['error', { 'prefer-inline': true, considerQueryString: true }],
 }
 
-const files = ['**/*.ts', '**/*.mts', '**/*.cts', '**/*.tsx']
+const files = ['**/*.{ts,mts,cts,tsx,mtsx,ctsx']
 
 module.exports = [
-  ...[...tseslint.configs.strict, ...tseslint.configs.stylistic].map(config => ({
-    ...config,
-    files,
-  })),
-
+  { files, ...tseslint.configs.strict },
+  { files, ...tseslint.configs.stylistic },
   {
     ...require('eslint-plugin-import/config/typescript'),
     files,
@@ -115,7 +114,6 @@ module.exports = [
       'import/no-unresolved': 'off',
     },
   },
-
   require('eslint-config-prettier'),
   {
     name: 'anjianshi-typescript',

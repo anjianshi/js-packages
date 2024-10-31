@@ -1,7 +1,20 @@
+const globals = require('./globals.cjs')
+
 module.exports = [
   require('@eslint/js').configs.recommended,
   require('eslint-plugin-import').flatConfigs.recommended,
   require('eslint-config-prettier'),
+
+  {
+    name: 'eslint-config-self',
+    files: ['**/eslint.config.{js,cjs,mjs}'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
+  },
+
   {
     name: 'anjianshi-base',
     rules: {
@@ -88,6 +101,18 @@ module.exports = [
       'spaced-comment': ['error', 'always'],
       'symbol-description': 'error',
       yoda: 'error',
+
+      // Import
+      'import/no-useless-path-segments': ['error', { noUselessIndex: false }], // Node.js ES6 Module 里需要把 noUselessIndex 设为 false
+      'import/no-named-as-default-member': 'off',
+      'import/no-duplicates': ['error', { considerQueryString: true }],
+      'import/order': [
+        'error',
+        {
+          groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object'],
+          alphabetize: { order: 'asc' },
+        },
+      ],
     },
   },
 ]

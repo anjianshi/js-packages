@@ -2,7 +2,7 @@ const globals = require('@anjianshi/presets-eslint-base/globals.cjs')
 const reactPlugin = require('eslint-plugin-react')
 const reactHooksPlugin = require('eslint-plugin-react-hooks')
 
-const files = ['**/*.{js,mjs,cjs,jsx,mjsx,ts,tsx,mtsx}']
+const files = ['**/*.{js,mjs,cjs,jsx,mjsx,cjsx,ts,mts,cts,tsx,mtsx,ctsx}']
 
 module.exports = [
   { files, ...reactPlugin.configs.flat.recommended },
