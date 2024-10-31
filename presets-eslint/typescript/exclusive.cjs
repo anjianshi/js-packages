@@ -90,8 +90,8 @@ const rules = {
 const files = ['**/*.{ts,mts,cts,tsx,mtsx,ctsx']
 
 module.exports = [
-  { files, ...tseslint.configs.strict },
-  { files, ...tseslint.configs.stylistic },
+  { files, ...tseslint.configs.strictTypeChecked },
+  { files, ...tseslint.configs.stylisticTypeChecked },
   {
     ...require('eslint-plugin-import/config/typescript'),
     files,
@@ -119,7 +119,7 @@ module.exports = [
     name: 'anjianshi-typescript',
     languageOptions: {
       parserOptions: {
-        project: './tsconfig.json',
+        projectService: true,
       },
     },
     files,

@@ -2,22 +2,17 @@ const globals = require('@anjianshi/presets-eslint-base/globals.cjs')
 const reactPlugin = require('eslint-plugin-react')
 const reactHooksPlugin = require('eslint-plugin-react-hooks')
 
-const files = ['**/*.{js,mjs,cjs,jsx,mjsx,cjsx,ts,mts,cts,tsx,mtsx,ctsx}']
-
 module.exports = [
-  { files, ...reactPlugin.configs.flat.recommended },
-  { files, ...reactPlugin.configs.flat['jsx-runtime'] },
+  reactPlugin.configs.flat.recommended,
+  reactPlugin.configs.flat['jsx-runtime'],
   {
-    files,
     plugins: { 'react-hooks': reactHooksPlugin },
     rules: reactHooksPlugin.configs.recommended.rules,
   },
   require('eslint-plugin-ts-react-hooks').configs.recommended,
   require('eslint-config-prettier'),
-
   {
     name: 'anjianshi-react',
-    files,
     languageOptions: {
       globals: {
         ...globals.browser,
