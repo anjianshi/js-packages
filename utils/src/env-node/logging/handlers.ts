@@ -157,6 +157,7 @@ export class FileHandler extends LogHandler {
     if (this.options.flushInterval !== 0) {
       setInterval(() => this.flush(), this.options.flushInterval)
     }
+    process.on('exit', () => this.flush())
   }
 
   // 文件系统交互 File system interaction
