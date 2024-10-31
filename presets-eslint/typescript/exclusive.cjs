@@ -90,8 +90,8 @@ const rules = {
 const files = ['**/*.{ts,mts,cts,tsx,mtsx,ctsx}']
 
 module.exports = [
-  { files, ...tseslint.configs.strictTypeChecked },
-  { files, ...tseslint.configs.stylisticTypeChecked },
+  ...tseslint.configs.strictTypeChecked.map(config => ({ files, ...config })),
+  ...tseslint.configs.stylisticTypeChecked.map(config => ({ files, ...config })),
   {
     ...require('eslint-plugin-import/config/typescript'),
     files,
