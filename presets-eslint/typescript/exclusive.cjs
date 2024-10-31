@@ -87,7 +87,7 @@ const rules = {
   'import/no-duplicates': ['error', { 'prefer-inline': true, considerQueryString: true }],
 }
 
-const files = ['**/*.{ts,mts,cts,tsx,mtsx,ctsx']
+const files = ['**/*.{ts,mts,cts,tsx,mtsx,ctsx}']
 
 module.exports = [
   { files, ...tseslint.configs.strictTypeChecked },
