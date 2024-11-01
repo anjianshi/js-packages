@@ -19,7 +19,7 @@ export type PrimitiveType =
 /**
  * validator 通用参数
  */
-export interface CommonOptions<Defaults = unknown> {
+export interface CommonOptions<Value = unknown> {
   /** 是否允许 null 值 @default false */
   null?: boolean
 
@@ -30,11 +30,13 @@ export interface CommonOptions<Defaults = unknown> {
    * 默认值，字段无值（或值为 undefined）时生效，值为 null 不会生效。
    * 指定后 required 选项将失去作用。
    */
-  defaults?: Defaults
+  defaults?: Value
+
+  custom?: <T extends Value>(input: T) => MaySuccess<T>
 
   // 用来保证传入定制过的 Options 时 TypeScript 不会报不匹配的错
-  // 例如不加这句时， `{ costom: boolean } extends CommonOptions` 是会被 TypeScript 判定为不匹配的：
-  // error TS2559: Type '{ costom: boolean }' has no properties in common with type 'CommonOptions<unknown>'
+  // 例如不加这句时， `{ other: boolean } extends CommonOptions` 是会被 TypeScript 判定为不匹配的：
+  // error TS2559: Type '{ other: boolean }' has no properties in common with type 'CommonOptions<unknown>'
   // 此解决办法来自：https://mariusschulz.com/blog/weak-type-detection-in-typescript
   [key: string]: unknown
 }
@@ -49,6 +51,7 @@ type FullfiledOptions<Options extends Partial<CommonOptions>> = Omit<
   null: Options['null'] extends true ? true : false
   required: Options['required'] extends false ? false : true
   defaults: Options extends { defaults: infer T } ? T : undefined
+  custom: Options extends { custom: infer T } ? T : undefined
 }
 
 /**
@@ -102,7 +105,7 @@ export function getValidatorGenerator<Value, Options extends CommonOptions>(
     function validator(input: AllowedInputValue): Return
     function validator(field: string, input: AllowedInputValue): Return
     function validator(field: string | AllowedInputValue, input?: AllowedInputValue) {
-      const { null: allowNull = false, required = true, defaults } = inputOptions
+      const { null: allowNull = false, required = true, defaults, custom } = inputOptions
 
       if (typeof field !== 'string') {
         input = field
@@ -120,7 +123,8 @@ export function getValidatorGenerator<Value, Options extends CommonOptions>(
       if (value === null && !allowNull) return failed(`${field} cannot be null`)
       if (value === null || value === undefined) return success(value)
 
-      return validate(field, value, inputOptions)
+      const validated = validate(field, value, inputOptions)
+      return validated.success && custom ? custom(validated.data) : validated
     }
     return validator
   }

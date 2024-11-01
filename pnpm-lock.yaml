@@ -178,27 +178,6 @@ importers:
         specifier: latest
         version: 4.2.0(rollup@4.24.0)(typescript@5.6.3)(vite@5.4.10(@types/node@22.8.5)(sass@1.80.5))
 
-  eslint-test:
-    dependencies:
-      '@anjianshi/presets-eslint-react':
-        specifier: workspace:*
-        version: link:../presets-eslint/react
-      '@anjianshi/presets-typescript':
-        specifier: workspace:*
-        version: link:../presets-typescript
-      '@types/react':
-        specifier: ^18.3.12
-        version: 18.3.12
-      eslint:
-        specifier: ^9.9.0
-        version: 9.9.0
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
-      typescript:
-        specifier: ^5.6.3
-        version: 5.6.3
-
   presets-eslint/base:
     dependencies:
       '@eslint/js':

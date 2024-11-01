@@ -127,22 +127,22 @@ export function getValidator<const InputDefinition extends Definition>(
       return getArrayValidator({
         // @ts-ignore 允许递归类型推断
         ...definition,
-        item: getValidator(definition['item']),
+        item: getValidator(definition.item),
       }) as GotValidator
     case 'tuple':
       return getTupleValidator({
         ...definition,
-        tuple: definition['tuple'].map(def => getValidator(def)),
+        tuple: definition.tuple.map(def => getValidator(def)),
       }) as GotValidator
     case 'struct': {
       const struct: Record<string, Validator<unknown, CommonOptions>> = {}
-      for (const [key, def] of Object.entries(definition['struct'])) struct[key] = getValidator(def)
+      for (const [key, def] of Object.entries(definition.struct)) struct[key] = getValidator(def)
       return getStructValidator({ ...definition, struct }) as GotValidator
     }
     case 'record':
       return getRecordValidator({
         ...definition,
-        record: getValidator(definition['record']),
+        record: getValidator(definition.record),
       }) as GotValidator
   }
 }
