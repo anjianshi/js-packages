@@ -56,6 +56,7 @@ const rules = {
   '@typescript-eslint/prefer-readonly': 'error',
   '@typescript-eslint/promise-function-async': 'error',
   '@typescript-eslint/require-array-sort-compare': ['error', { ignoreStringArrays: true }],
+  '@typescript-eslint/restrict-template-expressions': ['error', { allowNumber: true }],
   '@typescript-eslint/strict-boolean-expressions': 'off', // 这个规则不能正确判断 object | null | boolean 的情况
   '@typescript-eslint/switch-exhaustiveness-check': 'error',
   '@typescript-eslint/unbound-method': 'off', // 此规则对有些情况适配的不好
