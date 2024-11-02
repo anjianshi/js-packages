@@ -16,6 +16,7 @@ import {
   type StructOptions,
   getStructValidator,
 } from './object.js'
+import { type OneOfOptions, getOneOfValidator } from './oneOf.js'
 import { type StringOptions, type StringValueWithChoices, getStringValidator } from './string.js'
 
 export interface AnyDefinition extends CommonOptions {
@@ -46,6 +47,10 @@ export interface RecordDefinition extends Omit<RecordOptions, 'record'> {
   type: 'record'
   record: Definition
 }
+export interface OneOfDefinition extends Omit<OneOfOptions, 'validators'> {
+  type: 'oneOf'
+  validators: Definition[]
+}
 
 export type Definition =
   | AnyDefinition
@@ -56,6 +61,7 @@ export type Definition =
   | TupleDefinition
   | StructDefinition
   | RecordDefinition
+  | OneOfDefinition
 
 export type ValueOfDefinition<Def extends Definition> = Def extends AnyDefinition
   ? unknown
@@ -82,7 +88,16 @@ export type ValueOfDefinition<Def extends Definition> = Def extends AnyDefinitio
                 }
               : Def extends RecordDefinition
                 ? Record<string, Validated<ValueOfDefinition<Def['record']>, Def['record']>>
-                : never
+                : Def extends OneOfDefinition
+                  ? {
+                      [Key in keyof Def['validators']]: Def['validators'][Key] extends Definition
+                        ? Validated<
+                            ValueOfDefinition<Def['validators'][Key]>,
+                            Def['validators'][Key]
+                          >
+                        : Def['validators'][Key]
+                    }[number]
+                  : never
 
 export type OptionsFromDefinition<Def extends Definition> = Def extends ArrayDefinition
   ? Omit<Def, 'item'> & { item: ValidatorForDefinition<Def['item']> }
@@ -144,6 +159,10 @@ export function getValidator<const InputDefinition extends Definition>(
         ...definition,
         record: getValidator(definition.record),
       }) as GotValidator
+    case 'oneOf':
+      return getOneOfValidator({
+        validators: definition.validators.map(def => getValidator(def)),
+      }) as GotValidator
   }
 }
 
@@ -191,4 +210,12 @@ export function getValidator<const InputDefinition extends Definition>(
 // const v9 = getValidator({
 //   type: 'record',
 //   record: { type: 'string', null: true, choices: ['a', 'b', 'c'] },
+// })(1)
+// const v10 = getValidator({
+//   type: 'oneOf',
+//   validators: [
+//     { type: 'string', choices: ['a', 'b', 'c'] },
+//     { type: 'number', null: true },
+//   ],
+//   defaults: true,
 // })(1)
