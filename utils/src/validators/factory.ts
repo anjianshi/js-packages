@@ -219,3 +219,10 @@ export function getValidator<const InputDefinition extends Definition>(
 //   ],
 //   defaults: true,
 // })(1)
+// const v11 = getValidator({
+//   type: 'string',
+//   custom(value) {
+//     return { success: true, data: value }
+//   },
+//   defaults: 'some text',
+// })(1)

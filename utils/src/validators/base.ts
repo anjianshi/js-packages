@@ -19,7 +19,8 @@ export type PrimitiveType =
 /**
  * validator 通用参数
  */
-export interface CommonOptions<Value = unknown> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface CommonOptions<Value = any> {
   /** 是否允许 null 值 @default false */
   null?: boolean
 
@@ -32,7 +33,7 @@ export interface CommonOptions<Value = unknown> {
    */
   defaults?: Value
 
-  custom?: <T extends Value>(input: T) => MaySuccess<T>
+  custom?: (input: Value) => MaySuccess<Value>
 
   // 用来保证传入定制过的 Options 时 TypeScript 不会报不匹配的错
   // 例如不加这句时， `{ other: boolean } extends CommonOptions` 是会被 TypeScript 判定为不匹配的：
@@ -105,6 +106,7 @@ export function getValidatorGenerator<Value, Options extends CommonOptions>(
     function validator(input: AllowedInputValue): Return
     function validator(field: string, input: AllowedInputValue): Return
     function validator(field: string | AllowedInputValue, input?: AllowedInputValue) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const { null: allowNull = false, required = true, defaults, custom } = inputOptions
 
       if (typeof field !== 'string') {
