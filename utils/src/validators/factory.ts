@@ -161,6 +161,7 @@ export function getValidator<const InputDefinition extends Definition>(
       }) as GotValidator
     case 'oneOf':
       return getOneOfValidator({
+        ...definition,
         validators: definition.validators.map(def => getValidator(def)),
       }) as GotValidator
   }
