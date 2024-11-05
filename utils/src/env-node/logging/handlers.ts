@@ -92,7 +92,10 @@ export class FileHandler extends LogHandler {
     }
 
     this.initLogDir()
-    this.initFlush()
+
+    // 进程退出前把尚未写入文件的日志强制写入
+    // 这里必须用同步的方式来写，不然会写入不进去（可能是因为异步的话是放到下一个事件循环，但进程在这个事件循环内就退出了）
+    process.on('exit', () => this.flush(true))
   }
 
   // Format log content
@@ -133,34 +136,33 @@ export class FileHandler extends LogHandler {
     return util.format(item)
   }
 
-  // Handle buffer
+  // Handle buffer & flush
   private buffer: string[] = []
   private bufferSize = 0
+  private flushTimeoutId: NodeJS.Timeout | null = null
 
   protected pushBuffer(...strings: string[]) {
     this.buffer.push(...strings)
     this.bufferSize = strings.reduce((sum, v) => sum + v.length, this.bufferSize)
-    if (this.options.flushInterval === 0 || this.bufferSize >= this.options.flushLength)
+    if (this.options.flushInterval === 0 || this.bufferSize >= this.options.flushLength) {
       this.flush()
+    } else if (!this.flushTimeoutId) {
+      this.flushTimeoutId = setTimeout(() => this.flush(), this.options.flushInterval)
+    }
   }
 
   protected flush(sync?: boolean) {
+    if (this.flushTimeoutId) {
+      clearTimeout(this.flushTimeoutId)
+      this.flushTimeoutId = null
+    }
+
     if (this.buffer.length) {
       const content = this.buffer.join('')
       this.buffer = []
       this.bufferSize = 0
       this.write(content, sync)
     }
-  }
-
-  protected initFlush() {
-    if (this.options.flushInterval !== 0) {
-      setInterval(() => this.flush(), this.options.flushInterval)
-    }
-
-    // 进程退出前把尚未写入文件的日志强制写入
-    // 这里必须用同步的方式来写，不然会写入不进去（可能是因为异步的话是放到下一个事件循环，但进程在这个事件循环内就退出了）
-    process.on('exit', () => this.flush(true))
   }
 
   // 文件系统交互 File system interaction
