@@ -41,10 +41,8 @@ const rules = {
   ],
   '@typescript-eslint/consistent-type-imports': ['error', { fixStyle: 'inline-type-imports' }],
   '@typescript-eslint/explicit-member-accessibility': ['error', { accessibility: 'no-public' }],
-  '@typescript-eslint/no-confusing-void-expression': [
-    'error',
-    { ignoreArrowShorthand: true, ignoreVoidOperator: true },
-  ],
+  // 在 https://github.com/typescript-eslint/typescript-eslint/issues/8538 修复后再考虑启用
+  '@typescript-eslint/no-confusing-void-expression': ['off', { ignoreVoidOperator: true }],
   '@typescript-eslint/no-explicit-any': ['error', { fixToUnknown: false, ignoreRestArgs: true }],
   '@typescript-eslint/no-non-null-asserted-nullish-coalescing': 'error',
   '@typescript-eslint/no-misused-promises': ['error', { checksVoidReturn: false }],
