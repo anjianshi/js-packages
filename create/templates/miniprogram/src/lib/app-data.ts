@@ -11,7 +11,7 @@ const initialAppData: AppData = {
 const dataKey = 'app-data-v1'
 
 export function loadAppData() {
-  return wx.getStorageSync<AppData | undefined>(dataKey) ?? initialAppData
+  return wx.getStorageSync<AppData | ''>(dataKey) || initialAppData
 }
 
 export function getAppData() {
