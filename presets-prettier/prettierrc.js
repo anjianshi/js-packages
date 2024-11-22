@@ -10,7 +10,14 @@ module.exports = {
 
   // 来自插件的选项
   jsxElementParens: 'avoid',
-  plugins: [
-    path.join(packageDir, 'plugin-jsx-element-parens.mjs')
-  ]
+  plugins: [path.join(packageDir, 'plugin-jsx-element-parens.mjs')],
+
+  overrides: [
+    {
+      files: ['*.html', '*.wxml'],
+      options: {
+        printWidth: 200,
+      },
+    },
+  ],
 }

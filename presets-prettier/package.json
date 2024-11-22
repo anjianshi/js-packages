@@ -1,6 +1,6 @@
 {
   "name": "@anjianshi/presets-prettier",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "通用 Prettier 配置",
   "homepage": "https://github.com/anjianshi/js-packages/presets-prttier",
   "bugs": {

@@ -40,3 +40,12 @@ module.exports = '@anjianshi/presets-prettier/prettierrc'
 "prettier.singleQuote": true,
 "prettier.arrowParens": "avoid",
 ```
+
+### 格式化 wxml
+
+推荐 VSCode 下安装 `WXML - Language Service` 扩展，以更方便地编辑 wxml 文件。
+在 VSCode 配置里添加：`"minapp-vscode.wxmlFormatter": "prettier"` 以让其使用 Prettier 来格式化 wxml 代码。
+
+不过目前此扩展与 Prettier 的适配有问题，已向其提交 Pull Request，在 PR 未通过前，可以先手动修改扩展代码以让其正常运行：
+找到 VSCode 存放此扩展内容的目录（在 Mac 下是 `~/.vscode/extensions/qiu8310.minapp-vscode-2.4.13/`），修改 `dist/extension.js` 文件，
+把 `c = t.format(l, { ...this.config.prettier, ...n })` 改成 `c = await t.format(l, { ...this.config.prettier, ...n })` 即可。
