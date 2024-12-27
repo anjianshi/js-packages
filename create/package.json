@@ -1,6 +1,6 @@
 {
   "name": "@anjianshi/create",
-  "version": "0.1.20",
+  "version": "0.1.21",
   "description": "基础项目模板",
   "homepage": "https://github.com/anjianshi/js-packages/create/",
   "type": "module",
