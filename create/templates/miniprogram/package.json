@@ -6,9 +6,6 @@
     "watch": "gulp watch",
     "build": "gulp build"
   },
-  "dependencies": {
-    "@anjianshi/utils": "latest"
-  },
   "devDependencies": {
     "@anjianshi/presets-eslint-typescript": "workspace:*",
     "@anjianshi/presets-prettier": "workspace:*",
