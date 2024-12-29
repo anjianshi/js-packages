@@ -85,7 +85,8 @@ export function readableSize(bytes: number, si = false, dp = 1) {
 /**
  * 解析 JSON，失败时不抛出异常，而是返回 undefined
  */
-export function safeParseJSON<T>(json: string) {
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
+export function safeParseJSON<T>(json: string): T | undefined {
   try {
     return JSON.parse(json) as T
   } catch (e) {
