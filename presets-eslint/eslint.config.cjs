@@ -1,9 +1,26 @@
-const globals = require('./base/globals.cjs')
-module.exports = [
+const { limitFiles } = require('./base/utils.cjs')
+
+const configs = [
+  ...require('./base/index.cjs'),
+  ...limitFiles('{base,node,react,typescript}/', require('./node/exclusive.cjs')),
+
+  // 各 demo 的规则
+  ...limitFiles('demo/node/', require('./node/index.cjs')),
+  ...limitFiles('demo/react/', require('./react/index.cjs')),
   {
+    files: ['demo/**/*.{ts,tsx}'],
     languageOptions: {
-      globals: globals.node,
+      parserOptions: {
+        project: './demo/tsconfig.json',
+      },
+    },
+    settings: {
+      'import/resolver': {
+        typescript: {
+          project: './demo/',
+        },
+      },
     },
   },
-  ...require('./base/index.cjs'),
 ]
+module.exports = configs

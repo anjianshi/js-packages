@@ -1,12 +1,9 @@
 const globals = require('./globals.cjs')
 
 module.exports = [
-  require('@eslint/js').configs.recommended,
-  require('eslint-plugin-import').flatConfigs.recommended,
-  require('eslint-config-prettier'),
-
+  // ESLint 配置文件自身的配置
   {
-    name: 'eslint-config-self',
+    name: 'configs-for-eslint-config-file',
     files: ['**/eslint.config.{js,cjs,mjs}'],
     languageOptions: {
       globals: {
@@ -15,6 +12,9 @@ module.exports = [
     },
   },
 
+  require('@eslint/js').configs.recommended,
+  require('eslint-plugin-import').flatConfigs.recommended,
+  require('eslint-config-prettier'),
   {
     name: 'anjianshi-base',
     rules: {

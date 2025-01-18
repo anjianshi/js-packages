@@ -11,21 +11,16 @@
 [被排除的规则](https://github.com/prettier/eslint-config-prettier/blob/main/index.js)，
 主要包括 ESLint 自身 `Layout & Formatting` 段落的全部规则和 TypeScript、React 插件的许多规则。
 
-三、  
-`eslint-plugin-import` 还没有支持 `ESlint v9`，暂时将其弃用。  
-因此需要手动确认 `import` 的内容是否存在，以及维护引入内容的顺序。  
-详见：<https://github.com/import-js/eslint-plugin-import/issues/2948>
-
 ---
 
 ## 包列表
 
-| 文件                                 | 内容                      |
-| ------------------------------------ | ------------------------- |
-| @anjianshi/presets-eslint-base       | 基础 JavaScript 规则      |
-| @anjianshi/presets-eslint-typescript | TypeScript 规则           |
-| @anjianshi/presets-eslint-react      | React + TypeScript 规则   |
-| @anjianshi/presets-eslint-node       | Node.js + TypeScript 规则 |
+| 包名                                 | 内容                               |
+| ------------------------------------ | ---------------------------------- |
+| @anjianshi/presets-eslint-base       | 基础 JavaScript 规则及一些辅助内容 |
+| @anjianshi/presets-eslint-typescript | TypeScript 规则                    |
+| @anjianshi/presets-eslint-react      | React + TypeScript 规则            |
+| @anjianshi/presets-eslint-node       | Node.js + TypeScript 规则          |
 
 ---
 
@@ -47,7 +42,7 @@ pnpm add --save-dev @anjianshi/presets-eslint-xxx
 module.exports = [
   ...require('@anjianshi/presets-eslint-xxx'),
 
-  // 如果只想引入某个场景专属的内容，、例如只单独引入 TypeScript 配置，不包含 base，可以引入 exclusive.cjs 文件
+  // 如果只想引入某个场景专属的配置，例如只引入 TypeScript 配置，不包含 base，可以引入 exclusive.cjs 文件
   ...require('@anjianshi/presets-eslint-xxx/exclusive.cjs'),
 ]
 ```
@@ -132,6 +127,22 @@ library/      // /Users/me/library/
 
 以前 VSCode 里还需要配置 `eslint.validate`，但它现在被 `eslint.probe` 代替了。  
 且 `eslint.probe` 的默认值已符合需求，所以无需配置。
+
+### 辅助内容 - @anjianshi/presets-eslint-base/globals.cjs
+
+最新版的 ESLint 是通过设置 `globals` 来定义运行环境有哪些全局变量，例如 Node.js 里的 `process`。
+官方说明是可以从 `globals` npm 包取得这些定义：<https://eslint.org/docs/latest/use/configure/language-options#predefined-global-variables>。
+base 包的 `globals.cjs` 文件原样引用了 `globals` npm 包，需要时可以直接使用此文件，就不用手动安装 `globals` 依赖了。
+
+### 辅助内容 - @anjianshi/presets-eslint-base/utils.cjs
+
+此文件提供了一些工具函数:
+
+```typescript
+// 限定配置生效的路径
+// pathPrefixs 会转化为各配置对象的 files 属性，如果配置中已经有 files，则设置成各 files 的路径前缀。
+exports.limitFiles = function limitFiles(pathPrefixs: string | string[], configs: ESLintConfig[]): ESLintConfig
+```
 
 ---
 
