@@ -4,18 +4,22 @@
 
 /**
  * 限定配置生效的路径
- * pathPrefixs 会转化为各配置对象的 files 属性，如果配置中已经有 files，则设置成各 files 的路径前缀。
+ * pathPrefixs 会转化为各配置对象的 files 属性；
+ * 如果配置中已经有 files 属性，其中以 ** 通配符开头的会添加上各 pathPrefixs 前缀，其他的保持原样
  * @param pathPrefixs: string | string[]
  */
 exports.limitFiles = function limitFiles(pathPrefixs, configs) {
   if (!Array.isArray(pathPrefixs)) pathPrefixs = [pathPrefixs]
-  pathPrefixs = pathPrefixs.map(pathPrefix => pathPrefix.replace(/\/$/, ''))
+  pathPrefixs = pathPrefixs.map(pathPrefix =>
+    !pathPrefix.endsWith('/') ? pathPrefix + '/' : pathPrefix
+  )
 
   return configs.map(config => {
-    const files = (config.files || ['*.{js,cjs,mjs}']).reduce((files, pattern) => {
-      files.push(...pathPrefixs.map(pathPrefix => pathPrefix + '/**/' + pattern))
-      return files
-    }, [])
+    const files = []
+    for (const filePattern of config.files || ['**/*.{js,cjs,mjs}']) {
+      if (!filePattern.startsWith('**/')) files.push(filePattern)
+      else files.push(...pathPrefixs.map(pathPrefix => pathPrefix + filePattern))
+    }
     return { ...config, files }
   })
 }

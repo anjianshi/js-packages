@@ -4,7 +4,7 @@ module.exports = [
   // ESLint 配置文件自身的配置
   {
     name: 'configs-for-eslint-config-file',
-    files: ['**/eslint.config.{js,cjs,mjs}'],
+    files: ['eslint.config.{js,cjs,mjs}'],
     languageOptions: {
       globals: {
         ...globals.node,
@@ -51,7 +51,6 @@ module.exports = [
       'guard-for-in': 'error',
       'no-alert': 'warn',
       'no-caller': 'error',
-      'no-confusing-arrow': 'error',
       'no-eq-null': 'error',
       'no-eval': 'error',
       'no-extend-native': 'error',
