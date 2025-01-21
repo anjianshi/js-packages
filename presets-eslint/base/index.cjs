@@ -6,9 +6,7 @@ module.exports = [
     name: 'configs-for-eslint-config-file',
     files: ['eslint.config.{js,cjs,mjs}'],
     languageOptions: {
-      globals: {
-        ...globals.node,
-      },
+      globals: { ...globals.node },
     },
   },
 

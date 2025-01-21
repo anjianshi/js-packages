@@ -14,6 +14,7 @@ exports.limitFiles = function limitFiles(pathPrefixs, configs) {
     !pathPrefix.endsWith('/') ? pathPrefix + '/' : pathPrefix
   )
 
+  if (!Array.isArray(configs)) configs = [configs]
   return configs.map(config => {
     const files = []
     for (const filePattern of config.files || ['**/*.{js,cjs,mjs}']) {
