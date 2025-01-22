@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-import { fileURLToPath } from 'node:url'
-import path from 'node:path'
-import fs from 'node:fs'
 import child_process from 'child_process'
+import fs from 'node:fs'
+import path from 'node:path'
 import readline from 'node:readline/promises'
+import { fileURLToPath } from 'node:url'
 import chalk from 'chalk'
 
 // -------------------------

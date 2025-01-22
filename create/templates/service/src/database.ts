@@ -1,4 +1,3 @@
-import { PrismaClient } from '@prisma/client'
 import {
   getPrismaLoggingOptions,
   adaptPrismaLogging,
@@ -9,6 +8,7 @@ import {
   getTransactionContextedPrismaClient as rawGetTransactionContextedPrismaClient,
   type GetPrismaClientInTransaction,
 } from '@anjianshi/utils/env-service/prisma/index.js'
+import { PrismaClient } from '@prisma/client'
 import config from '@/config.js'
 import { rootLogger } from '@/logger.js'
 
