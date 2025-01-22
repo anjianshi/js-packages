@@ -40,6 +40,7 @@ interface QueryExtraArgs {
 export type { QueryExtraArgs as SoftDeleteQueryArgs }
 type QueryInputArgs<T, A, K extends Operation> = Prisma.Exact<A, Prisma.Args<T, K> & QueryExtraArgs>
 
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
 function getModel<T>(that: T) {
   const context = Prisma.getExtensionContext(that as ExampleModel)
 
@@ -62,10 +63,11 @@ function query<T, A, K extends Operation>(
   method: K,
 ) {
   const { model, supportSoftDelete } = getModel(that)
+  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
   const { withDeleted = false, ...args } = inputArgs as Prisma.Args<ExampleModel, 'findFirst'> &
     QueryExtraArgs
 
-  return (model as any)[method]({
+  return model[method]({
     ...args,
     where: !supportSoftDelete || withDeleted ? args.where : { ...args.where, deleteTime: null },
   }) as Promise<Prisma.Result<T, A, K>>

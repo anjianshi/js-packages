@@ -36,8 +36,8 @@ export async function timeout<T>(
       result => {
         if (!isTimeout) resolve(result)
       },
-      error => {
-        if (!isTimeout) reject(error)
+      (error: unknown) => {
+        if (!isTimeout) reject(error as Error)
       },
     )
   })

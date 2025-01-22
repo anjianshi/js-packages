@@ -43,7 +43,7 @@ export function disableVConsole() {
 
 export function runVConsole() {
   if (window.VConsole !== null) return
-  if (VConsoleLib === undefined) return void console.warn('尚未传入 VConsole 对象，无法启动')
+  if (VConsoleLib === undefined) return console.warn('尚未传入 VConsole 对象，无法启动')
   window.VConsole = new VConsoleLib()
 }
 

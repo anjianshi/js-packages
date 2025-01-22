@@ -306,13 +306,13 @@ export class MD5 {
     const HEX_CHARS = '0123456789abcdef'.split('')
     return (
       // prettier-ignore
-      HEX_CHARS[(h0 >> 4) & 0x0f] + HEX_CHARS[h0 & 0x0f]! + HEX_CHARS[(h0 >> 12) & 0x0f] + HEX_CHARS[(h0 >> 8) & 0x0f] + HEX_CHARS[(h0 >> 20) & 0x0f] +
-      HEX_CHARS[(h0 >> 16) & 0x0f] + HEX_CHARS[(h0 >> 28) & 0x0f] + HEX_CHARS[(h0 >> 24) & 0x0f] + HEX_CHARS[(h1 >> 4) & 0x0f] + HEX_CHARS[h1 & 0x0f] +
-      HEX_CHARS[(h1 >> 12) & 0x0f] + HEX_CHARS[(h1 >> 8) & 0x0f] + HEX_CHARS[(h1 >> 20) & 0x0f] + HEX_CHARS[(h1 >> 16) & 0x0f] + HEX_CHARS[(h1 >> 28) & 0x0f] +
-      HEX_CHARS[(h1 >> 24) & 0x0f] + HEX_CHARS[(h2 >> 4) & 0x0f] + HEX_CHARS[h2 & 0x0f] + HEX_CHARS[(h2 >> 12) & 0x0f] + HEX_CHARS[(h2 >> 8) & 0x0f] +
-      HEX_CHARS[(h2 >> 20) & 0x0f] + HEX_CHARS[(h2 >> 16) & 0x0f] + HEX_CHARS[(h2 >> 28) & 0x0f] + HEX_CHARS[(h2 >> 24) & 0x0f] + HEX_CHARS[(h3 >> 4) & 0x0f] +
-      HEX_CHARS[h3 & 0x0f] + HEX_CHARS[(h3 >> 12) & 0x0f] + HEX_CHARS[(h3 >> 8) & 0x0f] + HEX_CHARS[(h3 >> 20) & 0x0f] + HEX_CHARS[(h3 >> 16) & 0x0f] +
-      HEX_CHARS[(h3 >> 28) & 0x0f] + HEX_CHARS[(h3 >> 24) & 0x0f]
+      HEX_CHARS[(h0 >> 4) & 0x0f]! + HEX_CHARS[h0 & 0x0f]! + HEX_CHARS[(h0 >> 12) & 0x0f]! + HEX_CHARS[(h0 >> 8) & 0x0f]! + HEX_CHARS[(h0 >> 20) & 0x0f]! +
+      HEX_CHARS[(h0 >> 16) & 0x0f]! + HEX_CHARS[(h0 >> 28) & 0x0f]! + HEX_CHARS[(h0 >> 24) & 0x0f]! + HEX_CHARS[(h1 >> 4) & 0x0f]! + HEX_CHARS[h1 & 0x0f]! +
+      HEX_CHARS[(h1 >> 12) & 0x0f]! + HEX_CHARS[(h1 >> 8) & 0x0f]! + HEX_CHARS[(h1 >> 20) & 0x0f]! + HEX_CHARS[(h1 >> 16) & 0x0f]! + HEX_CHARS[(h1 >> 28) & 0x0f]! +
+      HEX_CHARS[(h1 >> 24) & 0x0f]! + HEX_CHARS[(h2 >> 4) & 0x0f]! + HEX_CHARS[h2 & 0x0f]! + HEX_CHARS[(h2 >> 12) & 0x0f]! + HEX_CHARS[(h2 >> 8) & 0x0f]! +
+      HEX_CHARS[(h2 >> 20) & 0x0f]! + HEX_CHARS[(h2 >> 16) & 0x0f]! + HEX_CHARS[(h2 >> 28) & 0x0f]! + HEX_CHARS[(h2 >> 24) & 0x0f]! + HEX_CHARS[(h3 >> 4) & 0x0f]! +
+      HEX_CHARS[h3 & 0x0f]! + HEX_CHARS[(h3 >> 12) & 0x0f]! + HEX_CHARS[(h3 >> 8) & 0x0f]! + HEX_CHARS[(h3 >> 20) & 0x0f]! + HEX_CHARS[(h3 >> 16) & 0x0f]! +
+      HEX_CHARS[(h3 >> 28) & 0x0f]! + HEX_CHARS[(h3 >> 24) & 0x0f]!
     )
   }
 }

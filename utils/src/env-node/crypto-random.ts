@@ -17,7 +17,7 @@ export function getCryptoRandomInt(min: number, max: number) {
  */
 export function getCryptoRandomString(length = 6, seed = '0123456789abcdefghijklmnopqrstuvwxyz') {
   let result = ''
-  while (result.length < length) result += seed[getCryptoRandomInt(0, seed.length - 1)]
+  while (result.length < length) result += seed[getCryptoRandomInt(0, seed.length - 1)]!
   return result
 }
 

@@ -7,7 +7,7 @@ export default async function loadScript(url: string): Promise<void> {
     const script = document.createElement('script')
     script.src = url
     script.onload = () => resolve()
-    script.onerror = err => reject(err)
+    script.onerror = err => reject(err) // eslint-disable-line @typescript-eslint/prefer-promise-reject-errors
     window.document.head.appendChild(script)
   })
 }

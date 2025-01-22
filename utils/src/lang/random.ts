@@ -12,7 +12,7 @@ export function getRandomInt(min: number, max: number) {
  */
 export function getRandomString(length = 6, seed = '0123456789abcdefghijklmnopqrstuvwxyz') {
   let result = ''
-  while (result.length < length) result += seed[getRandomInt(0, seed.length - 1)]
+  while (result.length < length) result += seed[getRandomInt(0, seed.length - 1)]!
   return result
 }
 

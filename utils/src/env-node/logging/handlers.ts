@@ -183,7 +183,7 @@ export class FileHandler extends LogHandler {
       fs.appendFileSync(this.filepath, content)
     } else {
       fs.appendFile(this.filepath, content, error => {
-        if (error) console.error('[logger] write failed: ' + String(error))
+        if (error) console.error('[logger] write failed: ', error)
       })
     }
   }

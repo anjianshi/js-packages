@@ -74,6 +74,7 @@ export class EnvReader {
   getByType(key: string, type?: 'string'): string | undefined
   getByType(key: string, type: 'number'): number | undefined
   getByType(key: string, type: 'boolean'): boolean | undefined
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
   getByType<T extends unknown[] | Record<string, unknown>>(key: string, type: 'json'): T | undefined
   getByType(key: string, type: 'string' | 'number' | 'boolean' | 'json' = 'string') {
     const raw = this.getRaw(key)

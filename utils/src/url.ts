@@ -44,7 +44,7 @@ function parseQuery(
     const [name, rawValue] = [re[1]!, re[2]!] as [string, string]
     const value = decode ? safeDecode(rawValue) : rawValue
     if (array && query[name] !== undefined) {
-      const prev = query[name]!
+      const prev = query[name]
       query[name] = Array.isArray(prev) ? [...prev, value] : [prev, value]
     } else {
       query[name] = value

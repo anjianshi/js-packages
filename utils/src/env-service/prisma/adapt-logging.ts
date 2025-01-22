@@ -5,8 +5,8 @@
  * 理论上可以重写 console.log/debug... 等方法来实现捕获，但这牵扯面太广，暂不这样做。
  */
 import nodeUtil from 'node:util'
-import chalk from 'chalk'
 import type { getPrismaClient, PrismaClientOptions } from '@prisma/client/runtime/library.js'
+import chalk from 'chalk'
 import { type Logger } from '../../logging/index.js'
 
 type PrismalClient = ReturnType<typeof getPrismaClient> extends new () => infer T ? T : never
@@ -23,6 +23,7 @@ export function getPrismaLoggingOptions(debug: boolean) {
   } satisfies PrismaClientOptions
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
 export function adaptPrismaLogging<T extends Pick<PrismalClient, '$on'>>(
   prisma: T,
   baseLogger: Logger,
