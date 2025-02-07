@@ -16,6 +16,10 @@ export async function initRedis() {
   await redis.connect()
 }
 
+/**
+ * 生成管理某项缓存的实例
+ * 使用规范见 README.md 里的“缓存使用流程”
+ */
 export function getCacheInstance<T>(topic: string, options?: Partial<CacheOptions>) {
   return new Cache<T>(redis, config.REDIS_KEY_PREFIX + topic, {
     logger: rootLogger.getChild('cache'),

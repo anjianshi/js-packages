@@ -48,3 +48,11 @@ Module: 通用组件或对某一特定功能的封装
 2. 执行 `pnpm prisma migrate deploy` 来应用 migrations。
 
 此操作已整合成 `pnpm db-deploy` 命令。
+
+---
+
+# 缓存使用流程
+
+1. 确定要缓存的内容，通过 `getCacheInstance()` 建立缓存管理器。
+2. 读取缓存时，若对应内容不存在，获取数据并存入缓存
+3. 相关数据更新时，清除缓存，待下一次读取时重新写入
