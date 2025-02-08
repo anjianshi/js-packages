@@ -18,6 +18,11 @@ Module: 通用组件或对某一特定功能的封装
 - `src/routes/` 对应 `Route`
 - `src/` 下的其他内容都是 `Module`
 
+routes 和 controller 都会验证数据有效性。但分工有所区别：
+
+- routes 主要验证“格式”上的有效性
+- controller 负责验证“业务逻辑”上的有效性，它假定使用者传入的数据格式一定是合法的。
+
 ---
 
 # Prisma ORM 适配
