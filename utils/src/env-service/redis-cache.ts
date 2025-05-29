@@ -2,7 +2,7 @@ import { type RedisClientType } from 'redis'
 import { type Logger, logger as rootLogger } from '../logging/index.js'
 
 export function initRedisLogging(redis: RedisClientType, logger?: Logger) {
-  if (!logger) logger = rootLogger.getChild('redis')
+  logger ??= rootLogger.getChild('redis')
   redis.on('connect', () => logger.info('connecting'))
   redis.on('ready', () => logger.info('connected'))
   redis.on('end', () => logger.info('connection closed'))

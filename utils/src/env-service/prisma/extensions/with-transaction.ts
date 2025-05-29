@@ -12,7 +12,7 @@
  *   }
  * )
  */
-import { Prisma } from '@prisma/client/extension'
+import { Prisma } from '@prisma/client/extension.js'
 import { type ITXClientDenyList } from '@prisma/client/runtime/library.js'
 import type { MaySuccess, Failed } from '../../../index.js'
 
@@ -36,10 +36,12 @@ class FailedInTransaction<T = void> extends Error {
   }
 }
 
+// 注意：此函数的返回值为 `R | Failed<any>`，例如实际可能为 `MaySuccess<xxx, xxx> | Failed<any>`，这是有意为之的，`Failed<any>` 并不多余。
+// 因为有时 callback() 只会返回 success 结果，此时 R=Success<xxx>，但是 $withTransaction 整体的返回值仍有可能有 Failed<any>，所以不能用 R 作为整体返回值。
 async function $withTransaction<That extends object, R extends MaySuccess<unknown, unknown>>(
   this: That,
   callback: (dbInTransaction: GetPrismaClientInTransaction<That>) => Promise<R>,
-): Promise<R> {
+) {
   const executeCallback = async (dbInTransaction: unknown) => {
     const result = await callback(dbInTransaction as GetPrismaClientInTransaction<That>)
     if (result.success) return result
@@ -53,7 +55,7 @@ async function $withTransaction<That extends object, R extends MaySuccess<unknow
         executeCallback(dbInTransaction),
       )
     } catch (e) {
-      if (e instanceof FailedInTransaction) return e.failed as R
+      if (e instanceof FailedInTransaction) return e.failed
       throw e
     }
   } else {
