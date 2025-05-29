@@ -12,7 +12,7 @@ module.exports = [
       },
     },
     settings: {
-      'import/resolver': {
+      'import-x/resolver': {
         node: true,
       },
     },
@@ -20,7 +20,7 @@ module.exports = [
       'global-require': 'off',
       'no-console': 'off',
       'no-restricted-syntax': 'off',
-      'import/no-dynamic-require': 'off',
+      'import-x/no-dynamic-require': 'off',
     },
   },
 ]

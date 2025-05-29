@@ -1,4 +1,0 @@
-{
-  "extends": "../../presets-typescript/tsconfig-base.json",
-  "include": ["./"]
-}

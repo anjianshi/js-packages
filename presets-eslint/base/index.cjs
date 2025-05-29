@@ -11,7 +11,7 @@ module.exports = [
   },
 
   require('@eslint/js').configs.recommended,
-  require('eslint-plugin-import').flatConfigs.recommended,
+  require('eslint-plugin-import-x').flatConfigs.recommended,
   require('eslint-config-prettier'),
   {
     name: 'anjianshi-base',
@@ -100,10 +100,11 @@ module.exports = [
       yoda: 'error',
 
       // Import
-      'import/no-useless-path-segments': ['error', { noUselessIndex: false }], // Node.js ES6 Module 里需要把 noUselessIndex 设为 false
-      'import/no-named-as-default-member': 'off',
-      'import/no-duplicates': ['error', { considerQueryString: true }],
-      'import/order': [
+      'import-x/extensions': ['error', 'always', { ts: 'never' }], // TODO: 暂没找到强制要求 .ts 代码里的引用带 `.js` 后缀又不报缺少 `.ts` 后缀的错的办法
+      'import-x/no-useless-path-segments': ['error', { noUselessIndex: false }], // Node.js ES6 Module 里需要把 noUselessIndex 设为 false
+      'import-x/no-named-as-default-member': 'off',
+      'import-x/no-duplicates': ['error', { considerQueryString: true }],
+      'import-x/order': [
         'error',
         {
           groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object'],

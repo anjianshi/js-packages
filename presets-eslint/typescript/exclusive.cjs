@@ -83,19 +83,29 @@ const rules = {
   '@typescript-eslint/no-useless-constructor': 'error',
   '@typescript-eslint/return-await': 'error',
 
-  'import/no-duplicates': ['error', { 'prefer-inline': true, considerQueryString: true }],
+  'import-x/no-duplicates': ['error', { 'prefer-inline': true, considerQueryString: true }],
 }
 
-const files = ['**/*.{ts,mts,cts,tsx,mtsx,ctsx}']
+const tsExtensions = ['ts', 'mts', 'cts', 'tsx', 'mtsx', 'ctsx']
+const allExtensions = [...tsExtensions, 'js', 'mjs', 'cjs', 'jsx', 'mjsx', 'cjsx']
+const files = [`**/*.{${tsExtensions.join(',')}}`]
 
 module.exports = [
-  ...tseslint.configs.strictTypeChecked.map(config => ({ files, ...config })),
-  ...tseslint.configs.stylisticTypeChecked.map(config => ({ files, ...config })),
+  ...tseslint.configs.strictTypeChecked.map(config => ({ ...config, files })),
+  ...tseslint.configs.stylisticTypeChecked.map(config => ({ ...config, files })),
   {
-    ...require('eslint-plugin-import/config/typescript'),
+    // 参考自 require('eslint-plugin-import-x').flatConfigs.typescript
     files,
     settings: {
-      'import/resolver': {
+      'import-x/external-module-folders': ['node_modules', 'node_modules/@types'],
+      // 指定哪些扩展名的文件需要进一步解析（以看其导出了哪些内容）
+      'import-x/extensions': allExtensions,
+      // 指定各扩展名要使用什么 parser 来解析(以看其导出了哪些内容)
+      // 未指定的当做普通 JavaScript 文件处理
+      'import-x/parsers': {
+        '@typescript-eslint/parser': [...tsExtensions],
+      },
+      'import-x/resolver': {
         node: true,
         typescript: {
           project: './',
@@ -106,11 +116,11 @@ module.exports = [
       // TypeScript 会自行检查以下项目，禁用以避免冲突并提升性能.
       // Checked by TypeScript itself, disable to avoid conflicts and improve performance.
       // <https://typescript-eslint.io/troubleshooting/typed-linting/performance#eslint-plugin-import>
-      'import/default': 'off',
-      'import/named': 'off',
-      'import/namespace': 'off',
-      'import/no-named-as-default-member': 'off',
-      'import/no-unresolved': 'off',
+      'import-x/default': 'off',
+      'import-x/named': 'off',
+      'import-x/namespace': 'off',
+      'import-x/no-named-as-default-member': 'off',
+      'import-x/no-unresolved': 'off',
     },
   },
   require('eslint-config-prettier'),
