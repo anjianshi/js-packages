@@ -3,3 +3,4 @@ node_modules/
 dist/
 .swc/
 create/test/
+.env

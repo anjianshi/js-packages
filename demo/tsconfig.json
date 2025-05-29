@@ -1,0 +1,10 @@
+{
+  "extends": "@anjianshi/presets-typescript/tsconfig-base.json",
+  "include": ["./"],
+  "compilerOptions": {
+    "rootDir": "./",
+    "paths": {
+      "@/*": ["./*"]
+    }
+  }
+}

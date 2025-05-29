@@ -1,0 +1,32 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node dist/utils/index.js",
+    "build": "rm -rf dist && tsc-with-alias -p tsconfig-build.json",
+    "watch": "rm -rf dist && tsc-with-alias -p tsconfig-build.json --watch",
+    "db-generate": "prisma generate --sql",
+    "db-push": "prisma db push"
+  },
+  "devDependencies": {
+    "@anjianshi/presets-eslint-base": "workspace:*",
+    "@anjianshi/presets-eslint-node": "workspace:*",
+    "@anjianshi/presets-eslint-react": "workspace:*",
+    "@anjianshi/presets-prettier": "workspace:*",
+    "@anjianshi/presets-typescript": "workspace:*",
+    "@anjianshi/utils": "workspace:*",
+    "@types/debug": "^4.1.12",
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "tsc-alias": "^1.8.16",
+    "typescript": "latest"
+  },
+  "prettier": "@anjianshi/presets-prettier/prettierrc",
+  "dependencies": {
+    "@prisma/client": "6.8.2",
+    "debug": "^4.4.1",
+    "prisma": "^6.8.2",
+    "react": "^19.1.0",
+    "redis": "^5.1.1"
+  }
+}

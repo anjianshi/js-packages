@@ -1,0 +1,12 @@
+{
+  "extends": "@anjianshi/presets-typescript/tsconfig-base.json",
+  "include": ["./"],
+  "exclude": ["./eslint"],
+  "compilerOptions": {
+    "rootDir": "./",
+    "paths": {
+      "@/*": ["./*"]
+    },
+    "outDir": "./dist/"
+  }
+}

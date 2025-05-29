@@ -2,13 +2,14 @@
 
 在此 git repo 下维护所有个人项目用到的公共 JavaScript 包。如通用的配置文件、函数库。
 
-| 目录               | 内容                 | 备注 |
-| ------------------ | -------------------- | ---- |
-| presets-eslint     | 通用 ESLint 配置     |      |
-| presets-prettier   | 通用 Prettier 配置   |      |
-| presets-typescript | 通用 TypeScript 配置 |      |
-| create             | 项目模板             |      |
-| utils              | 工具函数库           |      |
+| 目录               | 内容                     | 备注 |
+| ------------------ | ------------------------ | ---- |
+| presets-eslint     | 通用 ESLint 配置         |      |
+| presets-prettier   | 通用 Prettier 配置       |      |
+| presets-typescript | 通用 TypeScript 配置     |      |
+| create             | 项目模板                 |      |
+| utils              | 工具函数库               |      |
+| demo               | 测试以上各包能否正常运行 |      |
 
 ## 如何发布
 
