@@ -23,7 +23,10 @@ pnpm add --save-dev @anjianshi/presets-typescript typescript
 }
 ```
 
-注意：在使用 `pnpm` 的情况下，必须使用相对路径来引用 `tsconfig 文件，不能直接通过包名来引用，不然路径计算会出错。
+注意：
+
+1. 在使用 `pnpm` 的情况下，必须使用相对路径来引用 `tsconfig 文件，不能直接通过包名来引用，不然路径计算会出错。
+2. 若修改了 `tsconfig.json` 中的 `include` 内容，有可能需要同步修改 `compilerOptions.rootDir`
 
 ## 配置 path alias
 
@@ -56,3 +59,9 @@ pnpm add --save-dev @anjianshi/presets-typescript typescript
 
 在 `vite.config.js` 的 `resolve.alias` 里添加和 `tsconfig.json` 中一致的配置，  
 详见：<https://vitejs.dev/config/shared-options#resolve-alias>。
+
+### 注意事项
+
+因为 `tsc-alias` 是读取编译后的文件来替换 alias 内容，所以编译后的文件结构必须和编译前一致才行。
+例如没有在 `tsconfig.json` 里设置 `compilerOptions.rootDir` 的话，tsc 输出内容到 outDir 时会尝试省略一些不必要的上级目录，即 `src/a/b/c/index.js` 可能输出成 `dist/index.js`。
+此时 `tsc-alias` 就无法正常工作。
