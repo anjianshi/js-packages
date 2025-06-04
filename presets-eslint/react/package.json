@@ -1,6 +1,6 @@
 {
   "name": "@anjianshi/presets-eslint-react",
-  "version": "4.2.3",
+  "version": "4.3.0",
   "description": "公共 ESLint 配置",
   "homepage": "https://github.com/anjianshi/js-packages/presets-eslint/",
   "bugs": {
@@ -16,7 +16,9 @@
   },
   "main": "index.cjs",
   "dependencies": {
+    "@anjianshi/presets-eslint-base": "workspace:*",
     "@anjianshi/presets-eslint-typescript": "workspace:*",
+    "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-ts-react-hooks": "^2.0.0"
