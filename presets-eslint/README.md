@@ -29,10 +29,8 @@
 ### 安装
 
 ```sh
-pnpm add --save-dev @anjianshi/presets-eslint-xxx
+pnpm add --save-dev eslint @anjianshi/presets-eslint-xxx
 ```
-
-此包已包含 ESLint 依赖，无需再手动添加。
 
 ### 配置 ESLint
 
