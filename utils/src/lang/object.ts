@@ -26,3 +26,14 @@ function is(x: unknown, y: unknown) {
 function isObject(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null
 }
+
+/**
+ * 获取对象的方法，并将它的 this 锁定在原对象
+ *
+ * const method = getBoundMethod(object, 'someMethod')
+ * method(1,2,3) // 不用担心 this 改变
+ */
+export function getBoundMethod<T extends object, K extends keyof T>(object: T, key: K): T[K] {
+  const property = object[key]
+  return (typeof property === 'function' ? property.bind(object) : property) as T[K]
+}

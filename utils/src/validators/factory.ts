@@ -9,6 +9,7 @@ import {
 } from './array.js'
 import { type Validator, type CommonOptions, type Validated, getAnyValidator } from './base.js'
 import { type BooleanOptions, getBooleanValidator } from './boolean.js'
+import { type DatetimeOptions, type DatetimeValue, getDatetimeValidator } from './datetime.js'
 import { type NumberOptions, type NumberValueWithChoices, getNumberValidator } from './number.js'
 import {
   type RecordOptions,
@@ -16,7 +17,7 @@ import {
   type StructOptions,
   getStructValidator,
 } from './object.js'
-import { type OneOfOptions, getOneOfValidator } from './oneOf.js'
+import { type OneOfOptions, getOneOfValidator } from './one-of.js'
 import { type StringOptions, type StringValueWithChoices, getStringValidator } from './string.js'
 
 export interface AnyDefinition extends CommonOptions {
@@ -30,6 +31,9 @@ export interface NumberDefinition extends NumberOptions {
 }
 export interface StringDefinition extends StringOptions {
   type: 'string'
+}
+export interface DatetimeDefinition extends DatetimeOptions {
+  type: 'datetime'
 }
 export interface ArrayDefinition extends Omit<ArrayOptions, 'item'> {
   type: 'array'
@@ -57,6 +61,7 @@ export type Definition =
   | BooleanDefinition
   | NumberDefinition
   | StringDefinition
+  | DatetimeDefinition
   | ArrayDefinition
   | TupleDefinition
   | StructDefinition
@@ -66,56 +71,55 @@ export type Definition =
 export type ValueOfDefinition<Def extends Definition> = Def extends AnyDefinition
   ? unknown
   : Def extends BooleanDefinition
-    ? boolean
-    : Def extends NumberDefinition
-      ? NumberValueWithChoices<Def>
-      : Def extends StringDefinition
-        ? StringValueWithChoices<Def>
-        : Def extends ArrayDefinition
-          ? Validated<ValueOfDefinition<Def['item']>, Def['item']>[]
-          : Def extends TupleDefinition
-            ? {
-                [Key in keyof Def['tuple']]: Def['tuple'][Key] extends Definition
-                  ? Validated<ValueOfDefinition<Def['tuple'][Key]>, Def['tuple'][Key]>
-                  : Def['tuple'][Key]
-              }
-            : Def extends StructDefinition
-              ? {
-                  [Key in keyof Def['struct']]: Validated<
-                    ValueOfDefinition<Def['struct'][Key]>,
-                    Def['struct'][Key]
-                  >
-                }
-              : Def extends RecordDefinition
-                ? Record<string, Validated<ValueOfDefinition<Def['record']>, Def['record']>>
-                : Def extends OneOfDefinition
-                  ? {
-                      [Key in keyof Def['validators']]: Def['validators'][Key] extends Definition
-                        ? Validated<
-                            ValueOfDefinition<Def['validators'][Key]>,
-                            Def['validators'][Key]
-                          >
-                        : Def['validators'][Key]
-                    }[number]
-                  : never
+  ? boolean
+  : Def extends NumberDefinition
+  ? NumberValueWithChoices<Def>
+  : Def extends StringDefinition
+  ? StringValueWithChoices<Def>
+  : Def extends DatetimeDefinition
+  ? DatetimeValue<Def>
+  : Def extends ArrayDefinition
+  ? Validated<ValueOfDefinition<Def['item']>, Def['item']>[]
+  : Def extends TupleDefinition
+  ? {
+      [Key in keyof Def['tuple']]: Def['tuple'][Key] extends Definition
+        ? Validated<ValueOfDefinition<Def['tuple'][Key]>, Def['tuple'][Key]>
+        : Def['tuple'][Key]
+    }
+  : Def extends StructDefinition
+  ? {
+      [Key in keyof Def['struct']]: Validated<
+        ValueOfDefinition<Def['struct'][Key]>,
+        Def['struct'][Key]
+      >
+    }
+  : Def extends RecordDefinition
+  ? Record<string, Validated<ValueOfDefinition<Def['record']>, Def['record']>>
+  : Def extends OneOfDefinition
+  ? {
+      [Key in keyof Def['validators']]: Def['validators'][Key] extends Definition
+        ? Validated<ValueOfDefinition<Def['validators'][Key]>, Def['validators'][Key]>
+        : Def['validators'][Key]
+    }[number]
+  : never
 
 export type OptionsFromDefinition<Def extends Definition> = Def extends ArrayDefinition
   ? Omit<Def, 'item'> & { item: ValidatorForDefinition<Def['item']> }
   : Def extends TupleDefinition
-    ? Omit<Def, 'tuple'> & {
-        tuple: {
-          [Key in keyof Def['tuple']]: Def['tuple'][Key] extends Definition
-            ? ValidatorForDefinition<Def['tuple'][Key]>
-            : never
-        }
+  ? Omit<Def, 'tuple'> & {
+      tuple: {
+        [Key in keyof Def['tuple']]: Def['tuple'][Key] extends Definition
+          ? ValidatorForDefinition<Def['tuple'][Key]>
+          : never
       }
-    : Def extends StructDefinition
-      ? Omit<Def, 'struct'> & {
-          struct: { [Key in keyof Def['struct']]: ValidatorForDefinition<Def['struct'][Key]> }
-        }
-      : Def extends RecordDefinition
-        ? Omit<Def, 'record'> & { record: ValidatorForDefinition<Def['record']> }
-        : Def
+    }
+  : Def extends StructDefinition
+  ? Omit<Def, 'struct'> & {
+      struct: { [Key in keyof Def['struct']]: ValidatorForDefinition<Def['struct'][Key]> }
+    }
+  : Def extends RecordDefinition
+  ? Omit<Def, 'record'> & { record: ValidatorForDefinition<Def['record']> }
+  : Def
 
 export type ValidatorForDefinition<Def extends Definition> = Validator<
   ValueOfDefinition<Def>,
@@ -125,7 +129,7 @@ export type ValidatorForDefinition<Def extends Definition> = Validator<
 export type ResultForDefinition<Def extends Definition> = ReturnType<ValidatorForDefinition<Def>>
 
 export function getValidator<const InputDefinition extends Definition>(
-  definition: InputDefinition,
+  definition: InputDefinition
 ): ValidatorForDefinition<InputDefinition> {
   type GotValidator = ValidatorForDefinition<InputDefinition>
   switch (definition.type) {
@@ -137,6 +141,8 @@ export function getValidator<const InputDefinition extends Definition>(
       return getNumberValidator(definition) as GotValidator
     case 'string':
       return getStringValidator(definition) as GotValidator
+    case 'datetime':
+      return getDatetimeValidator(definition) as GotValidator
     case 'array':
       // @ts-ignore 允许递归类型推断
       return getArrayValidator({
@@ -226,4 +232,13 @@ export function getValidator<const InputDefinition extends Definition>(
 //     return { success: true, data: value }
 //   },
 //   defaults: 'some text',
+// })(1)
+// const v12 = getValidator({
+//   type: 'datetime',
+//   null: true,
+//   required: false,
+// })(1)
+// const v13 = getValidator({
+//   type: 'datetime',
+//   raw: true,
 // })(1)

@@ -19,7 +19,7 @@ export type OneOfValue<Options extends OneOfOptions> = Options extends {
   : never
 
 export function getOneOfValidator<const Options extends OneOfOptions>(
-  options: Options = {} as Options,
+  options: Options = {} as Options
 ) {
   return getValidatorGenerator<OneOfValue<Options>, Options>(function validate(field, value) {
     const errors: string[] = []
