@@ -1,19 +1,19 @@
 /**
  * 验证日期时间类型的值，依赖 dayjs
  */
-import dayjs, { Dayjs } from 'dayjs'
+import dayjs, { type Dayjs } from 'dayjs'
 import { success, failed } from '../lang/index.js'
 import { getValidatorGenerator, type CommonOptions } from './base.js'
 
 export interface DatetimeOptions extends CommonOptions<number> {
-  raw?: boolean // 为 true 则返回原生 Date 对象；否则返回 Dayjs 对象（默认）
+  dayjs?: boolean // 为 true 返回 Dayjs 对象，否则返回原生 Date 对象（默认）
 }
 
 export type DatetimeValue<Options extends DatetimeOptions> = Options extends {
-  raw: true
+  dayjs: true
 }
-  ? Date
-  : Dayjs
+  ? Dayjs
+  : Date
 
 export function getDatetimeValidator<const Options extends DatetimeOptions>(
   options: Options = {} as Options
@@ -27,13 +27,13 @@ export function getDatetimeValidator<const Options extends DatetimeOptions>(
     } else if (typeof value === 'string') {
       dayjsValue = dayjs(value)
       if (!dayjsValue.isValid()) return failed(`${field} must be a valid datetime string`)
-    } else if (value instanceof Date || value instanceof Dayjs) {
+    } else if (value instanceof Date || dayjs.isDayjs(value)) {
       dayjsValue = dayjs(value)
       if (!dayjsValue.isValid()) return failed(`${field} must be a valid Date or Dayjs object`)
     } else {
       return failed(`${field} must be a datetime string or unix timestamp`)
     }
 
-    return success((options.raw ? dayjsValue.toDate() : dayjsValue) as DatetimeValue<Options>)
+    return success((options.dayjs ? dayjsValue : dayjsValue.toDate()) as DatetimeValue<Options>)
   })(options)
 }
