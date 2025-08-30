@@ -9,7 +9,8 @@
   },
   "devDependencies": {
     "@anjianshi/presets-eslint-base": "workspace:*",
-    "@anjianshi/presets-prettier": "workspace:*"
+    "@anjianshi/presets-prettier": "workspace:*",
+    "eslint": "latest"
   },
   "prettier": "@anjianshi/presets-prettier/prettierrc"
 }

@@ -13,7 +13,7 @@
     "db-generate": "prisma generate --sql",
     "db-push": "prisma db push",
     "db-save": "prisma migrate dev",
-    "db-deploy": "prisma migrate deploy"
+    "db-deploy": "prisma generate && prisma migrate deploy"
   },
   "dependencies": {
     "@anjianshi/utils": "latest",

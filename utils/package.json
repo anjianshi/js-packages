@@ -1,6 +1,6 @@
 {
   "name": "@anjianshi/utils",
-  "version": "2.6.0",
+  "version": "2.9.1",
   "description": "Common JavaScript Utils",
   "homepage": "https://github.com/anjianshi/js-packages/utils",
   "bugs": {
@@ -9,7 +9,10 @@
   },
   "license": "MIT",
   "author": "anjianshi <anjianshi@gmail.com>",
-  "repository": "github:anjianshi/js-packages",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anjianshi/js-packages.git"
+  },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public",
