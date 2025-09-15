@@ -18,7 +18,7 @@ export interface Context {
 }
 
 export class AppController<
-  AllControllers extends Record<string, AnyController<Context>>,
+  AllControllers extends Record<string, AnyController<Context>>
 > extends Controller<Context, AllControllers> {
   protected readonly db: AppPrismaClient
   protected readonly logger: Logger
@@ -35,9 +35,9 @@ export type { ControllersFrom }
 export function initializeAppControllers<T extends Record<string, unknown>>(
   controllerClasses: T,
   db?: AppPrismaClient,
-  baseLogger?: Logger,
+  baseLogger?: Logger
 ) {
-  if (!db) db = getTransactionContextedPrismaClient()
-  if (!baseLogger) baseLogger = rootLogger.getChild('controller')
+  db ??= getTransactionContextedPrismaClient()
+  baseLogger ??= rootLogger.getChild('controller')
   return initializeControllers<Context, T>(controllerClasses, { db, baseLogger })
 }
