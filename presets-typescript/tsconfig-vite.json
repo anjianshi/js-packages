@@ -11,6 +11,6 @@
     "skipLibCheck": true,
 
     // 补充类型定义，如 svg 等导入资源的类型；假定项目包含了以下依赖：vite、vite-plugin-svgr
-    "types": ["vite-plugin-svgr/client", "vite/client"],
+    "types": ["vite-plugin-svgr/client", "vite/client"]
   }
 }

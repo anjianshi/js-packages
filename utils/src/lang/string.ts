@@ -47,9 +47,9 @@ export function numericCompare(a: string, b: string) {
  * 1. 默认设置 radix 为 10，无需再手动指定
  * 2. 支持指定 fallback，当解析出来的数字是 NaN 时返回这个值
  */
-export function safeParseInt(value: string | number, fallback?: number, redix = 10) {
-  const raw = parseInt(String(value), redix)
-  return isFinite(raw) ? raw : (fallback ?? raw)
+export function safeParseInt(value: string | number, fallback?: number, radix = 10) {
+  const raw = parseInt(String(value), radix)
+  return isFinite(raw) ? raw : fallback ?? raw
 }
 
 /**
