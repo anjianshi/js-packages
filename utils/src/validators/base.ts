@@ -1,4 +1,4 @@
-import { success, failed, type MaySuccess } from '../lang/index.js'
+import { success, failed, type Result } from '../lang/index.js'
 
 /**
  * 支持传入进行验证的值类型
@@ -33,7 +33,7 @@ export interface CommonOptions<Value = any> {
    */
   defaults?: Value
 
-  custom?: (input: Value) => MaySuccess<Value>
+  custom?: (input: Value) => Result<Value>
 
   // 用来保证传入定制过的 Options 时 TypeScript 不会报不匹配的错
   // 例如不加这句时， `{ other: boolean } extends CommonOptions` 是会被 TypeScript 判定为不匹配的：
@@ -82,8 +82,8 @@ export type Validated<Value, InputOptions extends CommonOptions> =
  * 最终生成的 validator 函数类型
  */
 export interface Validator<Value, InputOptions extends CommonOptions> {
-  (input: AllowedInputValue): MaySuccess<Validated<Value, InputOptions>>
-  (field: string, input: AllowedInputValue): MaySuccess<Validated<Value, InputOptions>>
+  (input: AllowedInputValue): Result<Validated<Value, InputOptions>>
+  (field: string, input: AllowedInputValue): Result<Validated<Value, InputOptions>>
 }
 
 // -----------------------------------
@@ -97,12 +97,12 @@ export function getValidatorGenerator<Value, Options extends CommonOptions>(
     field: string,
     input: PrimitiveType | Validated<Value, Options>,
     options: Options,
-  ) => MaySuccess<Value>,
+  ) => Result<Value>,
 ) {
   return function validatorGenerator<const InputOptions extends Options>(
     inputOptions: InputOptions,
   ): Validator<Value, InputOptions> {
-    type Return = MaySuccess<Validated<Value, InputOptions>>
+    type Return = Result<Validated<Value, InputOptions>>
     function validator(input: AllowedInputValue): Return
     function validator(field: string, input: AllowedInputValue): Return
     function validator(field: string | AllowedInputValue, input?: AllowedInputValue) {

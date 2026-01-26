@@ -1,4 +1,4 @@
-import { failed, type MaySuccess } from '../lang/index.js'
+import { failed, type Result } from '../lang/index.js'
 import {
   getValidatorGenerator,
   type CommonOptions,
@@ -19,13 +19,13 @@ export type OneOfValue<Options extends OneOfOptions> = Options extends {
   : never
 
 export function getOneOfValidator<const Options extends OneOfOptions>(
-  options: Options = {} as Options
+  options: Options = {} as Options,
 ) {
   return getValidatorGenerator<OneOfValue<Options>, Options>(function validate(field, value) {
     const errors: string[] = []
     for (const validator of options.validators) {
       const result = validator(field, value as AllowedInputValue)
-      if (result.success) return result as MaySuccess<OneOfValue<Options>>
+      if (result.success) return result as Result<OneOfValue<Options>>
       else errors.push(result.message)
     }
     return failed(`${field} do not match any valid format：\n- ` + errors.join('\n- '))

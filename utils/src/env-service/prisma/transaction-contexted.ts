@@ -1,4 +1,4 @@
-import { type MaySuccess } from '../../index.js'
+import { type Result } from '../../index.js'
 import type {
   GetPrismaClientInTransaction,
   WithTransactionMethod,
@@ -58,7 +58,7 @@ export function getTransactionContextedPrismaClient<
     }
   }
 
-  async function $withTransaction(callback: TransactionCallback<MaySuccess>) {
+  async function $withTransaction(callback: TransactionCallback<Result>) {
     return client.$withTransaction(async clientInTransaction =>
       callCallbackInTransaction(callback, clientInTransaction as PrismaClientInTransaction),
     )

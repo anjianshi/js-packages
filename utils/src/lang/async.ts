@@ -6,7 +6,7 @@
  * 返回一个指定毫秒后 resolve 的 Promise
  * 若指定了 resolveValue，则 Promise 最终会解析出此值
  */
-async function sleep(ms: number): Promise<void>
+async function sleep(ms: number): Promise<undefined>
 async function sleep<T>(ms: number, resolveValue: T): Promise<T>
 async function sleep<T>(ms: number, resolveValue?: T) {
   return new Promise<T>(resolve => {
