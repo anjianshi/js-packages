@@ -153,7 +153,7 @@ export class SafeRequestClient {
       if (result.success) return result
     }
 
-    result = (await handleException(response.arrayBuffer())) as Result<T>
+    result = (await handleException(response.blob())) as Result<T>
     return result
   }
 
