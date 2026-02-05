@@ -4,6 +4,7 @@
  *
  * 使用前提：
  * 1. 只支持浏览器渲染
+ * 2. 安装 @emotion/serialize、@emotion/utils
  * 2. 用 EmotionCacheProvider 包裹 App 根元素
  *
  * 来自：
