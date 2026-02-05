@@ -1,5 +1,5 @@
 import { sleep } from './lang/async.js'
-import { failed, handleException, type Result } from './lang/result.js'
+import { success, failed, handleException, type Result } from './lang/result.js'
 import { getLogger, type Logger } from './logging/index.js'
 import { combineUrl } from './url.js'
 
@@ -22,9 +22,14 @@ interface Options {
 
   /** 超时时间，不指定或设为 0 代表不限 */
   timeout?: number
+
+  /** 是否把响应内容作为二进制处理（结果是 blob） */
+  binary?: boolean
 }
 
-type FormattedOptions = Required<Pick<Options, 'url' | 'method' | 'headers' | 'body' | 'timeout'>>
+type FormattedOptions = Required<
+  Pick<Options, 'url' | 'method' | 'headers' | 'body' | 'timeout' | 'binary'>
+>
 
 type PredefinedOptions = Pick<Options, 'urlPrefix' | 'method' | 'headers' | 'timeout'>
 
@@ -102,6 +107,7 @@ export class SafeRequestClient {
       body: rawBody = null,
       data,
       timeout = predefined.timeout ?? 0,
+      binary = false,
     } = input
 
     const headers = {
@@ -127,6 +133,7 @@ export class SafeRequestClient {
       headers,
       body,
       timeout,
+      binary,
     }
     Object.assign(options.headers, await this.getHeaders(options, input))
     return options
@@ -142,19 +149,32 @@ export class SafeRequestClient {
     return undefined
   }
 
+  /**
+   * 解析响应内容
+   * - 若 options.binary 为 true，返回二进制结果
+   * - 若 response Content-Type 为 'text/' 开头，返回文本结果
+   * - 若 response Content-Type 为 'application/json' 开头，返回 JSON 结构
+   * - 其他情况，尝试解析成 JSON，成功则返回 JSON 否则返回纯文本
+   */
   protected async parseResponse<T>(options: FormattedOptions, response: Response) {
-    let result: Result<T>
-    result = await handleException(response.json())
-    if (result.success) return result
-
-    const contentType = (response.headers.get('Content-Type') ?? '').toLowerCase().trim()
-    if (contentType.startsWith('text/') || contentType === '') {
-      result = (await handleException(response.text())) as Result<T>
-      if (result.success) return result
+    if (options.binary) {
+      return (await handleException(response.blob())) as Result<T>
     }
 
-    result = (await handleException(response.blob())) as Result<T>
-    return result
+    const contentType = (response.headers.get('Content-Type') ?? '').toLowerCase().trim()
+
+    const textResult = await handleException(response.text())
+    if (contentType.startsWith('text/') || !textResult.success) return textResult as Result<T>
+
+    let jsonResult: Result<T>
+    try {
+      jsonResult = success(JSON.parse(textResult.data))
+    } catch (error) {
+      jsonResult = failed((error as Error).message)
+    }
+    if (contentType.startsWith('application/json') || jsonResult.success) return jsonResult
+
+    return textResult as Result<T>
   }
 
   /** 若请求未成功发起，会触发此回调来生成失败信息 */
