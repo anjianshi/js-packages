@@ -1,3 +1,9 @@
+/**
+ * 通用日志记录实现
+ *
+ * 使用前提：
+ * - 安装 dayjs 依赖
+ */
 import dayjs, { type Dayjs } from 'dayjs'
 export { default as formatters } from './formatters.js'
 export * from './adapt.js'

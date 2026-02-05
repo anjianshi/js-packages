@@ -3,6 +3,9 @@
  *
  * 注意：Prisma 的 debugging 日志是直接输出到 console 的，没有提供处理渠道，所以无法记录进日志文件。
  * 理论上可以重写 console.log/debug... 等方法来实现捕获，但这牵扯面太广，暂不这样做。
+ *
+ * 使用前提：
+ * - 安装 chalk 依赖
  */
 import nodeUtil from 'node:util'
 import type { getPrismaClient, PrismaClientOptions } from '@prisma/client/runtime/library.js'
