@@ -42,8 +42,8 @@ function failed<T>(message: string, code?: string | number, data?: T): Failed<T>
 export { failed }
 
 /**
- * 若传入值为 success，格式化其 data；否则原样返回错误
- * 支持传入会返回 Result 的 Promise
+ * 若传入值为 Success，格式化其 data；否则原样返回错误。
+ *
  */
 function formatSuccess<T1, T2, FT = void>(value: Result<T1, FT>, formatter: (value: T1) => T2): Result<T2, FT> // prettier-ignore
 function formatSuccess<T1, T2, FT = void>(value: Promise<Result<T1, FT>>, formatter: (value: T1) => T2): Promise<Result<T2, FT>> // prettier-ignore
@@ -57,12 +57,33 @@ function formatSuccess<T1, T2, FT = void>(
 export { formatSuccess }
 
 /**
+ * 若传入值为 Failed，格式化其内容；否则原样返回。
+ * 支持传入会返回 Result 的 Promise。
+ */
+function formatFailed<T, FT>(
+  value: Result<T>,
+  formatter: (result: Failed) => Failed<FT>,
+): Result<T, FT>
+function formatFailed<T, FT>(
+  value: Promise<Result<T>>,
+  formatter: (result: Failed) => Failed<FT>,
+): Promise<Result<T, FT>>
+function formatFailed<T, FT>(
+  value: Result<T> | Promise<Result<T>>,
+  formatter: (result: Failed) => Failed<FT>,
+) {
+  if ('then' in value) return value.then(finalValue => formatFailed(finalValue, formatter))
+  return value.success ? value : formatter(value)
+}
+export { formatFailed }
+
+/**
  * 把可能抛出异常的 Promise 转换为返回 Result 的 Promise。
  * 其中返回的 Failed 对象的 data 是 catch 捕获到的错误对象。
  *
  * 通过此函数可避免写一长串嵌套的 try catch 语句。
  */
-export async function handleException<T>(promise: Promise<T>): Promise<Result<T>> {
+export async function exceptionToFailed<T>(promise: Promise<T>): Promise<Result<T>> {
   return promise.then(
     data => success(data),
     (error: unknown) => {
