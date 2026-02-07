@@ -202,7 +202,7 @@ export abstract class BaseRequestClient<FailedT> {
     for (const key of ['originalError', 'status', 'response', 'responseData'] as const) {
       if (key in error) Object.assign(info, pick(error, [key]))
     }
-    this.logger.error(error.message, error)
+    this.logger.error(error.message, info)
     return this.makeFailedResult(error)
   }
 
