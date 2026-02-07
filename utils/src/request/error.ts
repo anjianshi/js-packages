@@ -30,7 +30,7 @@ export class RequestAborted extends RequestError {
 /** 请求超时 */
 export class RequestTimedOut extends RequestError {
   constructor(options: FormattedOptions) {
-    super('Request TimedOut', options)
+    super('Request Timed Out', options)
   }
 }
 

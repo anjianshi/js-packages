@@ -199,7 +199,7 @@ export abstract class BaseRequestClient<FailedT> {
 
   protected handleError(error: RequestError) {
     const info: Record<string, unknown> = pick(error.options, ['url', 'method'])
-    for (const key of ['originalError', 'status', 'response', 'responseData'] as const) {
+    for (const key of ['originalError', 'status', 'responseData'] as const) {
       if (key in error) Object.assign(info, pick(error, [key]))
     }
     this.logger.error(error.message, info)
