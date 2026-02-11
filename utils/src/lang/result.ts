@@ -17,13 +17,18 @@ export interface Success<T = void> {
   success: true
   data: T
 }
-export interface Failed<T = unknown> {
+export interface Failed<CodeT = unknown, DataT = unknown> {
   success: false
   message: string
-  code?: string | number
-  data: T
+  code: CodeT
+  data: DataT
 }
-export type Result<T = void, FailedT = unknown> = Success<T> | Failed<FailedT>
+export type Result<DataT = unknown, FailedT extends Failed = Failed> = Success<DataT> | FailedT
+
+export type SuccessDataTypeOfResult<ResultT extends Result> =
+  ResultT extends Success<infer DataT> ? DataT : never
+
+export type FailedTypeOfResult<ResultT extends Result> = ResultT extends Failed ? ResultT : never
 
 /** 生成 Success 数据 */
 function success(): Success
@@ -34,10 +39,11 @@ function success<T = void>(data?: T) {
 export { success }
 
 /** 生成 Failed 数据 */
-function failed(message: string, code?: string | number): Failed
-function failed<T>(message: string, code: string | number | undefined, data: T): Failed<T>
-function failed<T>(message: string, code?: string | number, data?: T): Failed<T> {
-  return { success: false, message, code, data: data as T }
+function failed(message: string): Failed
+function failed<CodeT>(message: string, code: CodeT): Failed<CodeT>
+function failed<CodeT, DataT>(message: string, code: CodeT, data: DataT): Failed<CodeT, DataT>
+function failed<CodeT, DataT>(message: string, code?: CodeT, data?: DataT): Failed<CodeT, DataT> {
+  return { success: false, message, code: code as CodeT, data: data as DataT }
 }
 export { failed }
 
@@ -45,14 +51,22 @@ export { failed }
  * 若传入值为 Success，格式化其 data；否则原样返回错误。
  *
  */
-function formatSuccess<T1, T2, FT = void>(value: Result<T1, FT>, formatter: (value: T1) => T2): Result<T2, FT> // prettier-ignore
-function formatSuccess<T1, T2, FT = void>(value: Promise<Result<T1, FT>>, formatter: (value: T1) => T2): Promise<Result<T2, FT>> // prettier-ignore
-function formatSuccess<T1, T2, FT = void>(
-  value: Result<T1, FT> | Promise<Result<T1, FT>>,
-  formatter: (value: T1) => T2,
+function formatSuccess<FormattedDataT, ResultT extends Result>(
+  result: ResultT,
+  formatter: (value: SuccessDataTypeOfResult<ResultT>) => FormattedDataT,
+): Result<FormattedDataT, FailedTypeOfResult<ResultT>>
+function formatSuccess<FormattedDataT, ResultT extends Result>(
+  result: Promise<ResultT>,
+  formatter: (value: SuccessDataTypeOfResult<ResultT>) => FormattedDataT,
+): Promise<Result<FormattedDataT, FailedTypeOfResult<ResultT>>>
+function formatSuccess<FormattedDataT, ResultT extends Result>(
+  result: ResultT | Promise<ResultT>,
+  formatter: (value: SuccessDataTypeOfResult<ResultT>) => FormattedDataT,
 ) {
-  if ('then' in value) return value.then(finalValue => formatSuccess(finalValue, formatter))
-  return value.success ? success(formatter(value.data)) : value
+  if ('then' in result) return result.then(finalValue => formatSuccess(finalValue, formatter))
+  return result.success
+    ? success(formatter(result.data as SuccessDataTypeOfResult<ResultT>))
+    : result
 }
 export { formatSuccess }
 
@@ -60,20 +74,20 @@ export { formatSuccess }
  * 若传入值为 Failed，格式化其内容；否则原样返回。
  * 支持传入会返回 Result 的 Promise。
  */
-function formatFailed<T, FT>(
-  value: Result<T>,
-  formatter: (result: Failed) => Failed<FT>,
-): Result<T, FT>
-function formatFailed<T, FT>(
-  value: Promise<Result<T>>,
-  formatter: (result: Failed) => Failed<FT>,
-): Promise<Result<T, FT>>
-function formatFailed<T, FT>(
-  value: Result<T> | Promise<Result<T>>,
-  formatter: (result: Failed) => Failed<FT>,
+function formatFailed<ResultT extends Result, FormattedFailedT extends Failed>(
+  result: ResultT,
+  formatter: (result: FailedTypeOfResult<ResultT>) => FormattedFailedT,
+): Result<SuccessDataTypeOfResult<ResultT>, FormattedFailedT>
+function formatFailed<ResultT extends Result, FormattedFailedT extends Failed>(
+  result: Promise<ResultT>,
+  formatter: (result: FailedTypeOfResult<ResultT>) => FormattedFailedT,
+): Promise<Result<SuccessDataTypeOfResult<ResultT>, FormattedFailedT>>
+function formatFailed<ResultT extends Result, FormattedFailedT extends Failed>(
+  result: ResultT | Promise<ResultT>,
+  formatter: (result: FailedTypeOfResult<ResultT>) => FormattedFailedT,
 ) {
-  if ('then' in value) return value.then(finalValue => formatFailed(finalValue, formatter))
-  return value.success ? value : formatter(value)
+  if ('then' in result) return result.then(finalResult => formatFailed(finalResult, formatter))
+  return result.success ? result : formatter(result as FailedTypeOfResult<ResultT>)
 }
 export { formatFailed }
 
@@ -83,7 +97,9 @@ export { formatFailed }
  *
  * 通过此函数可避免写一长串嵌套的 try catch 语句。
  */
-export async function exceptionToFailed<T>(promise: Promise<T>): Promise<Result<T>> {
+export async function exceptionToFailed<T>(
+  promise: Promise<T>,
+): Promise<Result<T, Failed<undefined>>> {
   return promise.then(
     data => success(data),
     (error: unknown) => {

@@ -31,14 +31,16 @@ export type WithTransactionMethod = typeof $withTransaction
 type OpenTransaction<R = unknown> = (cb: (dbInTransaction: unknown) => Promise<R>) => Promise<R>
 
 class FailedInTransaction<T = void> extends Error {
-  constructor(readonly failed: Failed<T>) {
+  constructor(readonly failed: Failed<unknown, T>) {
     super(failed.message)
   }
 }
 
-// 注意：此函数的返回值为 `R | Failed<any>`，例如实际可能为 `Result<xxx, xxx> | Failed<any>`，这是有意为之的，`Failed<any>` 并不多余。
-// 因为有时 callback() 只会返回 success 结果，此时 R=Success<xxx>，但是 $withTransaction 整体的返回值仍有可能有 Failed<any>，所以不能用 R 作为整体返回值。
-async function $withTransaction<That extends object, R extends Result<unknown, unknown>>(
+// 注意：此函数的返回值为 `R | Failed<unknown, any>`，例如实际可能为 `Result<xxx, xxx> | Failed<unknown, any>`，
+// 这是有意为之的，`Failed<unknown, any>` 并不多余。
+// 因为有时 callback() 只会返回 success 结果，此时 R=Success<xxx>，
+// 但是 $withTransaction 整体的返回值仍有可能有 Failed<unknown, any>，所以不能用 R 作为整体返回值。
+async function $withTransaction<That extends object, R extends Result>(
   this: That,
   callback: (dbInTransaction: GetPrismaClientInTransaction<That>) => Promise<R>,
 ) {

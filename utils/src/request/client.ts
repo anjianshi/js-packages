@@ -13,18 +13,11 @@ import {
 } from '../lang/result.js'
 import { getLogger, type Logger } from '../logging/index.js'
 import { combineUrl } from '../url.js'
-import {
-  type RequestError,
-  SendRequestFailed,
-  RequestAborted,
-  RequestTimedOut,
-  NonSuccessStatus,
-  ParseResponseBodyFailed,
-} from './error.js'
+import { type RequestFailed } from './error.js'
 import type { Options, PredefinedOptions, FormattedOptions } from './options.js'
 
 /** 此基类不可直接使用，因其未对错误格式进行具体约定 */
-export abstract class BaseRequestClient<FailedT> {
+export abstract class BaseRequestClient<FailedT extends Failed> {
   readonly logger: Logger
   readonly prefefinedOptions: PredefinedOptions
 
@@ -64,14 +57,16 @@ export abstract class BaseRequestClient<FailedT> {
       // 失败情形“手动取消”
       if (manualSignal && manualSignal.aborted && manualSignal.reason === error) {
         const reason = error instanceof DOMException && error.name === 'AbortError' ? null : error
-        return this.handleError(new RequestAborted(reason, options))
+        return this.handleError(failed('Request Aborted', 'RequestAborted', { options, reason }))
       }
       // 失败情形“请求超时”
       if (error instanceof DOMException && error.name === 'TimeoutError') {
-        return this.handleError(new RequestTimedOut(options))
+        return this.handleError(failed('Request Timeouted Out', 'RequestTimedOut', { options }))
       }
       // 失败情形“请求发起失败”
-      return this.handleError(new SendRequestFailed(error, options))
+      return this.handleError(
+        failed('Request Timeouted Out', 'RequestTimedOut', { options, originalError: error }),
+      )
     }
 
     // 失败情形“失败状态码”
@@ -79,7 +74,14 @@ export abstract class BaseRequestClient<FailedT> {
       // 此时服务端仍可能输出一些内容，试着解析出来
       const responseDataRes = await this.parseResponse(options, response)
       const responseData = responseDataRes.success ? responseDataRes.data : undefined
-      return this.handleError(new NonSuccessStatus(response, responseData, options))
+      return this.handleError(
+        failed('Non-Success Status', 'NonSuccessStatus', {
+          options,
+          status: response.status,
+          response,
+          responseData,
+        }),
+      )
     }
 
     // 解析响应内容
@@ -169,7 +171,12 @@ export abstract class BaseRequestClient<FailedT> {
       const blobResult = await exceptionToFailed(response.blob())
       return formatFailed(blobResult, result =>
         this.handleError(
-          new ParseResponseBodyFailed(result.data, response, options, 'Parse Blob Body Failed'),
+          failed('Parse Blob Body Failed', 'ParseResponseBodyFailed', {
+            options,
+            status: response.status,
+            originalError: result.data,
+            response,
+          }),
         ),
       )
     }
@@ -178,7 +185,12 @@ export abstract class BaseRequestClient<FailedT> {
     if (contentType.startsWith('text/') || !textResult.success) {
       return formatFailed(textResult, result =>
         this.handleError(
-          new ParseResponseBodyFailed(result.data, response, options, 'Parse Text Body Failed'),
+          failed('Parse Text Body Failed', 'ParseResponseBodyFailed', {
+            options,
+            status: response.status,
+            originalError: result.data,
+            response,
+          }),
         ),
       )
     }
@@ -191,28 +203,33 @@ export abstract class BaseRequestClient<FailedT> {
     }
     if (contentType.startsWith('application/json')) {
       return this.handleError(
-        new ParseResponseBodyFailed(jsonParseError, response, options, 'Parse JSON Body Failed'),
+        failed('Parse JSON Body Failed', 'ParseResponseBodyFailed', {
+          options,
+          status: response.status,
+          originalError: jsonParseError,
+          response,
+        }),
       )
     }
     return textResult
   }
 
-  protected handleError(error: RequestError) {
-    const info: Record<string, unknown> = pick(error.options, ['url', 'method'])
+  protected handleError(result: RequestFailed) {
+    const info: Record<string, unknown> = pick(result.data.options, ['url', 'method'])
     for (const key of ['originalError', 'status', 'responseData'] as const) {
-      if (key in error) Object.assign(info, pick(error, [key]))
+      if (key in result.data) Object.assign(info, pick(result.data, [key]))
     }
-    this.logger.error(error.message, info)
-    return this.makeFailedResult(error)
+    this.logger.error(result.code, info)
+    return this.makeFailedResult(result)
   }
 
   /** 生成符合 FailedT 约定的失败结果 */
-  protected abstract makeFailedResult(error: RequestError): Failed<FailedT>
+  protected abstract makeFailedResult(result: RequestFailed): FailedT
 }
 
 /** 默认的 RequestClient 实现。出现错误时，会把错误对象原样放入错误信息中。 */
-export class RequestClient extends BaseRequestClient<RequestError> {
-  protected makeFailedResult(error: RequestError) {
-    return failed(error.message, undefined, error)
+export class RequestClient extends BaseRequestClient<RequestFailed> {
+  protected makeFailedResult(result: RequestFailed) {
+    return result
   }
 }
