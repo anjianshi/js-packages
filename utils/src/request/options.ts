@@ -1,7 +1,7 @@
 /**
  * 请求参数
  */
-export interface Options {
+export interface Options<T = unknown> {
   urlPrefix?: string
   url?: string
   query?: Record<string, string | number | undefined>
@@ -24,6 +24,8 @@ export interface Options {
 
   /** 可通过此信号手动终止请求 */
   signal?: AbortSignal
+
+  format?: (responseData: unknown) => T
 }
 
 /** 可预指定的请求参数 */
@@ -33,4 +35,4 @@ export type PredefinedOptions = Pick<Options, 'urlPrefix' | 'method' | 'headers'
 export type FormattedOptions = Required<
   Pick<Options, 'url' | 'method' | 'headers' | 'body' | 'timeout' | 'binary'>
 > &
-  Pick<Options, 'signal'>
+  Pick<Options, 'signal' | 'format'>

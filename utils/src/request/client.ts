@@ -6,6 +6,7 @@ import pick from 'lodash/pick.js'
 import {
   success,
   failed,
+  formatSuccess,
   formatFailed,
   exceptionToFailed,
   type Result,
@@ -28,7 +29,7 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
 
   /** 生成一个快捷方式函数，调用它相当于调用 client.request() */
   asFunction() {
-    return async <T>(inputUrl: string, inputOptions?: Options) =>
+    return async <T>(inputUrl: string, inputOptions?: Options<T>) =>
       this.request<T>(inputUrl, inputOptions)
   }
 
@@ -36,12 +37,12 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
   // 发起请求
   // -------------------------------
 
-  async request<T>(inputUrl: string, inputOptions?: Options): Promise<Result<T, FailedT>> {
+  async request<T>(inputUrl: string, inputOptions?: Options<T>): Promise<Result<T, FailedT>> {
     const options = await this.formatOptions({
       url: inputUrl,
       ...(inputOptions ?? {}),
     })
-    const { url, method, headers, body, timeout, signal: manualSignal } = options
+    const { url, method, headers, body, timeout, signal: manualSignal, format } = options
 
     const timeoutSignal = timeout ? AbortSignal.timeout(timeout) : undefined
     const signal =
@@ -86,7 +87,7 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
 
     // 解析响应内容
     const result = await this.parseResponse(options, response)
-    return result as Result<T, FailedT>
+    return formatSuccess(result, data => (format ? format(data) : data) as T)
   }
 
   // -------------------------------
