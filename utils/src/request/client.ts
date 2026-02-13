@@ -6,10 +6,10 @@ import pick from 'lodash/pick.js'
 import {
   success,
   failed,
-  formatSuccess,
   formatFailed,
   exceptionToFailed,
   type Result,
+  type Success,
   type Failed,
 } from '../lang/result.js'
 import { getLogger, type Logger } from '../logging/index.js'
@@ -29,7 +29,7 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
 
   /** 生成一个快捷方式函数，调用它相当于调用 client.request() */
   asFunction() {
-    return async <T>(inputUrl: string, inputOptions?: Options<T>) =>
+    return async <T>(inputUrl: string, inputOptions?: Options) =>
       this.request<T>(inputUrl, inputOptions)
   }
 
@@ -37,7 +37,7 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
   // 发起请求
   // -------------------------------
 
-  async request<T>(inputUrl: string, inputOptions?: Options<T>): Promise<Result<T, FailedT>> {
+  async request<T>(inputUrl: string, inputOptions?: Options): Promise<Result<T, FailedT>> {
     const options = await this.formatOptions({
       url: inputUrl,
       ...(inputOptions ?? {}),
@@ -73,6 +73,7 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
     // 失败情形“失败状态码”
     if (!response.status.toString().startsWith('2')) {
       // 此时服务端仍可能输出一些内容，试着解析出来
+      // 但因此情况下后端输出数据往往和成功时不同，因此不调用用户提供的 format() 函数来格式化
       const responseDataRes = await this.parseResponse(options, response)
       const responseData = responseDataRes.success ? responseDataRes.data : undefined
       return this.handleError(
@@ -86,8 +87,39 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
     }
 
     // 解析响应内容
-    const result = await this.parseResponse(options, response)
-    return formatSuccess(result, data => (format ? format(data) : data) as T)
+    let result = await this.parseResponse(options, response)
+
+    // 格式化响应数据
+    if (result.success) {
+      try {
+        result = this.formatSuccessResult(result)
+      } catch (error) {
+        return this.handleError(
+          failed('Format Response Data Failed', 'FormatResponseDataFailed', {
+            options,
+            originalError: error,
+            response,
+            responseData: result.data,
+          }),
+        )
+      }
+    }
+    if (result.success && format) {
+      try {
+        const formattedData = format(result.data)
+        result = success(formattedData)
+      } catch (error) {
+        return this.handleError(
+          failed('Format Response Data By options.format Failed', 'FormatResponseDataFailed', {
+            options,
+            originalError: error,
+            response,
+            responseData: result.data,
+          }),
+        )
+      }
+    }
+    return result as Result<T, FailedT>
   }
 
   // -------------------------------
@@ -226,6 +258,17 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
 
   /** 生成符合 FailedT 约定的失败结果 */
   protected abstract makeFailedResult(result: RequestFailed): FailedT
+
+  /**
+   * 对请求成功得到的数据进行格式化。
+   *
+   * - 此步骤在 applyInputFormat() 之前运行，子类可在此进行一些通用的格式化工作，
+   * - 输出 Success 或 Failed 结果均可，但输出的 Failed 结果不会交给 makeFailedResult() 进行格式化，需自行保证符合 FailedT 约定。
+   * - 若此方法抛出异常，会生成 FormatResponseDataFailed，此错误会照常交给 makeFailedResult() 处理。
+   */
+  protected formatSuccessResult(result: Success<unknown>): Result<unknown, FailedT> {
+    return result
+  }
 }
 
 /** 默认的 RequestClient 实现。出现错误时，会把错误对象原样放入错误信息中。 */

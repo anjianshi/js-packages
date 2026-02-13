@@ -1,7 +1,7 @@
 /**
  * 请求参数
  */
-export interface Options<T = unknown> {
+export interface Options {
   urlPrefix?: string
   url?: string
   query?: Record<string, string | number | undefined>
@@ -25,7 +25,9 @@ export interface Options<T = unknown> {
   /** 可通过此信号手动终止请求 */
   signal?: AbortSignal
 
-  format?: (responseData: unknown) => T
+  /** 对请求成功时得到的数据进行最终格式化 */
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
+  format?: <RawT, FormattedT>(responseData: RawT) => FormattedT
 }
 
 /** 可预指定的请求参数 */

@@ -15,6 +15,7 @@ export type RequestFailed =
   | RequestTimedOut
   | NonSuccessStatus
   | ParseResponseBodyFailed
+  | FormatResponseDataFailed
 
 export interface RequestFailedInfo {
   options: FormattedOptions
@@ -57,4 +58,18 @@ export interface ParseResponseBodyFailedInfo extends RequestFailedInfo {
   originalError: unknown
   /** Response 对象 */
   response: Response
+}
+
+/** 响应体解析失败 */
+export type FormatResponseDataFailed = Failed<
+  'FormatResponseDataFailed',
+  FormatResponseDataFailedInfo
+>
+export interface FormatResponseDataFailedInfo extends RequestFailedInfo {
+  /** 原始错误对象 */
+  originalError: unknown
+  /** Response 对象 */
+  response: Response
+  /** 未经格式化的响应数据 */
+  responseData: unknown
 }
