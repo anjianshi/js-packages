@@ -56,7 +56,7 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
       response = await fetch(url, { method, headers, body, signal })
     } catch (error) {
       // 失败情形“手动取消”
-      if (manualSignal && manualSignal.aborted && manualSignal.reason === error) {
+      if (manualSignal?.aborted && manualSignal.reason === error) {
         const reason = error instanceof DOMException && error.name === 'AbortError' ? null : error
         return this.handleError(failed('Request Aborted', 'RequestAborted', { options, reason }))
       }
@@ -106,7 +106,7 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
     }
     if (result.success && format) {
       try {
-        const formattedData = format(result.data)
+        const formattedData = format(result.data) as T
         result = success(formattedData)
       } catch (error) {
         return this.handleError(
@@ -139,6 +139,7 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
       timeout = predefined.timeout ?? 0,
       binary = false,
       signal,
+      format,
     } = input
 
     const headers = {
@@ -166,6 +167,7 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
       timeout,
       binary,
       signal,
+      format,
     }
     Object.assign(options.headers, await this.getHeaders(options, input))
     return options

@@ -26,8 +26,8 @@ export interface Options {
   signal?: AbortSignal
 
   /** 对请求成功时得到的数据进行最终格式化 */
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
-  format?: <RawT, FormattedT>(responseData: RawT) => FormattedT
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  format?: (responseData: any) => any
 }
 
 /** 可预指定的请求参数 */
