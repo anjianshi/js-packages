@@ -29,7 +29,7 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
 
   /** 生成一个快捷方式函数，调用它相当于调用 client.request() */
   asFunction() {
-    return async <T>(inputUrl: string, inputOptions?: Options) =>
+    return async <T>(inputUrl: string, inputOptions?: Options<T>) =>
       this.request<T>(inputUrl, inputOptions)
   }
 
@@ -37,8 +37,8 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
   // 发起请求
   // -------------------------------
 
-  async request<T>(inputUrl: string, inputOptions?: Options): Promise<Result<T, FailedT>> {
-    const options = await this.formatOptions({
+  async request<T>(inputUrl: string, inputOptions?: Options<T>): Promise<Result<T, FailedT>> {
+    const options = await this.formatOptions<T>({
       url: inputUrl,
       ...(inputOptions ?? {}),
     })
@@ -106,7 +106,7 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
     }
     if (result.success && format) {
       try {
-        const formattedData = format(result.data) as T
+        const formattedData = format(result.data)
         result = success(formattedData)
       } catch (error) {
         return this.handleError(
@@ -126,7 +126,7 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
   // 请求预处理
   // -------------------------------
 
-  async formatOptions(input: Options): Promise<FormattedOptions> {
+  async formatOptions<T>(input: Options<T>): Promise<FormattedOptions<T>> {
     const predefined = this.prefefinedOptions
     const {
       urlPrefix = predefined.urlPrefix ?? '',
@@ -159,7 +159,7 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
 
     const url = combineUrl(urlPrefix + (rawUrl ?? ''), query)
 
-    const options: FormattedOptions = {
+    const options: FormattedOptions<T> = {
       method,
       url,
       headers,

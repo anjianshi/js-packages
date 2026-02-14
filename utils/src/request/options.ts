@@ -1,7 +1,7 @@
 /**
  * 请求参数
  */
-export interface Options {
+export interface Options<T = unknown> {
   urlPrefix?: string
   url?: string
   query?: Record<string, string | number | undefined>
@@ -27,14 +27,14 @@ export interface Options {
 
   /** 对请求成功时得到的数据进行最终格式化 */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  format?: (responseData: any) => any
+  format?: (responseData: any) => T
 }
 
 /** 可预指定的请求参数 */
 export type PredefinedOptions = Pick<Options, 'urlPrefix' | 'method' | 'headers' | 'timeout'>
 
 /** 经过整理的请求参数（client 内部使用） */
-export type FormattedOptions = Required<
+export type FormattedOptions<T = unknown> = Required<
   Pick<Options, 'url' | 'method' | 'headers' | 'body' | 'timeout' | 'binary'>
 > &
-  Pick<Options, 'signal' | 'format'>
+  Pick<Options<T>, 'signal' | 'format'>
