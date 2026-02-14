@@ -14,13 +14,15 @@ import { type Logger } from '../../logging/index.js'
 
 type PrismalClient = ReturnType<typeof getPrismaClient> extends new () => infer T ? T : never
 
-export function getPrismaLoggingOptions(debug: boolean) {
+export function getPrismaLoggingOptions(level: 'debug' | 'info' | 'warn' | 'error') {
   return {
     errorFormat: 'pretty',
     log: [
-      ...(debug ? [{ emit: 'event', level: 'query' } as const] : []),
-      { emit: 'event', level: 'info' },
-      { emit: 'event', level: 'warn' },
+      ...(level === 'debug' ? [{ emit: 'event', level: 'query' } as const] : []),
+      ...(['debug', 'info'].includes(level) ? [{ emit: 'event', level: 'info' } as const] : []),
+      ...(['debug', 'info', 'warn'].includes(level)
+        ? [{ emit: 'event', level: 'warn' } as const]
+        : []),
       { emit: 'event', level: 'error' },
     ],
   } satisfies PrismaClientOptions
