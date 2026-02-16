@@ -19,5 +19,19 @@ module.exports = {
         printWidth: 200,
       },
     },
+
+    // 使用插件自己定义的 parser 来处理文件
+    {
+      files: ['*.jsx'],
+      options: {
+        parser: 'babel-plugin-ext',
+      },
+    },
+    {
+      files: ['*.tsx'],
+      options: {
+        parser: 'typescript-plugin-ext',
+      },
+    },
   ],
 }

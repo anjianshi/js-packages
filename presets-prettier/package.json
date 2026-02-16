@@ -16,5 +16,6 @@
   },
   "dependencies": {
     "prettier": "^3.8.1"
-  }
+  },
+  "prettier": "./prettierrc"
 }
