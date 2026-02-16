@@ -29,8 +29,7 @@
     "access": "public"
   },
   "dependencies": {
-    "chalk": "^5.3.0",
-    "video.js": "^8.23.7"
+    "chalk": "^5.3.0"
   },
   "devDependencies": {
     "@anjianshi/presets-eslint-node": "workspace:*",
