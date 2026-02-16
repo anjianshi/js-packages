@@ -32,7 +32,7 @@
     "@types/lodash": "latest",
     "@types/node": "latest",
     "concurrently": "latest",
-    "eslint": "latest",
+    "eslint": "9.39.2",
     "nodemon": "latest",
     "prisma": "latest",
     "tsc-alias": "latest",

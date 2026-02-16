@@ -18,5 +18,8 @@
   "dependencies": {
     "@anjianshi/presets-eslint-base": "workspace:*",
     "@anjianshi/presets-eslint-typescript": "workspace:*"
+  },
+  "peerDependencies": {
+    "eslint": "9.39.2"
   }
 }
