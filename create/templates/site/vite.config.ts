@@ -29,6 +29,12 @@ export default defineConfig(({ mode }) => {
       },
     },
 
+    // 让 vite 对 node_modules 里的 jsx 文件也进行依赖解析
+    // 不然 @anjianshi/utils 里的 jsx 文件会无法正常引用类库
+    optimizeDeps: {
+      extensions: ['.jsx'],
+    },
+
     plugins: [
       react({
         jsxImportSource: '@emotion/react',

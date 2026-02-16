@@ -8,20 +8,25 @@
     "build": "vite build",
     "lint": "tsc --noEmit && eslint './src/'"
   },
+  "prettier": "@anjianshi/presets-prettier/prettierrc",
   "dependencies": {
     "@anjianshi/utils": "latest",
+    "@ant-design/cssinjs": "latest",
     "@ant-design/icons": "latest",
+    "@emotion/react": "latest",
     "antd": "latest",
     "dayjs": "latest",
+    "lodash": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "react-router": "latest"
   },
   "devDependencies": {
     "@anjianshi/presets-eslint-react": "workspace:*",
     "@anjianshi/presets-prettier": "workspace:*",
     "@anjianshi/presets-typescript": "workspace:*",
-    "@emotion/react": "latest",
     "@swc/plugin-emotion": "latest",
+    "@types/lodash": "^4.17.23",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
@@ -29,6 +34,5 @@
     "eslint": "latest",
     "vite": "latest",
     "vite-plugin-svgr": "latest"
-  },
-  "prettier": "@anjianshi/presets-prettier/prettierrc"
+  }
 }
