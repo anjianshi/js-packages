@@ -16,7 +16,11 @@ export function Page1() {
       <div css={s.content}>
         <img src={WebsiteImage} />
         <div className="title">Demo App - Page 1</div>
-        <Button onClick={goPage2}>Go Page 2</Button>
+        <div css={{ textAlign: 'center', marginTop: '20px' }}>
+          <Button type="primary" onClick={goPage2}>
+            Go Page 2
+          </Button>
+        </div>
       </div>
     </>
   )
@@ -27,8 +31,8 @@ const s = {
     padding: 200px 0;
     img {
       display: block;
-      margin: 0 auto 100px;
-      width: 300px;
+      margin: 0 auto 40px;
+      width: 150px;
     }
     .title {
       text-align: center;
