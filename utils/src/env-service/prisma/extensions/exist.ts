@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client/extension'
+import { Prisma } from '@prisma/client/extension.js'
 
 /**
  * 快速检查指定条件的数据是否存在

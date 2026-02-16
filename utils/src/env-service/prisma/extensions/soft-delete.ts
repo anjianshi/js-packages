@@ -13,7 +13,7 @@
  * 此扩展修改了 Prisma 的原生方法。
  * 为保证其他扩展也应用到修改过的这些方法，此扩展应尽可能放在最前面。
  */
-import { Prisma } from '@prisma/client/extension'
+import { Prisma } from '@prisma/client/extension.js'
 import type { Operation } from '@prisma/client/runtime/library.js'
 import { type OptionalFields } from '../../../index.js'
 

@@ -36,7 +36,7 @@ export function adaptDebugLib(debugLib: Debug, enable = '', logger?: Logger) {
   Object.assign(debugLib, emulate)
 
   // 将 debugLib 日志转发给 logger
-  if (!logger) logger = getLogger('3rd-library')
+  logger ??= getLogger('3rd-library')
   debugLib.log = logger.debug.bind(logger)
 
   if (enable) {

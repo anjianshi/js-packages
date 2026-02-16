@@ -16,12 +16,12 @@
   },
   "main": "index.cjs",
   "dependencies": {
-    "@eslint/js": "^10.0.1",
+    "@eslint/js": "9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import-x": "^4.16.1",
     "globals": "^16.5.0"
   },
   "peerDependencies": {
-    "eslint": "^10.0.0"
+    "eslint": "9.39.2"
   }
 }

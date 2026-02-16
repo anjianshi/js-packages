@@ -5,7 +5,7 @@ const reactHooksPlugin = require('eslint-plugin-react-hooks')
 module.exports = [
   reactPlugin.configs.flat.recommended,
   reactPlugin.configs.flat['jsx-runtime'],
-  reactHooksPlugin.configs['recommended-latest'],
+  reactHooksPlugin.configs.flat['recommended-latest'],
   require('eslint-plugin-ts-react-hooks').default.configs.recommended,
   require('eslint-config-prettier'),
   {

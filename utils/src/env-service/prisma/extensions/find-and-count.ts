@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client/extension'
+import { Prisma } from '@prisma/client/extension.js'
 import { type SoftDeleteQueryArgs } from './soft-delete.js'
 
 export const findAndCount = Prisma.defineExtension({

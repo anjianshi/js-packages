@@ -146,8 +146,8 @@ export class FileHandler extends LogHandler {
     this.bufferSize = strings.reduce((sum, v) => sum + v.length, this.bufferSize)
     if (this.options.flushInterval === 0 || this.bufferSize >= this.options.flushLength) {
       this.flush()
-    } else if (!this.flushTimeoutId) {
-      this.flushTimeoutId = setTimeout(() => this.flush(), this.options.flushInterval)
+    } else {
+      this.flushTimeoutId ??= setTimeout(() => this.flush(), this.options.flushInterval)
     }
   }
 

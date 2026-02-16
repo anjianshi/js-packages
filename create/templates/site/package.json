@@ -31,7 +31,7 @@
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "@vitejs/plugin-react-swc": "latest",
-    "eslint": "latest",
+    "eslint": "9.39.2",
     "vite": "latest",
     "vite-plugin-svgr": "latest"
   }
