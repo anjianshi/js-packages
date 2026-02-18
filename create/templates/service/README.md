@@ -29,8 +29,9 @@ routes 和 controller 都会验证数据有效性。但分工有所区别：
 
 ## 约定
 
-1. prism 相关内容（schema、migrations...）放在 `prisma/`，此为 prisma 默认支持的位置。
-2. `prisma` 命令会从环境变量或 `.env` 文件中获取数据库连接参数。
+1. prisma 定义（schema、migrations...）放在 `prisma/`，此为 prisma 默认支持的位置。
+2. prisma 生成的 client 代码放在 `src/prisma` 以便于引用。
+3. `prisma` 命令会从环境变量或 `.env` 文件中获取数据库连接参数。
    因此此项目设计为用 `.env` 文件维护配置，使得代码和 `prisma` 命令都能方便地读取到需要的配置值。
 
 ## 本地开发

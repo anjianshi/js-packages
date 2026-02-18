@@ -8,23 +8,27 @@ import {
   getTransactionContextedPrismaClient as rawGetTransactionContextedPrismaClient,
   type GetPrismaClientInTransaction,
 } from '@anjianshi/utils/env-service/prisma/index.js'
-import { PrismaClient } from '@prisma/client'
+import { PrismaPg } from '@prisma/adapter-pg'
 import config from '@/config.js'
 import { rootLogger } from '@/logger.js'
+import { PrismaClient } from '@/prisma/client.js'
 
 /**
  * 导出相关类型和工具函数
  */
-export * from '@prisma/client'
+export * from '@/prisma/client.js'
 export type AppPrismaClient = typeof prisma
 export type PrismaClientInTransaction = GetPrismaClientInTransaction<AppPrismaClient>
 
 /**
  * 初始化基础 PrismaClient 实例
  */
-process.env.DB_URL = config.DB_URL // 配置 Prisma 连接数据库所需的环境变量
-export const barePrisma = new PrismaClient({ ...getPrismaLoggingOptions(config.DEBUG) })
-adaptPrismaLogging(barePrisma, rootLogger.getChild('db'))
+const adapter = new PrismaPg({ connectionString: config.DB_URL })
+export const barePrisma = new PrismaClient({
+  adapter,
+  ...getPrismaLoggingOptions(config.DEBUG ? 'debug' : 'info'),
+})
+adaptPrismaLogging(barePrisma, rootLogger.getChild('prisma'), config.DEBUG)
 
 /**
  * 应用扩展

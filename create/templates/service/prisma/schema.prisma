@@ -6,13 +6,13 @@
 
 datasource db {
   provider   = "postgresql"
-  url        = env("DB_URL")
   extensions = [citext]
 }
 
 generator client {
-  provider        = "prisma-client-js"
+  provider        = "prisma-client"
   previewFeatures = ["postgresqlExtensions", "typedSql"]
+  output          = "../src/prisma/"
 }
 
 // -------------------------------
@@ -29,8 +29,9 @@ model School {
 }
 
 model Student {
-  id   String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name String @db.Citext
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name       String    @db.Citext
+  deleteTime DateTime? @map("delete_time") @db.Timestamptz()
 
   school   School @relation(fields: [schoolId], references: [id])
   schoolId String @map("school_id") @db.Uuid
