@@ -2,7 +2,7 @@
  * 针对 Node.js 环境定制 logging
  *
  * 使用前提：
- * - 安装 chalk 依赖
+ * - 依赖 chalk 库
  */
 import { logger as defaultLogger, type Logger } from '../../logging/index.js'
 import { ConsoleHandler } from './handlers.js'

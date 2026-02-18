@@ -2,7 +2,7 @@
  * 对接 Prisma 的日志记录
  *
  * 使用前提：
- * - 安装 chalk 依赖
+ * - 依赖 chalk 库
  *
  * Prisma 输出的日志分两部分：
  * 1. 日常运行日志，可通过 PrismaClient 的 log 选项控制。
@@ -56,12 +56,8 @@ export function getPrismaLoggingOptions(level: 'debug' | 'info' | 'warn' | 'erro
   } satisfies Omit<PrismaClientOptions, 'accelerateUrl'>
 }
 
-/** 把 Prisma 日志重定向到 logger 中 */
-export function adaptPrismaLogging(
-  prisma: Pick<PrismalClient, '$on'>,
-  logger: Logger,
-  enableDebugLog = false,
-) {
+/** 把 Prisma 日常日志重定向到 logger 中 */
+export function adaptPrismaLogging(prisma: Pick<PrismalClient, '$on'>, logger: Logger) {
   const queryLogger = logger.getChild('query')
   prisma.$on('query', e => {
     queryLogger.debug(e.query, chalk.green(nodeUtil.format(e.params) + ` +${e.duration}ms`))
@@ -69,11 +65,14 @@ export function adaptPrismaLogging(
   prisma.$on('info', e => logger.info(e.message))
   prisma.$on('warn', e => logger.warn(e.message))
   prisma.$on('error', e => logger.error(e.message))
-
-  if (enableDebugLog) adaptPrismaDebugLogging(logger)
 }
 
-/** 开启调试日志，并改为通过 logger 记录日志内容 */
+/**
+ * 开启调试日志，并改为通过 logger 记录日志内容
+ *
+ * 注意：
+ * 因为 Prisma 在代码被引入时就会开始输出日志，若要记录下最完整的日志内容，应在初始化 Prisma Client 前调用此函数
+ */
 export function adaptPrismaDebugLogging(logger: Logger) {
   ;(globalThis as unknown as { DEBUG?: string }).DEBUG = '*'
 

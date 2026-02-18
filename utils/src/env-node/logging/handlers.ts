@@ -13,7 +13,11 @@ export class ConsoleHandler extends LogHandler {
   log(info: LogInfo) {
     const { logger, level, args } = info
     const method = ConsoleHandler.consoleMethods[level]
-    const levelColor = ConsoleHandler.levelColors[level]
+
+    const levelColorName = ConsoleHandler.levelColors[level]
+    const levelColor =
+      (chalk[levelColorName as 'white'] as ChalkInstance | undefined) ?? chalk.white
+
     const levelName = formatters.level(info)
     const loggerColor = chalk[ConsoleHandler.getLoggerColor(logger)]
     const prefix = [
@@ -31,12 +35,12 @@ export class ConsoleHandler extends LogHandler {
     [LogLevel.Error]: console.error.bind(console),
   }
 
-  static readonly levelColors = {
-    // 不明确把类型标记为 ChalkInstance 的话，生成出的 .d.ts 会有问题。
-    [LogLevel.Debug]: chalk.whiteBright as ChalkInstance, // eslint-disable-line @typescript-eslint/no-unnecessary-type-assertion
-    [LogLevel.Info]: chalk.white as ChalkInstance, // eslint-disable-line @typescript-eslint/no-unnecessary-type-assertion
-    [LogLevel.Warning]: chalk.yellowBright as ChalkInstance, // eslint-disable-line @typescript-eslint/no-unnecessary-type-assertion
-    [LogLevel.Error]: chalk.redBright as ChalkInstance, // eslint-disable-line @typescript-eslint/no-unnecessary-type-assertion
+  /** 注意：这里的颜色必须是 chalk 支持的有效颜色 */
+  static readonly levelColors: Record<LogLevel, string> = {
+    [LogLevel.Debug]: 'whiteBright',
+    [LogLevel.Info]: 'white',
+    [LogLevel.Warning]: 'yellowBright',
+    [LogLevel.Error]: 'redBright',
   }
 
   // 可供 logger 选择的颜色
