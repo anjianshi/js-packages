@@ -5,6 +5,7 @@ import {
   findAndCount,
   softDelete,
   withTransaction,
+  adaptPrismaDebugLogging,
   getTransactionContextedPrismaClient as rawGetTransactionContextedPrismaClient,
   type GetPrismaClientInTransaction,
 } from '@anjianshi/utils/env-service/prisma/index.js'
