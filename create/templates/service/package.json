@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@anjianshi/utils": "latest",
+    "@prisma/adapter-pg": "latest",
     "@prisma/client": "latest",
     "dayjs": "latest",
     "dotenv": "latest",
