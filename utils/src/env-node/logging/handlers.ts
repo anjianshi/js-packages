@@ -2,7 +2,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import util from 'node:util'
-import chalk from 'chalk'
+import chalk, { type ChalkInstance } from 'chalk'
 import dayjs from 'dayjs'
 import { type LogInfo, LogLevel, LogHandler, formatters } from '../../logging/index.js'
 
@@ -32,10 +32,11 @@ export class ConsoleHandler extends LogHandler {
   }
 
   static readonly levelColors = {
-    [LogLevel.Debug]: chalk.whiteBright,
-    [LogLevel.Info]: chalk.white,
-    [LogLevel.Warning]: chalk.yellowBright,
-    [LogLevel.Error]: chalk.redBright,
+    // 不明确把类型标记为 ChalkInstance 的话，生成出的 .d.ts 会有问题。
+    [LogLevel.Debug]: chalk.whiteBright as ChalkInstance, // eslint-disable-line @typescript-eslint/no-unnecessary-type-assertion
+    [LogLevel.Info]: chalk.white as ChalkInstance, // eslint-disable-line @typescript-eslint/no-unnecessary-type-assertion
+    [LogLevel.Warning]: chalk.yellowBright as ChalkInstance, // eslint-disable-line @typescript-eslint/no-unnecessary-type-assertion
+    [LogLevel.Error]: chalk.redBright as ChalkInstance, // eslint-disable-line @typescript-eslint/no-unnecessary-type-assertion
   }
 
   // 可供 logger 选择的颜色

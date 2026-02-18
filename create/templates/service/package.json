@@ -32,6 +32,7 @@
     "@anjianshi/presets-typescript": "workspace:*",
     "@types/lodash": "latest",
     "@types/node": "latest",
+    "@types/pg": "latest",
     "concurrently": "latest",
     "eslint": "9.39.2",
     "nodemon": "latest",
