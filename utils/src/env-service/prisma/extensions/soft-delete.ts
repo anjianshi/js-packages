@@ -14,7 +14,7 @@
  * 为保证其他扩展也应用到修改过的这些方法，此扩展应尽可能放在最前面。
  */
 import { Prisma } from '@prisma/client/extension.js'
-import type { Operation } from '@prisma/client/runtime/library.js'
+import type { Operation } from '@prisma/client/runtime/client.js'
 import { type OptionalFields } from '../../../index.js'
 
 type ExampleModel = any
@@ -59,12 +59,15 @@ function getModel<T>(that: T) {
 
 function query<T, A, K extends Operation>(
   that: T,
-  inputArgs: Prisma.Exact<A, Prisma.Args<T, K>>,
+  inputArgs: Prisma.Exact<A, Prisma.Args<T, K>> | undefined,
   method: K,
 ) {
   const { model, supportSoftDelete } = getModel(that)
   // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
-  const { withDeleted = false, ...args } = inputArgs as Prisma.Args<ExampleModel, 'findFirst'> &
+  const { withDeleted = false, ...args } = (inputArgs ?? {}) as Prisma.Args<
+    ExampleModel,
+    'findFirst'
+  > &
     QueryExtraArgs
 
   return model[method]({
@@ -136,16 +139,16 @@ export const softDelete = Prisma.defineExtension({
       aggregate<T, A>(this: T, inputArgs: QueryInputArgs<T, A, 'aggregate'>) {
         return query(this, inputArgs, 'aggregate')
       },
-      count<T, A>(this: T, inputArgs: QueryInputArgs<T, A, 'count'>) {
+      count<T, A>(this: T, inputArgs?: QueryInputArgs<T, A, 'count'>) {
         return query(this, inputArgs, 'count')
       },
-      findFirst<T, A>(this: T, inputArgs: QueryInputArgs<T, A, 'findFirst'>) {
+      findFirst<T, A>(this: T, inputArgs?: QueryInputArgs<T, A, 'findFirst'>) {
         return query(this, inputArgs, 'findFirst')
       },
-      findFirstOrThrow<T, A>(this: T, inputArgs: QueryInputArgs<T, A, 'findFirstOrThrow'>) {
+      findFirstOrThrow<T, A>(this: T, inputArgs?: QueryInputArgs<T, A, 'findFirstOrThrow'>) {
         return query(this, inputArgs, 'findFirstOrThrow')
       },
-      findMany<T, A>(this: T, inputArgs: QueryInputArgs<T, A, 'findMany'>) {
+      findMany<T, A>(this: T, inputArgs?: QueryInputArgs<T, A, 'findMany'>) {
         return query(this, inputArgs, 'findMany')
       },
       findUnique<T, A>(this: T, inputArgs: QueryInputArgs<T, A, 'findUnique'>) {

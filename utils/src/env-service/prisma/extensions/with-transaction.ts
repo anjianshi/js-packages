@@ -1,5 +1,6 @@
 /**
- * 在事务中执行回调。与 $transaction 有几点不同：
+ * 在事务中执行操作（回调函数）。
+ * 与 prisma.$transaction 有几点不同：
  * 1. 回调必须返回 Result 值
  * 2. 回调返回 Failed 值或抛出异常都会触发回滚。
  *    如果是返回 Failed，会作为此方法的返回值；如果是抛出异常，则异常会继续向上传递，直到被捕获或触发请求失败。
@@ -13,7 +14,7 @@
  * )
  */
 import { Prisma } from '@prisma/client/extension.js'
-import { type ITXClientDenyList } from '@prisma/client/runtime/library.js'
+import { type ITXClientDenyList } from '@prisma/client/runtime/client.js'
 import type { Result, Failed } from '../../../index.js'
 
 export const withTransaction = Prisma.defineExtension({
@@ -28,10 +29,22 @@ export const withTransaction = Prisma.defineExtension({
 export type GetPrismaClientInTransaction<PrismaClient> = Omit<PrismaClient, ITXClientDenyList>
 export type WithTransactionMethod = typeof $withTransaction
 
-type OpenTransaction<R = unknown> = (cb: (dbInTransaction: unknown) => Promise<R>) => Promise<R>
+export type TransactionIsolationLevel =
+  | 'ReadUncommitted'
+  | 'ReadCommitted'
+  | 'RepeatableRead'
+  | 'Serializable'
+export interface TransactionOptions {
+  isolationLevel?: TransactionIsolationLevel
+}
 
-class FailedInTransaction<T = void> extends Error {
-  constructor(readonly failed: Failed<unknown, T>) {
+type OpenTransaction<R = unknown> = (
+  cb: (dbInTransaction: unknown) => Promise<R>,
+  options?: TransactionOptions,
+) => Promise<R>
+
+class FailedInTransaction<CodeT = unknown, DataT = unknown> extends Error {
+  constructor(readonly failed: Failed<CodeT, DataT>) {
     super(failed.message)
   }
 }
@@ -43,6 +56,7 @@ class FailedInTransaction<T = void> extends Error {
 async function $withTransaction<That extends object, R extends Result>(
   this: That,
   callback: (dbInTransaction: GetPrismaClientInTransaction<That>) => Promise<R>,
+  options?: TransactionOptions,
 ) {
   const executeCallback = async (dbInTransaction: unknown) => {
     const result = await callback(dbInTransaction as GetPrismaClientInTransaction<That>)
@@ -53,8 +67,9 @@ async function $withTransaction<That extends object, R extends Result>(
   if ('$transaction' in this && this.$transaction) {
     // 如果当前不在事务中，开启新事务并执行回调
     try {
-      return await (this.$transaction as OpenTransaction<R>)(async dbInTransaction =>
-        executeCallback(dbInTransaction),
+      return await (this.$transaction as OpenTransaction<R>)(
+        async dbInTransaction => executeCallback(dbInTransaction),
+        options,
       )
     } catch (e) {
       if (e instanceof FailedInTransaction) return e.failed
