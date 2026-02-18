@@ -26,7 +26,7 @@ const logger = rootLogger.getChild('prisma')
 /**
  * 初始化基础 PrismaClient 实例
  */
-if (config.DEBUG) {
+if (config.DB_DEBUG) {
   adaptPrismaDebugLogging(logger)
 }
 
