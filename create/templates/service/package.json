@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": " concurrently --raw \"npm run watch\" \"sleep 5 && nodemon dist/index.js\"",
-    "watch": "rm -rf dist && tsc-with-alias --watch",
-    "build": "rm -rf dist && tsc-with-alias",
+    "watch": "rm -rf dist && tsc-with-alias --watch --project tsconfig.build.json",
+    "build": "rm -rf dist && tsc-with-alias --project tsconfig.build.json",
     "start": "node dist/index.js",
     "lint": "tsc --noEmit && eslint './src/'",
     "db-generate": "prisma generate --sql",
