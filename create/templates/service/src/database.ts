@@ -20,15 +20,22 @@ export * from '@/prisma/client.js'
 export type AppPrismaClient = typeof prisma
 export type PrismaClientInTransaction = GetPrismaClientInTransaction<AppPrismaClient>
 
+const logger = rootLogger.getChild('prisma')
+
 /**
  * 初始化基础 PrismaClient 实例
  */
+if (config.DEBUG) {
+  adaptPrismaDebugLogging(logger)
+}
+
 const adapter = new PrismaPg({ connectionString: config.DB_URL })
 export const barePrisma = new PrismaClient({
   adapter,
   ...getPrismaLoggingOptions(config.DEBUG ? 'debug' : 'info'),
 })
-adaptPrismaLogging(barePrisma, rootLogger.getChild('prisma'), config.DEBUG)
+
+adaptPrismaLogging(barePrisma, rootLogger.getChild('prisma'))
 
 /**
  * 应用扩展
