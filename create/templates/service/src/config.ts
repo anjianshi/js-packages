@@ -28,7 +28,7 @@ const config = envReader.batchGet({
   // 是否开启调试模式，会影响日志记录
   DEBUG: false,
 
-  // 是否额外开启 Prisma 的调试日志
+  // 是否额外开启 Prisma 的调试日志（仅限 DEBUG 为 true 时生效）
   DB_DEBUG: false,
 
   // 监听端口
