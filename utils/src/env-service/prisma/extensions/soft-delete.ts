@@ -1,7 +1,7 @@
 /**
  * 扩展 Prisma 实现软删除
  *
- * 1. 有 deleteTime 字段的 model 支持软删除。
+ * 1. 有 deleteTime daletedTime deletedAt 字段之一的 model 支持软删除。
  * 2. 执行 delete() 和 deleteMany() 时默认是进行软删除；可指定 soft 为 false 来彻底删除；执行软删除时可指定要额外更新的 data。
  * 2. 查询时会忽略被软删除的记录；可指定 withDeleted 为 true 来包含它们。
  * 4. 可通过 restore() 和 restoreMany() 恢复软删除的记录。
@@ -16,6 +16,8 @@
 import { Prisma } from '@prisma/client/extension.js'
 import type { Operation } from '@prisma/client/runtime/client.js'
 import { type OptionalFields } from '../../../index.js'
+
+const fieldNames = ['deleteTime', 'deletedTime', 'deletedAt'] as const
 
 type ExampleModel = any
 
@@ -53,8 +55,8 @@ function getModel<T>(that: T) {
     model = (model as unknown as { $parent: Record<string, ExampleModel> }).$parent[context.$name!]!
   } while ('withSoftDeleteExtension' in model)
 
-  const supportSoftDelete = 'deleteTime' in model.fields
-  return { model, supportSoftDelete }
+  const softDeleteField = fieldNames.find(field => field in model.fields)
+  return { model, softDeleteField }
 }
 
 function query<T, A, K extends Operation>(
@@ -62,7 +64,7 @@ function query<T, A, K extends Operation>(
   inputArgs: Prisma.Exact<A, Prisma.Args<T, K>> | undefined,
   method: K,
 ) {
-  const { model, supportSoftDelete } = getModel(that)
+  const { model, softDeleteField } = getModel(that)
   // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
   const { withDeleted = false, ...args } = (inputArgs ?? {}) as Prisma.Args<
     ExampleModel,
@@ -72,7 +74,8 @@ function query<T, A, K extends Operation>(
 
   return model[method]({
     ...args,
-    where: !supportSoftDelete || withDeleted ? args.where : { ...args.where, deleteTime: null },
+    where:
+      !softDeleteField || withDeleted ? args.where : { ...args.where, [softDeleteField]: null },
   }) as Promise<Prisma.Result<T, A, K>>
 }
 
@@ -87,12 +90,12 @@ export const softDelete = Prisma.defineExtension({
       // -----------------------------
 
       delete<T, A>(this: T, rawArgs: Prisma.Exact<A, DeleteArgs<T>>) {
-        const { model, supportSoftDelete } = getModel(this)
+        const { model, softDeleteField } = getModel(this)
         const { soft = true, data, ...args } = rawArgs as DeleteArgs<ExampleModel>
-        if (supportSoftDelete && soft) {
+        if (softDeleteField && soft) {
           return model.update({
             ...args, // .delete() 的参数 .update() 也都支持
-            data: { ...(data ?? {}), deleteTime: new Date() },
+            data: { ...(data ?? {}), [softDeleteField]: new Date() },
           }) as unknown as DeleteReturn<T, A> // .update() 的返回值和 .delete() 一样
         } else {
           return model.delete(args) as unknown as DeleteReturn<T, A>
@@ -100,12 +103,12 @@ export const softDelete = Prisma.defineExtension({
       },
 
       deleteMany<T, A>(this: T, rawArgs: Prisma.Exact<A, DeleteManyArgs<T>>) {
-        const { model, supportSoftDelete } = getModel(this)
+        const { model, softDeleteField } = getModel(this)
         const { soft = true, data, ...args } = rawArgs as DeleteManyArgs<ExampleModel>
-        if (supportSoftDelete && soft) {
+        if (softDeleteField && soft) {
           return model.updateMany({
             ...args, // .deleteMany() 的参数 .updateMany() 也都支持
-            data: { ...(data ?? {}), deleteTime: new Date() },
+            data: { ...(data ?? {}), [softDeleteField]: new Date() },
           }) as DeleteManyReturn<T, A> // .updateMany() 的返回值和 .deleteMany() 一样
         } else {
           return model.deleteMany(args) as DeleteManyReturn<T, A>
@@ -114,21 +117,21 @@ export const softDelete = Prisma.defineExtension({
 
       restore<T, A>(this: T, rawArgs: Prisma.Exact<A, RestoreArgs<T>>) {
         const { data, ...args } = rawArgs as RestoreArgs<ExampleModel>
-        const { model, supportSoftDelete } = getModel(this)
-        if (!supportSoftDelete) throw new Error('当前模型不支持软删除，不能执行恢复')
+        const { model, softDeleteField } = getModel(this)
+        if (!softDeleteField) throw new Error('当前模型不支持软删除，不能执行恢复')
         return model.update({
           ...(args as Prisma.Args<ExampleModel, 'update'>),
-          data: { ...(data ?? {}), deleteTime: null },
+          data: { ...(data ?? {}), [softDeleteField]: null },
         }) as unknown as Promise<Prisma.Result<T, A, 'update'>>
       },
 
       restoreMany<T, A>(this: T, rawArgs: Prisma.Exact<A, RestoreManyArgs<T>>) {
         const { data, ...args } = rawArgs as RestoreArgs<ExampleModel>
-        const { model, supportSoftDelete } = getModel(this)
-        if (!supportSoftDelete) throw new Error('当前模型不支持软删除，不能执行恢复')
+        const { model, softDeleteField } = getModel(this)
+        if (!softDeleteField) throw new Error('当前模型不支持软删除，不能执行恢复')
         return model.updateMany({
           ...(args as Prisma.Args<ExampleModel, 'updateMany'>),
-          data: { ...(data ?? {}), deleteTime: new Date() },
+          data: { ...(data ?? {}), [softDeleteField]: new Date() },
         }) as Promise<Prisma.Result<T, A, 'updateMany'>>
       },
 
