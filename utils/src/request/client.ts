@@ -96,7 +96,7 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
     // 格式化响应数据
     if (result.success) {
       try {
-        result = this.formatSuccessResult(result)
+        result = this.formatSuccessResult(result, options)
       } catch (error) {
         return this.handleError(
           failed('Format Response Data Failed', 'FormatResponseDataFailed', {
@@ -272,7 +272,11 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
    * - 输出 Success 或 Failed 结果均可，但输出的 Failed 结果不会交给 makeFailedResult() 进行格式化，需自行保证符合 FailedT 约定。
    * - 若此方法抛出异常，会生成 FormatResponseDataFailed，此错误会照常交给 makeFailedResult() 处理。
    */
-  protected formatSuccessResult(result: Success<unknown>): Result<unknown, FailedT> {
+  protected formatSuccessResult(
+    result: Success<unknown>,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    options: FormattedOptions,
+  ): Result<unknown, FailedT> {
     return result
   }
 }
