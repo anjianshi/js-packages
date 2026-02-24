@@ -19,11 +19,15 @@ import type { Options, PredefinedOptions, FormattedOptions } from './options.js'
 
 /** 此基类不可直接使用，因其未对错误格式进行具体约定 */
 export abstract class BaseRequestClient<FailedT extends Failed> {
-  readonly logger: Logger
-  readonly prefefinedOptions: PredefinedOptions
+  logger: Logger
+  prefefinedOptions: PredefinedOptions
 
-  constructor(options: PredefinedOptions & { loggerName?: string } = {}) {
-    this.logger = getLogger(options.loggerName ?? 'request')
+  constructor(options: PredefinedOptions & { logger?: string | Logger } = {}) {
+    this.logger = !options.logger
+      ? getLogger('request')
+      : typeof options.logger === 'string'
+        ? getLogger(options.logger)
+        : options.logger
     this.prefefinedOptions = options
   }
 
