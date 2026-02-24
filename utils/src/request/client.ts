@@ -70,7 +70,7 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
       }
       // 失败情形“请求发起失败”
       return this.handleError(
-        failed('Request Timeouted Out', 'RequestTimedOut', { options, originalError: error }),
+        failed('Send Request Failed', 'SendRequestFailed', { options, originalError: error }),
       )
     }
 
