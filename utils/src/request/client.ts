@@ -55,7 +55,7 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
         this.logger.warn('Retrying Request', { ...options, tryCount })
       }
       result = await this.realRequest<T>(options)
-    } while (!result.success && tryCount <= options.retry + 1)
+    } while (!result.success && tryCount < options.retry + 1)
     return result
   }
 
