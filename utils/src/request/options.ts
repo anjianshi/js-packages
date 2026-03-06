@@ -25,16 +25,22 @@ export interface Options<T = unknown> {
   /** 可通过此信号手动终止请求 */
   signal?: AbortSignal
 
+  /** 请求结果为失败（无论原因为何）时的重试次数，默认值为 0，表示不重试 */
+  retry?: number
+
   /** 对请求成功时得到的数据进行最终格式化 */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   format?: (responseData: any) => T
 }
 
 /** 可预指定的请求参数 */
-export type PredefinedOptions = Pick<Options, 'urlPrefix' | 'method' | 'headers' | 'timeout'>
+export type PredefinedOptions = Pick<
+  Options,
+  'urlPrefix' | 'method' | 'headers' | 'timeout' | 'retry'
+>
 
 /** 经过整理的请求参数（client 内部使用） */
 export type FormattedOptions<T = unknown> = Required<
-  Pick<Options, 'url' | 'method' | 'headers' | 'body' | 'timeout' | 'binary'>
+  Pick<Options, 'url' | 'method' | 'headers' | 'body' | 'binary' | 'timeout' | 'retry'>
 > &
   Pick<Options<T>, 'signal' | 'format'>

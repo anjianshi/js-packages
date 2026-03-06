@@ -46,6 +46,20 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
       url: inputUrl,
       ...(inputOptions ?? {}),
     })
+
+    let result!: Result<T, FailedT>
+    let tryCount = 0
+    do {
+      tryCount += 1
+      if (tryCount > 1) {
+        this.logger.warn('Retrying Request', { ...options, tryCount })
+      }
+      result = await this.realRequest<T>(options)
+    } while (!result.success && tryCount <= options.retry + 1)
+    return result
+  }
+
+  protected async realRequest<T>(options: FormattedOptions): Promise<Result<T, FailedT>> {
     const { url, method, headers, body, timeout, signal: manualSignal, format } = options
 
     const timeoutSignal = timeout ? AbortSignal.timeout(timeout) : undefined
@@ -140,9 +154,10 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
       headers: rawHeaders = {},
       body: rawBody = null,
       data,
-      timeout = predefined.timeout ?? 0,
       binary = false,
+      timeout = predefined.timeout ?? 0,
       signal,
+      retry = predefined.retry ?? 0,
       format,
     } = input
 
@@ -172,6 +187,7 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
       binary,
       signal,
       format,
+      retry,
     }
     Object.assign(options.headers, await this.getHeaders(options, input))
     return options
