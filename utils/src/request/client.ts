@@ -2,6 +2,7 @@
  * 实现一个功能完善、异常处理逻辑全面的请求发起器。
  * 可通过继承子类来扩展其功能。
  */
+import isPlainObject from 'lodash/isPlainObject.js'
 import pick from 'lodash/pick.js'
 import {
   success,
@@ -153,7 +154,7 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
       method = predefined.method ?? 'GET',
       headers: rawHeaders = {},
       body: rawBody = null,
-      data,
+      data, // eslint-disable-line @typescript-eslint/no-unsafe-assignment
       binary = false,
       timeout = predefined.timeout ?? 0,
       signal,
@@ -169,7 +170,9 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
     let body: string | FormData | null = rawBody
     if (data !== undefined) {
       if (method === 'GET') {
-        Object.assign(query, data)
+        if (isPlainObject(data)) {
+          Object.assign(query, data)
+        }
       } else {
         body = data instanceof FormData ? data : JSON.stringify(data)
         headers['Content-Type'] = 'application/json; charset=utf-8'

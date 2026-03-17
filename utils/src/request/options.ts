@@ -10,11 +10,14 @@ export interface Options<T = unknown> {
   body?: string | FormData | null
 
   /**
-   * 向后端传递的数据。对于 GET 请求，会合并到 query 中；对于 POST 请求，会作为 POST body，代替 body 参数
-   * 注意：为了支持传入 interface 类型的值，Record 只能定义成 Record<string, any>
+   * 向后端传递的数据。
+   * 1. 对于 GET 请求：若 data 为 plain object 会合并到 query 中，否则会被忽略。
+   * 2. 对于 POST 请求：会作为 POST body，代替 body 参数。
+   *    其中若为 FormData，会原样交给 fetch()；否则进行 JSON 化。
+   * 3. 为了支持传入 interface 类型的值，Record 只能定义成 Record<string, any>
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data?: FormData | Record<string, any>
+  data?: any
 
   /** 是否把响应内容作为二进制处理（结果是 blob） */
   binary?: boolean
