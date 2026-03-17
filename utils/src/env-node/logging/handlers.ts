@@ -78,6 +78,7 @@ export interface FileHandlerOptions {
   maxLength: number // 单条日志最长多少字符 Maximum length of a single log message
   flushLength: number // 触发写入的缓存字符串数 Length of buffered strings that trigger a write operation
   flushInterval: number // 缓存定时写入间隔（单位：ms），为 0 则所有日志立刻写入 Buffered strings write interval, 0 means all logs are written immediately.
+  format: util.InspectOptions // 对象字符串化时的格式选项，例如 depth 可控制对象显示到地几层
 }
 
 export class FileHandler extends LogHandler {
@@ -93,6 +94,7 @@ export class FileHandler extends LogHandler {
       maxLength: 10000,
       flushLength: 100000,
       flushInterval: 1000,
+      format: {},
       ...(options ?? {}),
     }
 
@@ -138,7 +140,7 @@ export class FileHandler extends LogHandler {
     if (typeof item === 'string') item = item.replace(/\x1b\[\d+m/g, '')
 
     // 利用 util.format() 获得和 console.log() 相同的输出（因为 console.log() 底层也是用的 util.format()）
-    return util.format(item)
+    return util.formatWithOptions(this.options.format, item)
   }
 
   // Handle buffer & flush
