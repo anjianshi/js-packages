@@ -1,7 +1,9 @@
-const globals = require('@anjianshi/presets-eslint-base/globals.cjs')
-module.exports = [
+import { defineConfig } from 'eslint/config'
+import globals from 'globals'
+
+export default defineConfig([
   {
-    name: 'anjianshi-node',
+    name: '@anjianshi/node/main',
     languageOptions: {
       globals: {
         ...globals.node,
@@ -23,4 +25,4 @@ module.exports = [
       'import-x/no-dynamic-require': 'off',
     },
   },
-]
+])

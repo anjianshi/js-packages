@@ -1,20 +1,24 @@
-const globals = require('./globals.cjs')
+import eslintJs from '@eslint/js'
+import { defineConfig } from 'eslint/config'
+import eslintConfigPrettier from 'eslint-config-prettier'
+import eslintImportX from 'eslint-plugin-import-x'
+import globals from 'globals'
 
-module.exports = [
+export default defineConfig([
   // ESLint 配置文件自身的配置
   {
-    name: 'configs-for-eslint-config-file',
+    name: '@anjianshi/base/config-file-self',
     files: ['eslint.config.{js,cjs,mjs}'],
     languageOptions: {
-      globals: { ...globals.node },
+      globals: globals.node,
     },
   },
 
-  require('@eslint/js').configs.recommended,
-  require('eslint-plugin-import-x').flatConfigs.recommended,
-  require('eslint-config-prettier'),
+  eslintJs.configs.recommended,
+  eslintImportX.flatConfigs.recommended,
+  eslintConfigPrettier,
   {
-    name: 'anjianshi-base',
+    name: '@anjianshi/base/main',
     rules: {
       // Possible Problems
       'array-callback-return': 'error',
@@ -113,4 +117,4 @@ module.exports = [
       ],
     },
   },
-]
+])

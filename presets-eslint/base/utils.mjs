@@ -8,10 +8,10 @@
  * 如果配置中已经有 files 属性，其中以 ** 通配符开头的会添加上各 pathPrefixs 前缀，其他的保持原样
  * @param pathPrefixs: string | string[]
  */
-exports.limitFiles = function limitFiles(pathPrefixs, configs) {
+export function limitFiles(pathPrefixs, configs) {
   if (!Array.isArray(pathPrefixs)) pathPrefixs = [pathPrefixs]
   pathPrefixs = pathPrefixs.map(pathPrefix =>
-    !pathPrefix.endsWith('/') ? pathPrefix + '/' : pathPrefix
+    !pathPrefix.endsWith('/') ? pathPrefix + '/' : pathPrefix,
   )
 
   if (!Array.isArray(configs)) configs = [configs]
@@ -31,7 +31,7 @@ exports.limitFiles = function limitFiles(pathPrefixs, configs) {
  * 合并多个 config 对象
  * 各 config 对象中的数组和子对象，会被递归合并到一起，而不是用后面的代替前面的。
  */
-exports.mergeConfigs = function mergeConfigs(...configs) {
+export function mergeConfigs(...configs) {
   return {
     ...configs.reduce((merged, config) => ({ ...merged, ...config }), {}),
     ...mergeArrayInConfigs(configs, 'files'),

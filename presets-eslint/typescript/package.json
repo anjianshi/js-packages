@@ -1,6 +1,6 @@
 {
   "name": "@anjianshi/presets-eslint-typescript",
-  "version": "6.1.2",
+  "version": "6.2.0",
   "description": "公共 ESLint 配置",
   "homepage": "https://github.com/anjianshi/js-packages/presets-eslint/",
   "bugs": {
@@ -14,14 +14,14 @@
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
-  "main": "index.cjs",
+  "main": "index.mjs",
   "dependencies": {
     "@anjianshi/presets-eslint-base": "workspace:*",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-import-resolver-typescript": "^4.4.4",
-    "typescript-eslint": "^8.55.0"
+    "eslint-import-resolver-typescript": "^4.4.5",
+    "typescript-eslint": "^8.62.1"
   },
   "peerDependencies": {
-    "eslint": "9.39.2"
+    "eslint": "^10.6.0"
   }
 }

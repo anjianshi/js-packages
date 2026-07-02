@@ -1,6 +1,6 @@
 {
   "name": "@anjianshi/presets-eslint-node",
-  "version": "6.1.2",
+  "version": "6.2.0",
   "description": "公共 ESLint 配置",
   "homepage": "https://github.com/anjianshi/js-packages/presets-eslint/",
   "bugs": {
@@ -14,12 +14,13 @@
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
-  "main": "index.cjs",
+  "main": "index.mjs",
   "dependencies": {
     "@anjianshi/presets-eslint-base": "workspace:*",
-    "@anjianshi/presets-eslint-typescript": "workspace:*"
+    "@anjianshi/presets-eslint-typescript": "workspace:*",
+    "globals": "^17.7.0"
   },
   "peerDependencies": {
-    "eslint": "9.39.2"
+    "eslint": "^10.6.0"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@anjianshi/presets-eslint-react",
-  "version": "6.1.3",
+  "version": "6.2.0",
   "description": "公共 ESLint 配置",
   "homepage": "https://github.com/anjianshi/js-packages/presets-eslint/",
   "bugs": {
@@ -14,16 +14,17 @@
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
-  "main": "index.cjs",
+  "main": "index.mjs",
   "dependencies": {
     "@anjianshi/presets-eslint-base": "workspace:*",
     "@anjianshi/presets-eslint-typescript": "workspace:*",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-ts-react-hooks": "^2.0.0"
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-ts-react-hooks": "^2.1.0",
+    "globals": "^17.7.0"
   },
   "peerDependencies": {
-    "eslint": "9.39.2"
+    "eslint": "^10.6.0"
   }
 }

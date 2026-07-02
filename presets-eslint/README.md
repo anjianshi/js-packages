@@ -3,24 +3,22 @@
 ## 设计思路
 
 一、  
-只开启尽量少的规则，目标是**减少 bug 率**，而不是**限制**代码风格。
+只开启尽量少的规则，目标是**减少 bug 率**，而不是**限制代码风格**。
 
 二、  
-参考 [此文章](https://typescript-eslint.io/linting/troubleshooting/formatting/) 的建议，不开启代码样式规则，
-由专门的格式化工具，如 `Prettier` 来控制。  
-[被排除的规则](https://github.com/prettier/eslint-config-prettier/blob/main/index.js)，
-主要包括 ESLint 自身 `Layout & Formatting` 段落的全部规则和 TypeScript、React 插件的许多规则。
+参考 [此文章](https://typescript-eslint.io/linting/troubleshooting/formatting/) 的思路，不开启代码样式规则，由专门的工具（如 `Prettier`）负责格式化。  
+通过引入 `eslint-config-prettier`，ESLint 的 `Layout & Formatting` 规则和 TypeScript、React 插件的此类规则均被排除，[完整列表](https://github.com/prettier/eslint-config-prettier/blob/main/index.js)。
 
 ---
 
 ## 包列表
 
-| 包名                                 | 内容                               |
-| ------------------------------------ | ---------------------------------- |
-| @anjianshi/presets-eslint-base       | 基础 JavaScript 规则及一些辅助内容 |
-| @anjianshi/presets-eslint-typescript | TypeScript 规则                    |
-| @anjianshi/presets-eslint-react      | React + TypeScript 规则            |
-| @anjianshi/presets-eslint-node       | Node.js + TypeScript 规则          |
+| 包名                                 | 场景                 |
+| ------------------------------------ | -------------------- |
+| @anjianshi/presets-eslint-base       | 基础 JavaScript      |
+| @anjianshi/presets-eslint-typescript | TypeScript           |
+| @anjianshi/presets-eslint-react      | React + TypeScript   |
+| @anjianshi/presets-eslint-node       | Node.js + TypeScript |
 
 ---
 
@@ -34,15 +32,28 @@ pnpm add --save-dev eslint @anjianshi/presets-eslint-xxx
 
 ### 配置 ESLint
 
-建立 `eslint.config.cjs` 文件：
+建立 `eslint.config.mjs` 文件，这里以 React 场景为例：
 
 ```js
-module.exports = [
-  ...require('@anjianshi/presets-eslint-xxx'),
+import { defineConfig } from 'eslint/config'
+import reactConfigs from '@anjianshi/presets-eslint-react'
 
-  // 如果只想引入某个场景专属的配置，例如只引入 TypeScript 配置，不包含 base，可以引入 exclusive.cjs 文件
-  ...require('@anjianshi/presets-eslint-xxx/exclusive.cjs'),
-]
+export default defineConfig([
+  ...reactConfigs,
+
+  // 其他配置
+])
+```
+
+如果只想引入某个场景专属的配置，可以引入对应包的 `exclusive.mjs` 文件（`exclusive.mjs` 里也不包括 JavaScript 基础配置，如有需要要手动引入）。  
+例如对于一个纯 JavaScript 的 Node.js 项目，只引入 Node.js 相关配置，不包括 TypeScript 配置内容：
+
+```js
+import { defineConfig } from 'eslint/config'
+import baseConfigs from '@anjianshi/presets-eslint-base'
+import nodeConfigs from '@anjianshi/presets-eslint-node/exclusive.mjs'
+
+export default defineConfig([...baseConfigs, ...nodeConfigs])
 ```
 
 ### 配置 TypeScript
@@ -54,8 +65,11 @@ module.exports = [
 默认假定它与 ESLint 配置文件处在同目录，如果是在其他地方，则需手动指定：
 
 ```js
-module.exports = [
-  ...require('./node_modules/@anjianshi/eslint-typescript'),
+import { defineConfig } from 'eslint/config'
+import typescriptConfigs from '@anjianshi/presets-eslint-typescript'
+
+export default defineConfig([
+  ...typescriptConfigs,
   {
     languageOptions: {
       parserOptions: {
@@ -63,7 +77,7 @@ module.exports = [
       },
     },
   },
-]
+])
 ```
 
 3、为 import 插件指明 `tsconfig.json` 的位置。  
@@ -72,7 +86,11 @@ module.exports = [
 如果 `tsconfig.json` 不在项目根目录，需要手动指明（以项目根目录为基准）：
 
 ```js
-module.exports = [
+import { defineConfig } from 'eslint/config'
+import typescriptConfigs from '@anjianshi/presets-eslint-typescript'
+
+export default defineConfig([
+  ...typescriptConfigs,
   {
     settings: {
       'import/resolver': {
@@ -82,7 +100,7 @@ module.exports = [
       },
     },
   },
-]
+])
 ```
 
 ### 配置 VSCode
@@ -126,11 +144,7 @@ library/      // /Users/me/library/
 以前 VSCode 里还需要配置 `eslint.validate`，但它现在被 `eslint.probe` 代替了。  
 且 `eslint.probe` 的默认值已符合需求，所以无需配置。
 
-### 辅助内容 - @anjianshi/presets-eslint-base/globals.cjs
-
-最新版的 ESLint 是通过设置 `globals` 来定义运行环境有哪些全局变量，例如 Node.js 里的 `process`。
-官方说明是可以从 `globals` npm 包取得这些定义：<https://eslint.org/docs/latest/use/configure/language-options#predefined-global-variables>。
-base 包的 `globals.cjs` 文件原样引用了 `globals` npm 包，需要时可以直接使用此文件，就不用手动安装 `globals` 依赖了。
+---
 
 ### 辅助内容 - @anjianshi/presets-eslint-base/utils.cjs
 
