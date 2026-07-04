@@ -46,6 +46,12 @@ export default {
     '@typescript-eslint/no-unnecessary-condition': ['error', { allowConstantLoopConditions: true }],
     '@typescript-eslint/no-unnecessary-qualifier': 'error',
     '@typescript-eslint/prefer-enum-initializers': 'error',
+    // 一个很常见的情况是在 Promise 中，我们得到了一个错误对象，知道它是 Error 但标注出的类型确是 unknown。
+    // 如果我们选择用 reject(error as Error) 来抛出错误，@typescript-eslint/no-unnecessary-type-assertion 规则会报错，
+    // 因为 reject 能接收任意类型，这个 `as Error` 被认为不必要。
+    // 但不加 `as Error`，又会提示只能抛出 Error。
+    // 所以这里干脆允许抛出 unknown。
+    '@typescript-eslint/prefer-promise-reject-errors': ['error', { allowThrowingUnknown: true }],
     '@typescript-eslint/prefer-readonly': 'error',
     '@typescript-eslint/promise-function-async': 'error',
     '@typescript-eslint/require-array-sort-compare': ['error', { ignoreStringArrays: true }],

@@ -1,5 +1,5 @@
 import { defineConfig } from 'eslint/config'
 import typescriptConfigs from '../typescript/index.mjs'
-import nodeConfigs from './exclusive.mjs'
+import nodeExclusiveConfigs from './exclusive.mjs'
 
-export default defineConfig([...typescriptConfigs, ...nodeConfigs])
+export default defineConfig([...typescriptConfigs, ...nodeExclusiveConfigs])
