@@ -101,12 +101,13 @@ export class Cache<T> {
   /** 写入/更新一项内容 */
   set(value: T): Promise<void>
   set(identity: string, value: T): Promise<void>
-  async set(identity: string | T, value?: T) {
+  async set(identityOrValue: string | T, value?: T) {
+    let identity: string
     if (value === undefined) {
-      value = identity as T
+      value = identityOrValue as T
       identity = ''
     } else {
-      identity = identity as string
+      identity = identityOrValue as string
     }
 
     const redisKey = this.getRedisKey(identity)

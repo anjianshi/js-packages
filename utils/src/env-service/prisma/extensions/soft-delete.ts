@@ -42,7 +42,14 @@ interface QueryExtraArgs {
 export type { QueryExtraArgs as SoftDeleteQueryArgs }
 type QueryInputArgs<T, A, K extends Operation> = Prisma.Exact<A, Prisma.Args<T, K> & QueryExtraArgs>
 
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
+interface Model<T> {
+  update<A>(args: any): DeleteReturn<T, A>
+  updateMany<A>(args: any): DeleteManyReturn<T, A>
+  delete<A>(args: any): DeleteReturn<T, A>
+  deleteMany<A>(args: any): DeleteManyReturn<T, A>
+  fields: any
+}
+
 function getModel<T>(that: T) {
   const context = Prisma.getExtensionContext(that as ExampleModel)
 
@@ -50,7 +57,7 @@ function getModel<T>(that: T) {
   // 2. 如果此扩展后面还应用了其他扩展，那么仅仅一层 $parent 取得的 model 还是这个扩展修改过的版本而不是原生的。
   //    此时需要递归向上，直到取得未经此扩展修改过的 model。不然此扩展的业务逻辑会被重复执行，
   //    而因为第一次执行时已经把定制参数消解掉了，第二次执行时会误以为没有传入定制参数，最终导致定制参数失效。
-  let model = context
+  let model = context as Model<T>
   do {
     model = (model as unknown as { $parent: Record<string, ExampleModel> }).$parent[context.$name!]!
   } while ('withSoftDeleteExtension' in model)
@@ -72,7 +79,7 @@ function query<T, A, K extends Operation>(
   > &
     QueryExtraArgs
 
-  return model[method]({
+  return (model as any)[method]({
     ...args,
     where:
       !softDeleteField || withDeleted ? args.where : { ...args.where, [softDeleteField]: null },
@@ -93,12 +100,12 @@ export const softDelete = Prisma.defineExtension({
         const { model, softDeleteField } = getModel(this)
         const { soft = true, data, ...args } = rawArgs as DeleteArgs<ExampleModel>
         if (softDeleteField && soft) {
-          return model.update({
+          return model.update<A>({
             ...args, // .delete() 的参数 .update() 也都支持
             data: { ...(data ?? {}), [softDeleteField]: new Date() },
-          }) as unknown as DeleteReturn<T, A> // .update() 的返回值和 .delete() 一样
+          }) // .update() 的返回值和 .delete() 一样
         } else {
-          return model.delete(args) as unknown as DeleteReturn<T, A>
+          return model.delete<A>(args)
         }
       },
 
@@ -106,12 +113,12 @@ export const softDelete = Prisma.defineExtension({
         const { model, softDeleteField } = getModel(this)
         const { soft = true, data, ...args } = rawArgs as DeleteManyArgs<ExampleModel>
         if (softDeleteField && soft) {
-          return model.updateMany({
+          return model.updateMany<A>({
             ...args, // .deleteMany() 的参数 .updateMany() 也都支持
             data: { ...(data ?? {}), [softDeleteField]: new Date() },
-          }) as DeleteManyReturn<T, A> // .updateMany() 的返回值和 .deleteMany() 一样
+          }) // .updateMany() 的返回值和 .deleteMany() 一样
         } else {
-          return model.deleteMany(args) as DeleteManyReturn<T, A>
+          return model.deleteMany<A>(args)
         }
       },
 
@@ -119,20 +126,20 @@ export const softDelete = Prisma.defineExtension({
         const { data, ...args } = rawArgs as RestoreArgs<ExampleModel>
         const { model, softDeleteField } = getModel(this)
         if (!softDeleteField) throw new Error('当前模型不支持软删除，不能执行恢复')
-        return model.update({
+        return model.update<A>({
           ...(args as Prisma.Args<ExampleModel, 'update'>),
           data: { ...(data ?? {}), [softDeleteField]: null },
-        }) as unknown as Promise<Prisma.Result<T, A, 'update'>>
+        })
       },
 
       restoreMany<T, A>(this: T, rawArgs: Prisma.Exact<A, RestoreManyArgs<T>>) {
         const { data, ...args } = rawArgs as RestoreArgs<ExampleModel>
         const { model, softDeleteField } = getModel(this)
         if (!softDeleteField) throw new Error('当前模型不支持软删除，不能执行恢复')
-        return model.updateMany({
+        return model.updateMany<A>({
           ...(args as Prisma.Args<ExampleModel, 'updateMany'>),
           data: { ...(data ?? {}), [softDeleteField]: new Date() },
-        }) as Promise<Prisma.Result<T, A, 'updateMany'>>
+        })
       },
 
       // -----------------------------
