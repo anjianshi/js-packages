@@ -3,7 +3,7 @@ import globals from 'globals'
 
 export default defineConfig([
   {
-    name: '@anjianshi/node/main',
+    name: '@anjianshi/node',
     languageOptions: {
       globals: {
         ...globals.node,

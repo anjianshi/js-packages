@@ -12,7 +12,7 @@ export default defineConfig([
   tsReactHooksPlugin.default.configs.recommended,
   eslintConfigPrettier,
   {
-    name: '@anjianshi/react/main',
+    name: '@anjianshi/react',
     languageOptions: {
       globals: {
         ...globals.browser,

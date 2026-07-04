@@ -22,3 +22,8 @@ console.log(functionA1(), functionA2(), functionB1(), functionB2(), functionC1()
 // process.argv 应能正常引用且有类型定义
 // argv 应报错：变量未被使用
 const argv = process.argv
+
+// 此函数若不加 async 修饰符应报错，并在 lint 时自动补上
+export async function functionReturnsPromise() {
+  return Promise.resolve('value')
+}

@@ -5,20 +5,12 @@ import eslintImportX from 'eslint-plugin-import-x'
 import globals from 'globals'
 
 export default defineConfig([
-  // ESLint 配置文件自身的配置
-  {
-    name: '@anjianshi/base/config-file-self',
-    files: ['eslint.config.{js,cjs,mjs}'],
-    languageOptions: {
-      globals: globals.node,
-    },
-  },
-
   eslintJs.configs.recommended,
   eslintImportX.flatConfigs.recommended,
   eslintConfigPrettier,
+
   {
-    name: '@anjianshi/base/main',
+    name: '@anjianshi/base',
     rules: {
       // Possible Problems
       'array-callback-return': 'error',
@@ -115,6 +107,15 @@ export default defineConfig([
           alphabetize: { order: 'asc' },
         },
       ],
+    },
+  },
+
+  // ESLint 配置文件中允许使用 Node.js 环境下的内容
+  {
+    name: '@anjianshi/base/config-file-self',
+    files: ['**/eslint.config.{js,cjs,mjs}'],
+    languageOptions: {
+      globals: globals.node,
     },
   },
 ])

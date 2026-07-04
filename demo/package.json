@@ -19,6 +19,7 @@
     "@types/node": "latest",
     "@types/react": "latest",
     "eslint": "^9.27.0",
+    "globals": "^17.7.0",
     "tsc-alias": "^1.8.16",
     "typescript": "latest"
   },

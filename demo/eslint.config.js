@@ -1,10 +1,24 @@
-import { limitFiles } from '@anjianshi/presets-eslint-base/utils.mjs'
 import baseConfigs from '@anjianshi/presets-eslint-base'
 import nodeConfigs from '@anjianshi/presets-eslint-node'
 import reactConfigs from '@anjianshi/presets-eslint-react'
+import { defineConfig } from 'eslint/config'
 
-export default [
+const configs = defineConfig([
   ...baseConfigs,
-  ...limitFiles(['eslint/node/', 'typescript/'], nodeConfigs),
-  ...limitFiles('eslint/react/', reactConfigs),
-]
+  {
+    name: 'configs-for-demo-eslint-node',
+    basePath: 'eslint/node',
+    extends: nodeConfigs,
+  },
+  {
+    name: 'configs-for-demo-eslint-react',
+    basePath: 'eslint/react',
+    extends: reactConfigs,
+  },
+  {
+    name: 'configs-for-demo-typescript',
+    basePath: 'typescript',
+    extends: nodeConfigs,
+  },
+])
+export default configs
