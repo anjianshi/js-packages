@@ -16,9 +16,9 @@
     // 使 ES6 脚本可以更方便地引用 CommonJS 模块
     "esModuleInterop": true,
 
-    "module": "ESNext",
+    "module": "NodeNext",
 
-    "moduleResolution": "Node",
+    "moduleResolution": "NodeNext",
 
     // ========== 运行环境 ==========
 
