@@ -4,15 +4,15 @@
 // 数据库配置
 // -------------------------------
 
-datasource db {
-  provider   = "postgresql"
-  url        = env("DB_URL")
-  extensions = [citext]
+generator client {
+  provider        = "prisma-client"
+  previewFeatures = ["postgresqlExtensions", "typedSql"]
+  output          = "./generated"
 }
 
-generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["postgresqlExtensions", "typedSql"]
+datasource db {
+  provider   = "postgresql"
+  extensions = [citext]
 }
 
 model School {

@@ -5,8 +5,18 @@
     "start": "node dist/utils/index.js",
     "build": "rm -rf dist && tsc-with-alias -p tsconfig-build.json",
     "watch": "rm -rf dist && tsc-with-alias -p tsconfig-build.json --watch",
-    "db-generate": "prisma generate --sql",
+    "db-generate": "prisma generate",
     "db-push": "prisma db push"
+  },
+  "prettier": "@anjianshi/presets-prettier/prettierrc",
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.4.0",
+    "@prisma/client": "^7.4.0",
+    "debug": "^4.4.1",
+    "dotenv": "^17.4.2",
+    "pg": "^8.22.0",
+    "react": "^19.1.0",
+    "redis": "^5.1.1"
   },
   "devDependencies": {
     "@anjianshi/presets-eslint-base": "workspace:*",
@@ -17,18 +27,12 @@
     "@anjianshi/utils": "workspace:*",
     "@types/debug": "^4.1.12",
     "@types/node": "latest",
+    "@types/pg": "^8.20.0",
     "@types/react": "latest",
     "eslint": "^9.27.0",
     "globals": "^17.7.0",
+    "prisma": "^7.4.0",
     "tsc-alias": "^1.8.16",
     "typescript": "latest"
-  },
-  "prettier": "@anjianshi/presets-prettier/prettierrc",
-  "dependencies": {
-    "@prisma/client": "6.8.2",
-    "debug": "^4.4.1",
-    "prisma": "^6.8.2",
-    "react": "^19.1.0",
-    "redis": "^5.1.1"
   }
 }
