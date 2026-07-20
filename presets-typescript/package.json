@@ -1,6 +1,6 @@
 {
   "name": "@anjianshi/presets-typescript",
-  "version": "3.3.1",
+  "version": "3.3.2",
   "description": "通用 tsconfig.json 配置",
   "homepage": "https://github.com/anjianshi/js-packages/presets-typescript",
   "bugs": {
@@ -23,7 +23,7 @@
     "@anjianshi/presets-prettier": "workspace:*"
   },
   "peerDependencies": {
-    "typescript": "^6.0.3",
+    "typescript": "^7.0.2",
     "tsc-alias": "^1.8.17"
   },
   "peerDependenciesMeta": {

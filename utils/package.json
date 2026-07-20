@@ -51,7 +51,7 @@
     "eslint": "^10.6.0",
     "react": "^19.2.7",
     "redis": "^6.1.0",
-    "typescript": "^6.0.3",
+    "typescript": "^7.0.2",
     "vconsole": "^3.15.1"
   },
   "prettier": "@anjianshi/presets-prettier/prettierrc"
