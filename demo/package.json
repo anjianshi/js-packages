@@ -29,10 +29,10 @@
     "@types/node": "latest",
     "@types/pg": "^8.20.0",
     "@types/react": "latest",
-    "eslint": "^9.27.0",
+    "eslint": "^10.6.0",
     "globals": "^17.7.0",
     "prisma": "^7.4.0",
     "tsc-alias": "^1.8.16",
-    "typescript": "latest"
+    "typescript": "^6.0.3"
   }
 }

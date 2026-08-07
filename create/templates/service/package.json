@@ -38,7 +38,7 @@
     "nodemon": "latest",
     "prisma": "latest",
     "tsc-alias": "latest",
-    "typescript": "latest"
+    "typescript": "^6.0.3"
   },
   "prettier": "@anjianshi/presets-prettier/prettierrc"
 }
