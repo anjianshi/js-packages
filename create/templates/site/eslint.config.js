@@ -1,5 +1,6 @@
-module.exports = [
-  ...require('@anjianshi/presets-eslint-react'),
+import configs from '@anjianshi/presets-eslint-react'
+export default [
+  ...configs,
   {
     rules: {
       // 适配 Emotion CSS
