@@ -57,3 +57,27 @@ export interface AsyncEffectContext {
   cancelled: boolean
   onCancel: (callback: () => void) => void
 }
+
+/**
+ * 设置浏览器页面标题
+ */
+export function usePageTitle(title: string) {
+  /**
+   * 记录组件加载前的页面标题，组件卸载后还原此标题。
+   *
+   * 与后续操作分成两个 useEffect 是因为 title 参数可能在组件生命周期内多次变化，
+   * 但原始标题只应在加载时记录一次，
+   * 不然会把此组件上一次设置的标题记录成原始标题。
+   */
+  const previousTitleRef = useRef('')
+  useEffect(() => {
+    previousTitleRef.current = document.title
+    return () => {
+      document.title = previousTitleRef.current
+    }
+  }, [])
+
+  useEffect(() => {
+    document.title = title
+  }, [title])
+}
