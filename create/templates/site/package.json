@@ -26,12 +26,12 @@
     "@anjianshi/presets-prettier": "workspace:*",
     "@anjianshi/presets-typescript": "workspace:*",
     "@swc/plugin-emotion": "latest",
-    "@types/lodash": "^4.17.23",
+    "@types/lodash": "latest",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "@vitejs/plugin-react-swc": "latest",
-    "eslint": "9.39.2",
+    "eslint": "latest",
     "vite": "latest",
     "vite-plugin-svgr": "latest"
   }

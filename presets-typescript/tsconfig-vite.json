@@ -1,6 +1,9 @@
 {
   "extends": ["./tsconfig-base"],
   "compilerOptions": {
+    // 与 moduleResolution 搭配
+    "module": "ESNext",
+
     // 启用 Vite 的文件解析特性（支持在开启了 Module 的项目里不带扩展名引入文件）
     "moduleResolution": "bundler",
 
