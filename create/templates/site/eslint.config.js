@@ -11,6 +11,7 @@ export default [
         'warn',
         {
           additionalHooks: '(useAsyncEffect)',
+          allowAsyncHooks: '(useAsyncEffect)',
         },
       ],
     },
