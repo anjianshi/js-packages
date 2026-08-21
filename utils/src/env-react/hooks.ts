@@ -81,3 +81,42 @@ export function usePageTitle(title: string) {
     document.title = title
   }, [title])
 }
+
+/**
+ * 返回元素尺寸，尺寸变化时自动产生新值
+ */
+export function useElementSize(
+  element: HTMLElement | null | undefined,
+  type: 'client' | 'offset' = 'client',
+) {
+  const [size, setSize] = useState(() => getElementSize(element, type))
+
+  useEffect(() => {
+    if (!element) return
+
+    const resizeObserver = new ResizeObserver(() => {
+      setSize(getElementSize(element, type))
+    })
+    resizeObserver.observe(element)
+    return () => resizeObserver.disconnect()
+  }, [element, type])
+
+  return size
+}
+function getElementSize(
+  element: HTMLElement | null | undefined,
+  type: 'client' | 'offset' = 'client',
+) {
+  if (!element) return { width: 0, height: 0 }
+
+  return type === 'client'
+    ? { width: element.clientWidth, height: element.clientHeight }
+    : { width: element.offsetWidth, height: element.offsetHeight }
+}
+
+/**
+ * 返回页面尺寸，尺寸变化时自动产生新值
+ */
+export function useWindowSize() {
+  return useElementSize(document.documentElement)
+}

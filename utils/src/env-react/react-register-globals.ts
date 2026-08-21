@@ -10,6 +10,7 @@ import {
   useRef as useRefValue,
   useImperativeHandle as useImperativeHandleValue,
   useEffect as useEffectValue,
+  useLayoutEffect as useLayoutEffectValue,
   useMemo as useMemoValue,
   useCallback as useCallbackValue,
   useTransition as useTransitionValue,
@@ -27,6 +28,7 @@ declare global {
   var useRef: typeof useRefValue
   var useImperativeHandle: typeof useImperativeHandleValue
   var useEffect: typeof useEffectValue
+  var useLayoutEffect: typeof useLayoutEffectValue
   var useMemo: typeof useMemoValue
   var useCallback: typeof useCallbackValue
   var useTransition: typeof useTransitionValue
@@ -43,6 +45,7 @@ globalThis.useContext = useContextValue
 globalThis.useRef = useRefValue
 globalThis.useImperativeHandle = useImperativeHandleValue
 globalThis.useEffect = useEffectValue
+globalThis.useLayoutEffect = useLayoutEffectValue
 globalThis.useMemo = useMemoValue
 globalThis.useCallback = useCallbackValue
 globalThis.useTransition = useTransitionValue
