@@ -6,20 +6,20 @@ import isPlainObject from 'lodash/isPlainObject.js'
 import pick from 'lodash/pick.js'
 import {
   success,
-  failed,
-  formatFailed,
-  exceptionToFailed,
+  failure,
+  formatFailure,
+  exceptionToFailure,
   type Result,
   type Success,
-  type Failed,
+  type Failure,
 } from '../lang/result.js'
 import { getLogger, type Logger } from '../logging/index.js'
 import { combineUrl } from '../url.js'
-import { type RequestFailed } from './error.js'
+import { type RequestFailure } from './error.js'
 import type { Options, PredefinedOptions, FormattedOptions } from './options.js'
 
 /** 此基类不可直接使用，因其未对错误格式进行具体约定 */
-export abstract class BaseRequestClient<FailedT extends Failed> {
+export abstract class BaseRequestClient<FailureT extends Failure> {
   logger: Logger
   prefefinedOptions: PredefinedOptions
 
@@ -42,13 +42,13 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
   // 发起请求
   // -------------------------------
 
-  async request<T>(inputUrl: string, inputOptions?: Options<T>): Promise<Result<T, FailedT>> {
+  async request<T>(inputUrl: string, inputOptions?: Options<T>): Promise<Result<T, FailureT>> {
     const options = await this.formatOptions<T>({
       url: inputUrl,
       ...(inputOptions ?? {}),
     })
 
-    let result!: Result<T, FailedT>
+    let result!: Result<T, FailureT>
     let tryCount = 0
     do {
       tryCount += 1
@@ -60,7 +60,7 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
     return result
   }
 
-  protected async realRequest<T>(options: FormattedOptions): Promise<Result<T, FailedT>> {
+  protected async realRequest<T>(options: FormattedOptions): Promise<Result<T, FailureT>> {
     const { url, method, headers, body, timeout, signal: manualSignal, format } = options
 
     const timeoutSignal = timeout ? AbortSignal.timeout(timeout) : undefined
@@ -77,15 +77,17 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
       // 失败情形“手动取消”
       if (manualSignal?.aborted && manualSignal.reason === error) {
         const reason = error instanceof DOMException && error.name === 'AbortError' ? null : error
-        return this.handleError(failed('Request Aborted', 'RequestAborted', { options, reason }))
+        return this.handleError(
+          failure('Request Was Canceled', 'RequestAborted', { options, reason }),
+        )
       }
       // 失败情形“请求超时”
       if (error instanceof DOMException && error.name === 'TimeoutError') {
-        return this.handleError(failed('Request Timeouted Out', 'RequestTimedOut', { options }))
+        return this.handleError(failure('Request Timed Out', 'RequestTimeout', { options }))
       }
       // 失败情形“请求发起失败”
       return this.handleError(
-        failed('Send Request Failed', 'SendRequestFailed', { options, originalError: error }),
+        failure("Couldn't Send Request", 'RequestSendFailed', { options, originalError: error }),
       )
     }
 
@@ -96,7 +98,7 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
       const responseDataRes = await this.parseResponse(options, response)
       const responseData = responseDataRes.success ? responseDataRes.data : undefined
       return this.handleError(
-        failed('Non-Success Status', 'NonSuccessStatus', {
+        failure('Unexpected Response HTTP Status', 'UnexpectedHttpStatus', {
           options,
           status: response.status,
           response,
@@ -114,7 +116,7 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
         result = this.formatSuccessResult(result, options)
       } catch (error) {
         return this.handleError(
-          failed('Format Response Data Failed', 'FormatResponseDataFailed', {
+          failure('Failed To Format Response Data', 'ResponseDataFormattingFailed', {
             options,
             originalError: error,
             response,
@@ -129,16 +131,20 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
         result = success(formattedData)
       } catch (error) {
         return this.handleError(
-          failed('Format Response Data By options.format Failed', 'FormatResponseDataFailed', {
-            options,
-            originalError: error,
-            response,
-            responseData: result.data,
-          }),
+          failure(
+            'Failed To Format Response Data Using options.format',
+            'ResponseDataFormattingFailed',
+            {
+              options,
+              originalError: error,
+              response,
+              responseData: result.data,
+            },
+          ),
         )
       }
     }
-    return result as Result<T, FailedT>
+    return result as Result<T, FailureT>
   }
 
   // -------------------------------
@@ -222,14 +228,14 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
   protected async parseResponse(
     options: FormattedOptions,
     response: Response,
-  ): Promise<Result<unknown, FailedT>> {
+  ): Promise<Result<unknown, FailureT>> {
     const contentType = (response.headers.get('Content-Type') ?? '').toLowerCase().trim()
 
     if (options.binary) {
-      const blobResult = await exceptionToFailed(response.blob())
-      return formatFailed(blobResult, result =>
+      const blobResult = await exceptionToFailure(response.blob())
+      return formatFailure(blobResult, result =>
         this.handleError(
-          failed('Parse Blob Body Failed', 'ParseResponseBodyFailed', {
+          failure('Blob Body Parsing Failed', 'ResponseBodyParseFailed', {
             options,
             status: response.status,
             originalError: result.data,
@@ -239,11 +245,11 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
       )
     }
 
-    const textResult = await exceptionToFailed(response.text())
+    const textResult = await exceptionToFailure(response.text())
     if (contentType.startsWith('text/') || !textResult.success) {
-      return formatFailed(textResult, result =>
+      return formatFailure(textResult, result =>
         this.handleError(
-          failed('Parse Text Body Failed', 'ParseResponseBodyFailed', {
+          failure('Text Body Parsing Failed', 'ResponseBodyParseFailed', {
             options,
             status: response.status,
             originalError: result.data,
@@ -261,7 +267,7 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
     }
     if (contentType.startsWith('application/json')) {
       return this.handleError(
-        failed('Parse JSON Body Failed', 'ParseResponseBodyFailed', {
+        failure('JSON Body Parsing Failed', 'ResponseBodyParseFailed', {
           options,
           status: response.status,
           originalError: jsonParseError,
@@ -272,37 +278,37 @@ export abstract class BaseRequestClient<FailedT extends Failed> {
     return textResult
   }
 
-  protected handleError(result: RequestFailed) {
+  protected handleError(result: RequestFailure) {
     const info: Record<string, unknown> = pick(result.data.options, ['url', 'method'])
     for (const key of ['originalError', 'status', 'responseData'] as const) {
       if (key in result.data) Object.assign(info, pick(result.data, [key]))
     }
     this.logger.error(result.code, info)
-    return this.makeFailedResult(result)
+    return this.makeFailureResult(result)
   }
 
-  /** 生成符合 FailedT 约定的失败结果 */
-  protected abstract makeFailedResult(result: RequestFailed): FailedT
+  /** 生成符合 FailureT 约定的失败结果 */
+  protected abstract makeFailureResult(result: RequestFailure): FailureT
 
   /**
    * 对请求成功得到的数据进行格式化。
    *
    * - 此步骤在 applyInputFormat() 之前运行，子类可在此进行一些通用的格式化工作，
-   * - 输出 Success 或 Failed 结果均可，但输出的 Failed 结果不会交给 makeFailedResult() 进行格式化，需自行保证符合 FailedT 约定。
-   * - 若此方法抛出异常，会生成 FormatResponseDataFailed，此错误会照常交给 makeFailedResult() 处理。
+   * - 输出 Success 或 Failure 结果均可，但输出的 Failure 结果不会交给 makeFailureResult() 进行格式化，需自行保证符合 FailureT 约定。
+   * - 若此方法抛出异常，会生成 ResponseDataFormattingFailed，此错误会照常交给 makeFailureResult() 处理。
    */
   protected formatSuccessResult(
     result: Success<unknown>,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     options: FormattedOptions,
-  ): Result<unknown, FailedT> {
+  ): Result<unknown, FailureT> {
     return result
   }
 }
 
 /** 默认的 RequestClient 实现。出现错误时，会把错误对象原样放入错误信息中。 */
-export class RequestClient extends BaseRequestClient<RequestFailed> {
-  protected makeFailedResult(result: RequestFailed) {
+export class RequestClient extends BaseRequestClient<RequestFailure> {
+  protected makeFailureResult(result: RequestFailure) {
     return result
   }
 }

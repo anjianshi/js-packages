@@ -1,4 +1,4 @@
-import { success, failed } from '../lang/index.js'
+import { success, failure } from '../lang/index.js'
 import { getValidatorGenerator, type CommonOptions } from './base.js'
 
 export type BooleanOptions = CommonOptions<boolean>
@@ -16,6 +16,6 @@ export const getBooleanValidator = getValidatorGenerator<boolean, BooleanOptions
       if (input === 1) value = true
       else if (input === 0) value = false
     }
-    return value === null ? failed(`${field} must be true or false`) : success(value)
+    return value === null ? failure(`${field} must be true or false`) : success(value)
   },
 )

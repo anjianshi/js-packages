@@ -1,4 +1,4 @@
-import { success, failed } from '../lang/index.js'
+import { success, failure } from '../lang/index.js'
 import {
   getValidatorGenerator,
   type CommonOptions,
@@ -35,15 +35,15 @@ export function getArrayValidator<Options extends ArrayOptions>(options: Options
     function validate(field, value, options) {
       if (!Array.isArray(value)) {
         if (options.toArray) value = [value as PrimitiveType]
-        else return failed(`${field} should be an array`)
+        else return failure(`${field} should be an array`)
       }
 
       let formatted = []
       if (typeof options.min === 'number' && value.length < options.min)
-        return failed(`array ${field}'s length should >= ${options.min}`)
+        return failure(`array ${field}'s length should >= ${options.min}`)
 
       if (typeof options.max === 'number' && value.length > options.max)
-        return failed(`array ${field}'s length should <= ${options.max}`)
+        return failure(`array ${field}'s length should <= ${options.max}`)
 
       const itemValidator = options.item
       for (let i = 0; i < value.length; i++) {
@@ -79,9 +79,9 @@ type TupleValues<Options extends TupleOptions> = {
 export function getTupleValidator<const Options extends TupleOptions>(options: Options) {
   return getValidatorGenerator<TupleValues<Options>, Options>(
     function validate(field, value, options) {
-      if (!Array.isArray(value)) return failed(`${field} should be an array`)
+      if (!Array.isArray(value)) return failure(`${field} should be an array`)
       if (value.length > options.tuple.length)
-        return failed(`${field} should be a tuple with ${options.tuple.length} items`)
+        return failure(`${field} should be a tuple with ${options.tuple.length} items`)
 
       const formatted = []
       // 这种情况不能遍历 value，因为它的长度可能小于 opt.tuple

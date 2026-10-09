@@ -1,4 +1,4 @@
-import { failed, type Result } from '../lang/index.js'
+import { failure, type Result } from '../lang/index.js'
 import {
   getValidatorGenerator,
   type CommonOptions,
@@ -28,6 +28,6 @@ export function getOneOfValidator<const Options extends OneOfOptions>(
       if (result.success) return result as Result<OneOfValue<Options>>
       else errors.push(result.message)
     }
-    return failed(`${field} do not match any valid format：\n- ` + errors.join('\n- '))
+    return failure(`${field} do not match any valid format：\n- ` + errors.join('\n- '))
   })(options)
 }

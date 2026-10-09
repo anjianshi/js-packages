@@ -1,4 +1,4 @@
-import { success, failed, type Result } from '../lang/index.js'
+import { success, failure, type Result } from '../lang/index.js'
 
 /**
  * 支持传入进行验证的值类型
@@ -119,10 +119,10 @@ export function getValidatorGenerator<Value, Options extends CommonOptions>(
         if (typeof defaults !== 'undefined') {
           value = defaults as Validated<Value, Options>
         } else if (required) {
-          return failed(`${field} is required`)
+          return failure(`${field} is required`)
         }
       }
-      if (value === null && !allowNull) return failed(`${field} cannot be null`)
+      if (value === null && !allowNull) return failure(`${field} cannot be null`)
       if (value === null || value === undefined) return success(value)
 
       const validated = validate(field, value, inputOptions)

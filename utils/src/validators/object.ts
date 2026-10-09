@@ -1,5 +1,5 @@
 import isPlainObject from 'lodash/isPlainObject.js'
-import { success, failed } from '../lang/index.js'
+import { success, failure } from '../lang/index.js'
 import {
   getValidatorGenerator,
   type CommonOptions,
@@ -26,7 +26,7 @@ type StructValues<Options extends StructOptions> = {
 export function getStructValidator<const Options extends StructOptions>(options: Options) {
   return getValidatorGenerator<StructValues<Options>, Options>(
     function validate(field, value, options) {
-      if (!isPlainObject(value)) return failed(`${field} should be a plain object`)
+      if (!isPlainObject(value)) return failure(`${field} should be a plain object`)
 
       const formatted: Record<string, unknown> = {}
       for (const [key, itemValidator] of Object.entries(options.struct)) {
@@ -72,7 +72,7 @@ type RecordValues<Options extends RecordOptions> = Record<
 export function getRecordValidator<Options extends RecordOptions>(options: Options) {
   return getValidatorGenerator<RecordValues<Options>, Options>(
     function validate(field, value, options) {
-      if (!isPlainObject(value)) return failed(`${field} should be a plain object`)
+      if (!isPlainObject(value)) return failure(`${field} should be a plain object`)
 
       const formatted: Record<string, unknown> = {}
       for (const [key, itemValue] of Object.entries(value as Record<string, AllowedInputValue>)) {
@@ -91,9 +91,9 @@ export function getRecordValidator<Options extends RecordOptions>(options: Optio
 
       const length = Object.keys(formatted).length
       if (typeof options.min === 'number' && length < options.min)
-        return failed(`size of ${field} should >= ${options.min}`)
+        return failure(`size of ${field} should >= ${options.min}`)
       if (typeof options.max === 'number' && length > options.max)
-        return failed(`size of ${field} should <= ${options.max}`)
+        return failure(`size of ${field} should <= ${options.max}`)
 
       return success(formatted as RecordValues<Options>)
     },
