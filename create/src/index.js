@@ -103,9 +103,16 @@ fs.cpSync(templatePath, projectPath, {
   },
 })
 
-const gitignorePath = path.join(projectPath, 'gitignore')
-if (confirmPath(gitignorePath) === 'file') {
-  fs.renameSync(gitignorePath, path.join(projectPath, '.gitignore'))
+const filesToRename = [
+  { from: '_gitignore', to: '.gitignore' },
+  { from: '_pnpm-workspace.yaml', to: 'pnpm-workspace.yaml' },
+]
+for (const item of filesToRename) {
+  const fromPath = path.join(projectPath, item.from)
+  const toPath = path.join(projectPath, item.to)
+  if (confirmPath(fromPath) === 'file') {
+    fs.renameSync(fromPath, toPath)
+  }
 }
 
 // -------------------------
