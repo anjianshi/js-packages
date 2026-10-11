@@ -1,5 +1,5 @@
 import isPlainObject from 'lodash/isPlainObject.js'
-import { success, failure } from '../lang/index.js'
+import { success, failure } from '../index.js'
 import {
   getValidatorGenerator,
   type CommonOptions,

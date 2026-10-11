@@ -2,7 +2,7 @@
  * 验证日期时间类型的值，依赖 dayjs
  */
 import dayjs, { type Dayjs } from 'dayjs'
-import { success, failure } from '../lang/index.js'
+import { success, failure } from '../index.js'
 import { getValidatorGenerator, type CommonOptions } from './base.js'
 
 export interface DatetimeOptions extends CommonOptions<number> {

@@ -6,7 +6,7 @@
  * 2. 请求本身成功，但相应内容表达了业务上的失败，例如登录接口返回密码错误。
  * 如有需要，可继承子类来处理这些失败情形。
  */
-import { type Failure } from '../lang/result.js'
+import { type Failure } from '../result.js'
 import { type FormattedOptions } from './options.js'
 
 export type RequestFailure =

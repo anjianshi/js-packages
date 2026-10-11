@@ -1,5 +1,5 @@
 /**
- * 类似 lang/random.ts，但基于 Node.js 的 crypto 模块，提供密码级的随机数。
+ * 类似 /random.ts，但基于 Node.js 的 crypto 模块，提供密码级的随机数。
  */
 import crypto from 'node:crypto'
 

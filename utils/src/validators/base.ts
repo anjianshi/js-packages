@@ -1,4 +1,4 @@
-import { success, failure, type Result } from '../lang/index.js'
+import { success, failure, type Result } from '../index.js'
 
 /**
  * 支持传入进行验证的值类型

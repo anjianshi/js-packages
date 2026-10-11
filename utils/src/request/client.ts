@@ -4,6 +4,7 @@
  */
 import isPlainObject from 'lodash/isPlainObject.js'
 import pick from 'lodash/pick.js'
+import { getLogger, type Logger } from '../logging/index.js'
 import {
   success,
   failure,
@@ -12,8 +13,7 @@ import {
   type Result,
   type Success,
   type Failure,
-} from '../lang/result.js'
-import { getLogger, type Logger } from '../logging/index.js'
+} from '../result.js'
 import { combineUrl } from '../url.js'
 import { type RequestFailure } from './error.js'
 import type { Options, PredefinedOptions, FormattedOptions } from './options.js'

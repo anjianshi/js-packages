@@ -1,4 +1,4 @@
-import { sleep } from '../lang/async.js'
+import { sleep } from '../async.js'
 import { type Logger, logger as rootLogger } from '../logging/index.js'
 
 /** 返回 false 可结束任务 */

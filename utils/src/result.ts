@@ -1,3 +1,7 @@
+// ----------------------------
+// 类型定义
+// ----------------------------
+
 /**
  * Result：代表一种“可能失败”的操作结果，可以作为函数返回值，也可以作为接口响应值。
  * 它的灵感来自 Scala 的 Option 类型。
@@ -11,24 +15,42 @@
  * 1. 它的 Failure 类型可以携带失败信息。
  * 2. 无需 try catch，只需简单的 result.success 判断
  */
+export type Result<DataT = unknown, FailureT extends Failure = Failure> = Success<DataT> | FailureT
 
-/** 类型定义 */
+/**
+ * 操作成功时的结果
+ * data 是可选的
+ */
 export interface Success<T = void> {
   success: true
   data: T
 }
+
+/**
+ * 操作失败时的结果
+ * 可附带失败信息、失败码、甚至具体的相关数据
+ */
 export interface Failure<CodeT = unknown, DataT = unknown> {
   success: false
   message: string
   code: CodeT
   data: DataT
 }
-export type Result<DataT = unknown, FailureT extends Failure = Failure> = Success<DataT> | FailureT
 
+/**
+ * 若 ResultT 是成功结果，提取出其数据类型；否则生成 never
+ */
 export type SuccessDataTypeOfResult<ResultT extends Result> =
   ResultT extends Success<infer DataT> ? DataT : never
 
+/**
+ * 若 ResultT 是失败结果，直接返回此结果类型，否则生成 never
+ */
 export type FailureTypeOfResult<ResultT extends Result> = ResultT extends Failure ? ResultT : never
+
+// ----------------------------
+// 工具函数
+// ----------------------------
 
 /** 生成 Success 数据 */
 function success(): Success
@@ -48,7 +70,8 @@ function failure<CodeT, DataT>(message: string, code?: CodeT, data?: DataT): Fai
 export { failure }
 
 /**
- * 若传入值为 Success，格式化其 data；否则原样返回错误。
+ * 若传入值为 Success，格式化其 data 并重新生成一个 Success 对象；否则原样返回失败结果。
+ * 支持传入会返回 Result 的 Promise。
  */
 function formatSuccess<FormattedDataT, ResultT extends Result>(
   result: ResultT,
@@ -92,7 +115,7 @@ export { formatFailure }
 
 /**
  * 把可能抛出异常的 Promise 转换为返回 Result 的 Promise。
- * 其中返回的 Failure 对象的 data 是 catch 捕获到的错误对象。
+ * catch 捕获到的错误对象会被作为返回的 Failure 对象的 data。
  *
  * 通过此函数可避免写一长串嵌套的 try catch 语句。
  */

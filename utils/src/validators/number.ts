@@ -1,4 +1,4 @@
-import { truthy, success, failure } from '../lang/index.js'
+import { truthy, success, failure } from '../index.js'
 import { getValidatorGenerator, type CommonOptions } from './base.js'
 
 export interface NumberOptions extends CommonOptions<number> {

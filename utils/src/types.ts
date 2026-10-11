@@ -16,16 +16,16 @@ export function tuple<T extends unknown[]>(...elements: T) {
   return elements
 }
 
-/** 将一个对象中的指定 key 设为必须的 */
+/** 将对象中的指定 key 设为必须的 */
 export type RequiredFields<T, K extends keyof T> = Omit<T, K> & Pick<Required<T>, K>
 
-/** 将一个对象中的指定 key 设为非必须的 */
+/** 将对象中的指定 key 设为非必须的 */
 export type OptionalFields<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 
 /** 用 ReplaceT 中的字段定义代替 T 中的 */
 export type ReplaceFields<T, ReplaceT> = Omit<T, keyof ReplaceT> & ReplaceT
 
-/** 获取一个对象所有 value 的集合 */
+/** 获取对象所有 value 的集合 */
 export type ValueOf<T> = T extends { [_ in keyof T]: infer U } ? U : never
 
 /**

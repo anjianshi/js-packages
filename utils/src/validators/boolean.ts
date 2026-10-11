@@ -1,4 +1,4 @@
-import { success, failure } from '../lang/index.js'
+import { success, failure } from '../index.js'
 import { getValidatorGenerator, type CommonOptions } from './base.js'
 
 export type BooleanOptions = CommonOptions<boolean>

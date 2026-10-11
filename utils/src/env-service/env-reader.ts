@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv'
-import { safeParseJSON } from '../lang/string.js'
+import { safeParseJSON } from '../string.js'
 
 type EnvValue = string | number | boolean | unknown[] | Record<string, unknown>
 

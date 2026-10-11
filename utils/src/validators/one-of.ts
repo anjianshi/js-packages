@@ -1,4 +1,4 @@
-import { failure, type Result } from '../lang/index.js'
+import { failure, type Result } from '../index.js'
 import {
   getValidatorGenerator,
   type CommonOptions,
